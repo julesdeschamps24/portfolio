@@ -23,8 +23,9 @@ export default function ProjetsPage() {
           </p>
           <h1 className="text-4xl font-bold md:text-5xl">Projets</h1>
           <p className="text-base text-zinc-300">
-            Survolez une vidéo pour lancer la lecture. Cliquez sur “Agrandir”
-            pour ouvrir un aperçu lissé en plein écran.
+            Survolez le bouton “Agrandir” (ou cliquez sur la vidéo) pour ouvrir
+            l’aperçu plein écran. La vidéo démarre automatiquement et se ferme
+            dès que le curseur quitte la zone de lecture.
           </p>
         </header>
 

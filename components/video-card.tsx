@@ -60,7 +60,36 @@ export function VideoCard({
   const handlePlay = (ref: React.RefObject<HTMLVideoElement | null>) => {
     const el = ref.current;
     if (!el) return;
-    void el.play();
+    // #region agent log
+    sendDebugLog({
+      runId: "run4",
+      hypothesisId: "H2",
+      location: "components/video-card.tsx:handlePlay",
+      message: "handlePlay called",
+      data: { src: el.src, currentTime: el.currentTime, paused: el.paused },
+    });
+    // #endregion
+    void el.play().then(() => {
+      // #region agent log
+      sendDebugLog({
+        runId: "run4",
+        hypothesisId: "H2",
+        location: "components/video-card.tsx:handlePlay:then",
+        message: "video play resolved",
+        data: { src: el.src, paused: el.paused },
+      });
+      // #endregion
+    }).catch((err) => {
+      // #region agent log
+      sendDebugLog({
+        runId: "run4",
+        hypothesisId: "H2",
+        location: "components/video-card.tsx:handlePlay:catch",
+        message: "video play rejected",
+        data: { src: el.src, error: String(err) },
+      });
+      // #endregion
+    });
   };
 
   const handlePause = (ref: React.RefObject<HTMLVideoElement | null>) => {
@@ -75,6 +104,15 @@ export function VideoCard({
   ) => {
     const el = ref.current;
     if (!el) return;
+    // #region agent log
+    sendDebugLog({
+      runId: "run4",
+      hypothesisId: "H4",
+      location: "components/video-card.tsx:handleShowFirstFrame",
+      message: "show first frame called",
+      data: { src: el.src, paused: el.paused },
+    });
+    // #endregion
     el.currentTime = 0.001; // force render of first frame
     el.pause();
   };
@@ -106,6 +144,30 @@ export function VideoCard({
 
   useEffect(() => {
     if (!isExpanded) return;
+    // #region agent log
+    sendDebugLog({
+      runId: "run4",
+      hypothesisId: "H2",
+      location: "components/video-card.tsx:isExpanded:true",
+      message: "modal opened",
+      data: { src },
+    });
+    // #endregion
+    // Démarrer la vidéo automatiquement quand le modal s'ouvre
+    setTimeout(() => {
+      if (modalVideoRef.current) {
+        // #region agent log
+        sendDebugLog({
+          runId: "run4",
+          hypothesisId: "H2",
+          location: "components/video-card.tsx:modal:auto-play",
+          message: "attempting auto-play in modal",
+          data: { src: modalVideoRef.current.src, paused: modalVideoRef.current.paused },
+        });
+        // #endregion
+        handlePlay(modalVideoRef);
+      }
+    }, 100);
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         handlePause(modalVideoRef);
@@ -136,14 +198,37 @@ export function VideoCard({
           onMouseEnter={() => handlePlay(videoRef)}
           onMouseLeave={() => handlePause(videoRef)}
           onLoadedData={() => handleShowFirstFrame(videoRef)}
-          onClick={() => {
+          onClick={(e) => {
+            // #region agent log
+            sendDebugLog({
+              runId: "run4",
+              hypothesisId: "H5",
+              location: "components/video-card.tsx:video:onClick",
+              message: "video clicked",
+              data: { src, clientX: e.clientX, clientY: e.clientY },
+            });
+            // #endregion
             setIsExpanded(true);
           }}
         />
 
         <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-70" />
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4">
+        <div
+          className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-4 pointer-events-none"
+          onClick={(e) => {
+            // #region agent log
+            sendDebugLog({
+              runId: "run4",
+              hypothesisId: "H1",
+              location: "components/video-card.tsx:text-container:onClick",
+              message: "text container clicked (should not happen)",
+              data: { title },
+            });
+            // #endregion
+            e.stopPropagation();
+          }}
+        >
           <h3 className="text-xl font-semibold text-white">{title}</h3>
           {description && (
             <p className="text-sm text-zinc-300 leading-5">{description}</p>
@@ -227,7 +312,40 @@ export function VideoCard({
                 controls={false}
                 onMouseEnter={() => handlePlay(modalVideoRef)}
                 onMouseLeave={() => handlePause(modalVideoRef)}
-                onLoadedData={() => handleShowFirstFrame(modalVideoRef)}
+                onLoadedData={() => {
+                  // #region agent log
+                  sendDebugLog({
+                    runId: "run4",
+                    hypothesisId: "H2",
+                    location: "components/video-card.tsx:modal-video:onLoadedData",
+                    message: "modal video loaded",
+                    data: { src, paused: modalVideoRef.current?.paused },
+                  });
+                  // #endregion
+                  handleShowFirstFrame(modalVideoRef);
+                }}
+                onPlay={() => {
+                  // #region agent log
+                  sendDebugLog({
+                    runId: "run4",
+                    hypothesisId: "H2",
+                    location: "components/video-card.tsx:modal-video:onPlay",
+                    message: "modal video playing",
+                    data: { src },
+                  });
+                  // #endregion
+                }}
+                onError={(e) => {
+                  // #region agent log
+                  sendDebugLog({
+                    runId: "run4",
+                    hypothesisId: "H2",
+                    location: "components/video-card.tsx:modal-video:onError",
+                    message: "modal video error",
+                    data: { src, error: String(e) },
+                  });
+                  // #endregion
+                }}
               />
             </motion.div>
           </motion.div>
