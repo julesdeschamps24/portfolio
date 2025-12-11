@@ -7,10 +7,10 @@ export default function Home() {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Transition automatique après 3.5 secondes
+    // Transition automatique après 1.5 secondes
     const timer = setTimeout(() => {
       setShowContent(true);
-    }, 3500);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
