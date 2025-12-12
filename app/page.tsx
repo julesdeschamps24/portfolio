@@ -134,19 +134,19 @@ export default function Home() {
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                   <TypewriterText 
                     text="Bienvenue sur mon portfolio" 
-                    speed={120}
-                    delay={500}
+                    speed={100}
+                    delay={1200}
                     showCursor={true}
                     hideCursorWhenDone={true}
                     accelerate={true}
-                    minSpeed={82}
+                    minSpeed={72}
                   />
                 </h1>
                 <p className="text-lg md:text-xl leading-8 text-zinc-400">
                   <TypewriterText 
                     text="Découvrez mes projets et compétences" 
                     speed={60}
-                    delay={3300}
+                    delay={4400}
                     showCursor={true}
                     accelerate={true}
                     minSpeed={50}
