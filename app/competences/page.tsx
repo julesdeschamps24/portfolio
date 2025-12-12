@@ -4,7 +4,6 @@ export default function CompetencesPage() {
     { name: "JavaScript", category: "Frontend" },
     { name: "React", category: "Frontend" },
     { name: "Node.js", category: "Backend" },
-    { name: "Next.js", category: "Backend" },
     { name: "Next.js", category: "Frontend" },
     { name: "C", category: "Langage" },
     { name: "C++", category: "Langage" },

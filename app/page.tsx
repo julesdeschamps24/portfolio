@@ -18,6 +18,17 @@ const videos = [
   },
 ];
 
+const competences = [
+  { name: "HTML5/CSS3", category: "Frontend" },
+  { name: "JavaScript", category: "Frontend" },
+  { name: "React", category: "Frontend" },
+  { name: "Node.js", category: "Backend" },
+  { name: "Next.js", category: "Frontend" },
+  { name: "C", category: "Langage" },
+  { name: "C++", category: "Langage" },
+  { name: "Git", category: "Outils" },
+];
+
 export default function Home() {
   const [showContent, setShowContent] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
@@ -174,6 +185,96 @@ export default function Home() {
                   {videos.map((video) => (
                     <VideoCard key={video.title} {...video} />
                   ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Section Compétences */}
+            <section id="competences" className="min-h-screen bg-black text-white">
+              <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 py-20">
+                <header className="flex flex-col gap-4">
+                  <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
+                    Compétences
+                  </p>
+                  <h2 className="text-4xl font-bold md:text-5xl">Mes Compétences</h2>
+                  <p className="text-base text-zinc-300">
+                    Technologies et outils que je maîtrise pour créer des projets innovants.
+                  </p>
+                </header>
+
+                {(() => {
+                  const categories = competences.reduce((acc, comp) => {
+                    if (!acc[comp.category]) {
+                      acc[comp.category] = [];
+                    }
+                    acc[comp.category].push(comp.name);
+                    return acc;
+                  }, {} as Record<string, string[]>);
+
+                  return (
+                    <>
+                      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        {Object.entries(categories).map(([category, skills]) => (
+                          <div
+                            key={category}
+                            className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
+                          >
+                            <h3 className="mb-4 text-xl font-semibold text-indigo-300">
+                              {category}
+                            </h3>
+                            <ul className="flex flex-col gap-3">
+                              {skills.map((skill) => (
+                                <li
+                                  key={skill}
+                                  className="flex items-center gap-2 text-zinc-200 transition hover:text-white"
+                                >
+                                  <span className="h-2 w-2 rounded-full bg-indigo-400"></span>
+                                  <span>{skill}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Section avec toutes les compétences en badges */}
+                      <section className="mt-8">
+                        <h3 className="mb-6 text-2xl font-semibold">Toutes mes compétences</h3>
+                        <div className="flex flex-wrap gap-3">
+                          {competences.map((comp) => (
+                            <span
+                              key={comp.name}
+                              className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 transition hover:border-indigo-400/50 hover:bg-indigo-500/20"
+                            >
+                              {comp.name}
+                            </span>
+                          ))}
+                        </div>
+                      </section>
+                    </>
+                  );
+                })()}
+              </div>
+            </section>
+
+            {/* Section À propos */}
+            <section id="a-propos" className="min-h-screen bg-black text-white">
+              <div className="mx-auto flex max-w-4xl flex-col gap-12 px-6 py-20">
+                <header className="flex flex-col gap-4">
+                  <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
+                    À propos
+                  </p>
+                  <h2 className="text-4xl font-bold md:text-5xl">À propos de moi</h2>
+                </header>
+
+                <div className="flex flex-col gap-6">
+                  <p className="text-base leading-7 text-zinc-300">
+                    Je m'appelle Jules Deschamps, formé au développement à l'école 42, passionné par la compréhension approfondie des systèmes afin de concevoir des applications web fiables et bien structurées. Cette formation m'a permis d'acquérir rigueur, autonomie et sens du code propre, des valeurs appliquées dans chacun des projets réalisés.
+                  </p>
+                  
+                  <p className="text-base leading-7 text-zinc-300">
+                    Mon apprentissage se base principalement sur la réalisation de projets concrets, favorisant une progression rapide et une adaptation efficace aux nouvelles technologies. Curieux et motivé, j'apprécie relever de nouveaux défis techniques et faire évoluer ses compétences en continu.
+                  </p>
                 </div>
               </div>
             </section>
