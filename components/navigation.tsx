@@ -72,6 +72,12 @@ export function Navigation() {
             Projets
           </a>
           <a
+            href="/competences"
+            className="transition hover:text-white hover:underline underline-offset-4 cursor-pointer"
+          >
+            Compétences
+          </a>
+          <a
             href="#contact"
             onClick={(e) => handleScroll(e, "contact")}
             className="transition hover:text-white hover:underline underline-offset-4 cursor-pointer"
