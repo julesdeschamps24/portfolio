@@ -1,22 +1,36 @@
 export default function CompetencesPage() {
   const competences = [
-    { name: "HTML5/CSS3", category: "Frontend" },
-    { name: "JavaScript", category: "Frontend" },
-    { name: "React", category: "Frontend" },
-    { name: "Node.js", category: "Backend" },
-    { name: "Next.js", category: "Frontend" },
-    { name: "C", category: "Langage" },
-    { name: "C++", category: "Langage" },
-    { name: "Git", category: "Outils" },
+    { name: "HTML5/CSS3", categories: ["Frontend"] },
+    { name: "JavaScript", categories: ["Langage"] },
+    { name: "TypeScript", categories: ["Langage"] },
+    { name: "React", categories: ["Frontend"] },
+    { name: "Node.js", categories: ["Backend"] },
+    { name: "Next.js", categories: ["Frontend", "Backend"] },
+    { name: "C", categories: ["Langage"] },
+    { name: "C++", categories: ["Langage"] },
+    { name: "Git", categories: ["Outils"] },
   ];
 
   const categories = competences.reduce((acc, comp) => {
-    if (!acc[comp.category]) {
-      acc[comp.category] = [];
-    }
-    acc[comp.category].push(comp.name);
+    comp.categories.forEach((category) => {
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(comp.name);
+    });
     return acc;
   }, {} as Record<string, string[]>);
+
+  const categoryOrder = ["Frontend", "Backend", "Langage", "Outils"];
+  const sortedCategories = Object.entries(categories).sort((a, b) => {
+    const indexA = categoryOrder.indexOf(a[0]);
+    const indexB = categoryOrder.indexOf(b[0]);
+    // Si la catégorie n'est pas dans l'ordre, la mettre à la fin
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -32,7 +46,7 @@ export default function CompetencesPage() {
         </header>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {Object.entries(categories).map(([category, skills]) => (
+          {sortedCategories.map(([category, skills]) => (
             <div
               key={category}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
