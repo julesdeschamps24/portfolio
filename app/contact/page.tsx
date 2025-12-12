@@ -20,10 +20,10 @@ export default function ContactPage() {
             <p className="text-sm text-zinc-300">
               Email :{" "}
               <a
-                href="mailto:contact@node4.dev"
+                href="mailto:contact@Jules Deschamps.dev"
                 className="text-indigo-300 underline underline-offset-4 hover:text-indigo-200"
               >
-                contact@node4.dev
+                contact@Jules Deschamps.dev
               </a>
             </p>
             <p className="text-sm text-zinc-300">

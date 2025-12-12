@@ -2,24 +2,87 @@
 import React, { useEffect, useState } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { motion, AnimatePresence } from "framer-motion";
+import { VideoCard } from "@/components/video-card";
+
+const videos = [
+  {
+    title: "Motion Design – Asana",
+    description: "Exploration graphique en basse lumière avec effets de lueurs.",
+    src: "/vid/asana.webm",
+  },
+  {
+    title: "Cinematic – Sport Avenue",
+    description: "Sequence narrative pour tester la narration visuelle.",
+    src: "/vid/sport_avenue.webm",
+  },
+];
 
 export default function Home() {
   const [showContent, setShowContent] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
+  const [formStatus, setFormStatus] = useState<{ type: "success" | "error" | null; message: string }>({ type: null, message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Transition automatique après 1.5 secondes
-    const timer = setTimeout(() => {
+    // Vérifier si l'intro a déjà été vue dans cette session
+    const introSeen = sessionStorage.getItem("introSeen");
+    
+    if (introSeen) {
+      // Si l'intro a déjà été vue, afficher directement le contenu
       setShowContent(true);
-    }, 1500);
+      setShowIntro(false);
+      // Gérer le scroll vers une ancre si présente dans l'URL
+      const hash = window.location.hash.replace("#", "");
+      if (hash) {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            const headerOffset = 80;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
+            });
+          }
+        }, 100);
+      }
+    } else {
+      // Si c'est la première visite, afficher l'intro
+      setShowIntro(true);
+      // Transition automatique après 1.5 secondes
+      const timer = setTimeout(() => {
+        setShowContent(true);
+        setShowIntro(false);
+        // Marquer que l'intro a été vue
+        sessionStorage.setItem("introSeen", "true");
+        // Gérer le scroll vers une ancre si présente dans l'URL après l'intro
+        const hash = window.location.hash.replace("#", "");
+        if (hash) {
+          setTimeout(() => {
+            const element = document.getElementById(hash);
+            if (element) {
+              const headerOffset = 80;
+              const elementPosition = element.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+            }
+          }, 500);
+        }
+      }, 1500);
 
-    return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-black">
       {/* Hero Section avec SparklesCore */}
       <AnimatePresence>
-        {!showContent && (
+        {showIntro && !showContent && (
           <motion.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -28,7 +91,7 @@ export default function Home() {
           >
             <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden">
               <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
-                Node4
+                Jules Deschamps
               </h1>
               <div className="w-[40rem] h-40 relative">
                 {/* Gradients */}
@@ -64,7 +127,8 @@ export default function Home() {
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="min-h-screen w-full"
           >
-            <main className="flex min-h-screen w-full flex-col items-center justify-center py-32 px-16 bg-black text-white">
+            {/* Section Accueil */}
+            <section id="accueil" className="flex min-h-screen w-full flex-col items-center justify-center py-32 px-16 bg-black text-white">
               <div className="flex flex-col items-center gap-6 text-center max-w-4xl">
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                   Bienvenue sur mon portfolio
@@ -72,9 +136,171 @@ export default function Home() {
                 <p className="text-lg md:text-xl leading-8 text-zinc-400">
                   Découvrez mes projets et compétences
                 </p>
-                {/* Ici vous pouvez ajouter vos sections : projets, à propos, contact, etc. */}
               </div>
-            </main>
+            </section>
+
+            {/* Section Projets */}
+            <section id="projets" className="min-h-screen bg-black text-white">
+              <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 py-20">
+                <header className="flex flex-col gap-4">
+                  <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
+                    Portfolio
+                  </p>
+                  <h2 className="text-4xl font-bold md:text-5xl">Projets</h2>
+                  <p className="text-base text-zinc-300">
+                    Survolez le bouton "Agrandir" (ou cliquez sur la vidéo) pour ouvrir
+                    l'aperçu plein écran. La vidéo démarre automatiquement et se ferme
+                    dès que le curseur quitte la zone de lecture.
+                  </p>
+                </header>
+
+                <div className="grid gap-8 md:grid-cols-2">
+                  {videos.map((video) => (
+                    <VideoCard key={video.title} {...video} />
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Section Contact */}
+            <section id="contact" className="min-h-screen bg-black text-white">
+              <div className="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-20">
+                <header className="flex flex-col gap-3">
+                  <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
+                    Contact
+                  </p>
+                  <h2 className="text-4xl font-bold md:text-5xl">
+                    Discutons de votre projet
+                  </h2>
+                  <p className="text-base text-zinc-300">
+                    Vous avez une idée ou une mission ? Écrivez-moi, je réponds sous 24h.
+                  </p>
+                </header>
+
+                <section className="grid gap-8 rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg backdrop-blur md:grid-cols-2">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold">Coordonnées</h3>
+                    <p className="text-sm text-zinc-300">
+                      Email :{" "}
+                      <a
+                        href="mailto:contact@julesdeschamps.dev"
+                        className="text-indigo-300 underline underline-offset-4 hover:text-indigo-200"
+                      >
+                        contact@julesdeschamps.dev
+                      </a>
+                    </p>
+                    <p className="text-sm text-zinc-300">
+                      Disponible pour missions freelance et projets collaboratifs.
+                    </p>
+                  </div>
+
+                  <form
+                    className="space-y-4"
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setIsSubmitting(true);
+                      setFormStatus({ type: null, message: "" });
+
+                      const formData = new FormData(e.currentTarget);
+                      const data = {
+                        name: formData.get("name") as string,
+                        email: formData.get("email") as string,
+                        message: formData.get("message") as string,
+                      };
+
+                      try {
+                        const response = await fetch("/api/contact", {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify(data),
+                        });
+
+                        const result = await response.json();
+
+                        if (result.ok) {
+                          setFormStatus({
+                            type: "success",
+                            message: "Message envoyé avec succès !",
+                          });
+                          (e.target as HTMLFormElement).reset();
+                        } else {
+                          setFormStatus({
+                            type: "error",
+                            message: result.message || "Erreur lors de l'envoi du message.",
+                          });
+                        }
+                      } catch (error) {
+                        setFormStatus({
+                          type: "error",
+                          message: "Erreur lors de l'envoi du message.",
+                        });
+                      } finally {
+                        setIsSubmitting(false);
+                      }
+                    }}
+                  >
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm text-zinc-200">
+                        Nom
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
+                        placeholder="Votre nom"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm text-zinc-200">
+                        Email
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
+                        placeholder="vous@email.com"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="message" className="text-sm text-zinc-200">
+                        Message
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={4}
+                        className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
+                        placeholder="Décrivez votre besoin"
+                        required
+                      />
+                    </div>
+                    {formStatus.message && (
+                      <div
+                        className={`rounded-lg px-4 py-2 text-sm ${
+                          formStatus.type === "success"
+                            ? "bg-green-500/20 text-green-300"
+                            : "bg-red-500/20 text-red-300"
+                        }`}
+                      >
+                        {formStatus.message}
+                      </div>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? "Envoi..." : "Envoyer"}
+                    </button>
+                  </form>
+                </section>
+              </div>
+            </section>
           </motion.div>
         )}
       </AnimatePresence>
