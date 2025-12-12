@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { motion, AnimatePresence } from "framer-motion";
 import { VideoCard } from "@/components/video-card";
+import { TypewriterText } from "@/components/typewriter-text";
 
 const videos = [
   {
@@ -131,10 +132,25 @@ export default function Home() {
             <section id="accueil" className="flex min-h-screen w-full flex-col items-center justify-center py-32 px-16 bg-black text-white">
               <div className="flex flex-col items-center gap-6 text-center max-w-4xl">
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                  Bienvenue sur mon portfolio
+                  <TypewriterText 
+                    text="Bienvenue sur mon portfolio" 
+                    speed={120}
+                    delay={500}
+                    showCursor={true}
+                    hideCursorWhenDone={true}
+                    accelerate={true}
+                    minSpeed={82}
+                  />
                 </h1>
                 <p className="text-lg md:text-xl leading-8 text-zinc-400">
-                  Découvrez mes projets et compétences
+                  <TypewriterText 
+                    text="Découvrez mes projets et compétences" 
+                    speed={60}
+                    delay={3300}
+                    showCursor={true}
+                    accelerate={true}
+                    minSpeed={50}
+                  />
                 </p>
               </div>
             </section>
