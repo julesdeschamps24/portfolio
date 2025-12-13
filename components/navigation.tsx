@@ -2,33 +2,140 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navigation() {
   const pathname = usePathname();
+  const router = useRouter();
   const isHomePage = pathname === "/";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const scrollToSection = (targetId: string, smooth = true) => {
-    const element = document.getElementById(targetId);
-    if (element) {
-      const headerOffset = 80; // Hauteur du header
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  const scrollToSection = (targetId: string, smooth = true, retries = 3) => {
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:scrollToSection',message:'scrollToSection called',data:{targetId,smooth,retries,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,windowHeight:window.innerHeight,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,D'})}).catch(()=>{});
+    // #endregion
+    const attemptScroll = (attempt: number) => {
+      const element = document.getElementById(targetId);
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'attemptScroll start',data:{targetId,attempt,elementFound:!!element,currentScrollY:window.pageYOffset},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B'})}).catch(()=>{});
+      // #endregion
+      if (element) {
+        // Obtenir la hauteur réelle du header
+        const header = document.querySelector('header');
+        const headerOffset = header ? header.offsetHeight : 80;
+        
+        // Calculer la position absolue depuis le haut du document en remontant depuis l'élément
+        // jusqu'au body. Cette méthode est plus fiable que getBoundingClientRect() + pageYOffset
+        // car elle ne dépend pas de la position actuelle du scroll
+        let absoluteTop = 0;
+        let currentElement: HTMLElement | null = element;
+        while (currentElement && currentElement !== document.body) {
+          absoluteTop += currentElement.offsetTop;
+          currentElement = currentElement.offsetParent as HTMLElement | null;
+        }
+        
+        // Calculer la position de scroll pour amener le début de la section juste sous le header
+        const scrollPosition = Math.max(0, absoluteTop - headerOffset);
+        
+        // #region agent log
+        fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'scroll calculation',data:{targetId,attempt,pageYOffset:window.pageYOffset,headerOffset,absoluteTop,scrollPosition,elementOffsetTop:element.offsetTop},timestamp:Date.now(),sessionId:'debug-session',runId:'post-fix',hypothesisId:'A,B,C'})}).catch(()=>{});
+        // #endregion
+        
+        window.scrollTo({
+          top: scrollPosition,
+          behavior: smooth ? "smooth" : "auto",
+        });
+        
+        // #region agent log
+        fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'scroll executed',data:{targetId,attempt,scrollPosition,currentScrollY:window.pageYOffset},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+        // #endregion
+        
+        // Vérifier la position après un court délai pour voir si le scroll a atteint la position calculée
+        if (smooth) {
+          setTimeout(() => {
+            const finalRect = element.getBoundingClientRect();
+            // #region agent log
+            fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'scroll position after delay',data:{targetId,attempt,expectedScrollPosition:scrollPosition,actualScrollY:window.pageYOffset,elementTopAfterScroll:finalRect.top,elementOffsetTop:element.offsetTop},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+            // #endregion
+          }, 500);
+        }
+        
+        return true;
+      }
+      return false;
+    };
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: smooth ? "smooth" : "auto",
-      });
-    }
-    // Fermer le menu mobile après avoir cliqué sur un lien
-    setIsMobileMenuOpen(false);
+    // Essayer immédiatement
+    if (attemptScroll(0)) return;
+
+    // Si l'élément n'est pas trouvé, réessayer avec des délais progressifs
+    let attempt = 1;
+    const tryScroll = () => {
+      if (attemptScroll(attempt) || attempt >= retries) return;
+      attempt++;
+      setTimeout(tryScroll, 100 * attempt);
+    };
+    
+    setTimeout(tryScroll, 50);
   };
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'handleScroll called',data:{targetId,isMobileMenuOpen,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,D'})}).catch(()=>{});
+    // #endregion
     e.preventDefault();
-    scrollToSection(targetId, true);
+    e.stopPropagation();
+    
+    // Fermer le menu d'abord
+    setIsMobileMenuOpen(false);
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'menu closed, before timeout',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+    // #endregion
+    
+    // Attendre que le useEffect ait restauré l'overflow et que le DOM soit stabilisé
+    // Utiliser requestAnimationFrame pour s'assurer que le DOM est mis à jour
+    // Ajouter un petit délai pour que le menu soit complètement fermé avant de scroller
+    setTimeout(() => {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'timeout callback, before RAF',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+      requestAnimationFrame(() => {
+        // #region agent log
+        fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'first RAF, before second RAF',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+        // #endregion
+        requestAnimationFrame(() => {
+          // #region agent log
+          fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'second RAF, calling scrollToSection',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+          // #endregion
+          scrollToSection(targetId, true);
+        });
+      });
+    }, 100);
+  };
+
+  const handleLinkClick = (href: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
+    
+    // Fermer le menu immédiatement
+    setIsMobileMenuOpen(false);
+    
+    // Si c'est un lien vers une section de la page d'accueil depuis une autre page
+    if (href.startsWith("/#")) {
+      const sectionId = href.replace("/#", "");
+      // Naviguer vers la page d'accueil
+      router.push("/");
+      // Attendre que la navigation soit terminée puis scroller
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            scrollToSection(sectionId, true);
+          });
+        });
+      }, 300);
+    }
   };
 
   useEffect(() => {
@@ -57,6 +164,9 @@ export function Navigation() {
 
   // Empêcher le scroll du body quand le menu mobile est ouvert
   useEffect(() => {
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:useEffect overflow',message:'overflow state changed',data:{isMobileMenuOpen,newOverflow:isMobileMenuOpen?'hidden':'unset',currentScrollY:window.pageYOffset,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+    // #endregion
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -166,7 +276,15 @@ export function Navigation() {
                     <a
                       href={link.homeHref}
                       onClick={(e) => handleScroll(e, link.id)}
-                      className="block py-2 text-base text-zinc-200 transition hover:text-white hover:underline underline-offset-4 cursor-pointer"
+                      className="block py-3 text-base text-zinc-200 transition hover:text-white hover:underline underline-offset-4 cursor-pointer touch-manipulation active:text-indigo-300"
+                    >
+                      {link.label}
+                    </a>
+                  ) : link.href.startsWith("/#") ? (
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleLinkClick(link.href, e)}
+                      className="block py-3 text-base text-zinc-200 transition hover:text-white hover:underline underline-offset-4 cursor-pointer touch-manipulation active:text-indigo-300"
                     >
                       {link.label}
                     </a>
@@ -174,7 +292,7 @@ export function Navigation() {
                     <Link
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block py-2 text-base text-zinc-200 transition hover:text-white hover:underline underline-offset-4 cursor-pointer"
+                      className="block py-3 text-base text-zinc-200 transition hover:text-white hover:underline underline-offset-4 cursor-pointer touch-manipulation active:text-indigo-300"
                     >
                       {link.label}
                     </Link>
