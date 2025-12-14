@@ -26,9 +26,7 @@ export function VideoCard({
   const handlePlay = useCallback((ref: React.RefObject<HTMLVideoElement | null>) => {
     const el = ref.current;
     if (!el) return;
-    void el.play().catch(() => {
-      // Ignore les erreurs de lecture silencieusement
-    });
+    void el.play().catch(() => {});
   }, []);
 
   const handlePause = useCallback((ref: React.RefObject<HTMLVideoElement | null>) => {

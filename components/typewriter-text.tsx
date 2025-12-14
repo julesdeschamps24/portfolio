@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface TypewriterTextProps {
   text: string;
@@ -73,7 +73,6 @@ export function TypewriterText({
     };
   }, [text, speed, delay, accelerate, minSpeed]);
 
-  // Le curseur apparaît seulement quand l'animation commence (isTyping) ou après si on ne le cache pas
   const shouldShowCursor = showCursor && (isTyping || (!hideCursorWhenDone && isDone));
 
   return (

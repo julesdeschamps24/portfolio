@@ -5,7 +5,7 @@ import * as THREE from "three"
 
 interface WebGLShaderProps {
   isActive?: boolean;
-  targetFPS?: number; // Limitation FPS optionnelle (30 ou 60)
+  targetFPS?: number;
 }
 
 export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProps) {
@@ -45,7 +45,6 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
       uniform float time;
       uniform float xScale;
       uniform float yScale;
-      uniform float distortion;
 
       void main() {
         vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
@@ -60,7 +59,6 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
         // Fonction d'easing quintique pour une transition encore plus douce
         float t = rawConvergence;
         float convergenceFactor = t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
-        float separationFactor = 1.0 - convergenceFactor;
         
         // À droite : variations très subtiles de la courbe de base
         // Utiliser des variations minimales pour éviter les angles prononcés
@@ -117,7 +115,6 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
     const initScene = () => {
       refs.scene = new THREE.Scene()
       refs.renderer = new THREE.WebGLRenderer({ canvas })
-      // Limiter le pixelRatio à 2 maximum pour optimiser les performances
       refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       refs.renderer.setClearColor(new THREE.Color(0x000000))
 
@@ -128,7 +125,6 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
         time: { value: 0.0 },
         xScale: { value: 1.0 },
         yScale: { value: 0.5 },
-        distortion: { value: 0.05 },
       }
 
       const position = [
@@ -157,12 +153,10 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
       handleResize()
     }
 
-    // Système de limitation FPS
     let lastFrameTime = 0
-    const frameInterval = 1000 / targetFPS // Intervalle entre les frames en ms
+    const frameInterval = 1000 / targetFPS
 
     const animate = (currentTime: number) => {
-      // Limitation FPS : ne rendre que si assez de temps s'est écoulé
       const elapsed = currentTime - lastFrameTime
       
       if (elapsed >= frameInterval) {
@@ -184,7 +178,6 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
       refs.uniforms.resolution.value = [width, height]
     }
 
-    // Debounce pour handleResize (150ms)
     let resizeTimeout: ReturnType<typeof setTimeout> | null = null
     const debouncedHandleResize = () => {
       if (resizeTimeout) clearTimeout(resizeTimeout)
