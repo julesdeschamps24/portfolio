@@ -45,51 +45,55 @@ export function WebGLShader() {
       void main() {
         vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
         
-        // Facteur de convergence : les traits se rejoignent progressivement vers la gauche
-        // p.x va de -1 (gauche) à 1 (droite)
-        // Utiliser une transition plus douce et centrée
-        float convergenceFactor = smoothstep(0.8, -0.3, p.x); // Transition de droite vers gauche
+        // Utiliser une seule courbe de base qui évolue progressivement
+        // Cela évite les multiples changements de direction
+        float baseCurve = sin((p.x + time) * xScale * 1.0) * yScale * 1.0;
+        
+        // Facteur de convergence très progressif avec une zone très étendue
+        // Transition ultra-longue de droite (1.2) vers gauche (-1.0) pour une convergence très douce
+        float rawConvergence = smoothstep(1.2, -1.0, p.x);
+        // Fonction d'easing quintique pour une transition encore plus douce
+        float t = rawConvergence;
+        float convergenceFactor = t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
         float separationFactor = 1.0 - convergenceFactor;
         
-        // Courbe principale vers laquelle tous les traits convergent
-        float mainCurve = sin((p.x + time) * xScale * 1.0) * yScale * 1.0;
+        // À droite : variations très subtiles de la courbe de base
+        // Utiliser des variations minimales pour éviter les angles prononcés
+        float variation1 = sin((p.x + time) * xScale * 0.98) * yScale * 0.95 - baseCurve;
+        float variation2 = sin((p.x + time) * xScale * 1.02) * yScale * 1.05 - baseCurve;
+        float variation3 = sin((p.x + time) * xScale * 0.96) * yScale * 0.92 - baseCurve;
         
-        // À droite : 3 traits avec des courbes différentes
-        // Trait 1 : courbe avec fréquence et amplitude différentes
-        float curve1Right = sin((p.x + time) * xScale * 0.9) * yScale * 0.7;
-        float offset1Right = 0.2; // Décalage vertical initial
+        // Les variations convergent progressivement vers 0 (vers la courbe de base)
+        float variationFactor = smoothstep(0.9, -0.7, p.x);
+        variationFactor = variationFactor * variationFactor * variationFactor * (variationFactor * (variationFactor * 6.0 - 15.0) + 10.0);
         
-        // Trait 2 : courbe avec fréquence différente
-        float curve2Right = sin((p.x + time) * xScale * 1.1) * yScale * 0.8;
-        float offset2Right = 0.0; // Pas de décalage
+        // Courbes finales : base + variations qui convergent vers 0
+        float curve1 = baseCurve + variation1 * (1.0 - variationFactor);
+        float curve2 = baseCurve + variation2 * (1.0 - variationFactor);
+        float curve3 = baseCurve + variation3 * (1.0 - variationFactor);
         
-        // Trait 3 : courbe avec fréquence différente
-        float curve3Right = sin((p.x + time) * xScale * 0.7) * yScale * 0.6;
-        float offset3Right = -0.2; // Décalage opposé
+        // Offsets qui convergent très tôt et progressivement vers 0
+        // Commencer la convergence plus tôt pour éviter les changements multiples
+        float offsetConvergenceFactor = smoothstep(0.7, -0.8, p.x);
+        offsetConvergenceFactor = offsetConvergenceFactor * offsetConvergenceFactor * offsetConvergenceFactor * (offsetConvergenceFactor * (offsetConvergenceFactor * 6.0 - 15.0) + 10.0);
+        float offsetSeparationFactor = 1.0 - offsetConvergenceFactor;
         
-        // Interpoler progressivement les courbes et offsets vers la courbe principale
-        // À droite : courbes séparées, à gauche : courbe unifiée
-        float curve1 = mix(curve1Right, mainCurve, convergenceFactor);
-        float curve2 = mix(curve2Right, mainCurve, convergenceFactor);
-        float curve3 = mix(curve3Right, mainCurve, convergenceFactor);
+        // Offsets réduits et qui convergent tôt
+        float offset1 = 0.12 * offsetSeparationFactor;
+        float offset2 = 0.0;
+        float offset3 = -0.12 * offsetSeparationFactor;
         
-        // Les offsets convergent vers 0 (pas de décalage à gauche)
-        float offset1 = offset1Right * separationFactor;
-        float offset2 = offset2Right * separationFactor;
-        float offset3 = offset3Right * separationFactor;
-        
-        // Calculer les traits avec les courbes interpolées
+        // Calculer les traits avec les courbes unifiées
         float trait1 = 0.05 / abs(p.y + offset1 + curve1);
         float trait2 = 0.05 / abs(p.y + offset2 + curve2);
         float trait3 = 0.05 / abs(p.y + offset3 + curve3);
         
-        // Teintes différentes pour chaque trait (gris clair, moyen, foncé)
-        // Les teintes convergent aussi vers une teinte uniforme à gauche
-        float gray1 = trait1 * mix(0.8, 0.6, convergenceFactor); // Gris clair -> moyen
-        float gray2 = trait2 * mix(0.6, 0.6, convergenceFactor); // Gris moyen constant
-        float gray3 = trait3 * mix(0.4, 0.6, convergenceFactor); // Gris foncé -> moyen
+        // Teintes différentes pour chaque trait
+        float gray1 = trait1 * mix(0.8, 0.6, convergenceFactor);
+        float gray2 = trait2 * mix(0.6, 0.6, convergenceFactor);
+        float gray3 = trait3 * mix(0.4, 0.6, convergenceFactor);
         
-        // Combiner les traits - ils fusionnent naturellement car leurs courbes convergent
+        // Combiner les traits
         float finalGray = gray1 + gray2 + gray3;
         
         // À gauche, augmenter l'intensité pour le trait fusionné
