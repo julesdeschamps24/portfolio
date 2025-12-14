@@ -5,10 +5,9 @@ import * as THREE from "three"
 
 interface WebGLShaderProps {
   isActive?: boolean;
-  targetFPS?: number; // Limitation FPS optionnelle (30 ou 60)
 }
 
-export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProps) {
+export function WebGLShader({ isActive = true }: WebGLShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<{
     scene: THREE.Scene | null
@@ -117,8 +116,7 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
     const initScene = () => {
       refs.scene = new THREE.Scene()
       refs.renderer = new THREE.WebGLRenderer({ canvas })
-      // Limiter le pixelRatio à 2 maximum pour optimiser les performances
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      refs.renderer.setPixelRatio(window.devicePixelRatio)
       refs.renderer.setClearColor(new THREE.Color(0x000000))
 
       refs.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1)
@@ -157,22 +155,11 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
       handleResize()
     }
 
-    // Système de limitation FPS
-    let lastFrameTime = 0
-    const frameInterval = 1000 / targetFPS // Intervalle entre les frames en ms
-
-    const animate = (currentTime: number) => {
-      // Limitation FPS : ne rendre que si assez de temps s'est écoulé
-      const elapsed = currentTime - lastFrameTime
-      
-      if (elapsed >= frameInterval) {
-        if (refs.uniforms) refs.uniforms.time.value += 0.01
-        if (refs.renderer && refs.scene && refs.camera) {
-          refs.renderer.render(refs.scene, refs.camera)
-        }
-        lastFrameTime = currentTime - (elapsed % frameInterval)
+    const animate = () => {
+      if (refs.uniforms) refs.uniforms.time.value += 0.01
+      if (refs.renderer && refs.scene && refs.camera) {
+        refs.renderer.render(refs.scene, refs.camera)
       }
-      
       refs.animationId = requestAnimationFrame(animate)
     }
 
@@ -184,23 +171,13 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
       refs.uniforms.resolution.value = [width, height]
     }
 
-    // Debounce pour handleResize (150ms)
-    let resizeTimeout: ReturnType<typeof setTimeout> | null = null
-    const debouncedHandleResize = () => {
-      if (resizeTimeout) clearTimeout(resizeTimeout)
-      resizeTimeout = setTimeout(() => {
-        handleResize()
-      }, 150)
-    }
-
     initScene()
-    animate(performance.now())
-    window.addEventListener("resize", debouncedHandleResize)
+    animate()
+    window.addEventListener("resize", handleResize)
 
     return () => {
       if (refs.animationId) cancelAnimationFrame(refs.animationId)
-      if (resizeTimeout) clearTimeout(resizeTimeout)
-      window.removeEventListener("resize", debouncedHandleResize)
+      window.removeEventListener("resize", handleResize)
       if (refs.mesh) {
         refs.scene?.remove(refs.mesh)
         refs.mesh.geometry.dispose()
@@ -210,7 +187,7 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
       }
       refs.renderer?.dispose()
     }
-  }, [isActive, targetFPS])
+  }, [isActive])
 
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-10">
