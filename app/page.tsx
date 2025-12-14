@@ -1,41 +1,42 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { motion, AnimatePresence } from "framer-motion";
-import { VideoCard } from "@/components/video-card";
 import { TypewriterText } from "@/components/typewriter-text";
+import { VideoCard } from "@/components/video-card";
+import { ContactForm } from "@/components/contact-form";
+import { videos, competences, categoryOrder } from "@/lib/data";
+import { ErrorBoundary } from "@/components/error-boundary";
 import { WebGLShader } from "@/components/ui/web-gl-shader";
-
-const videos = [
-  {
-    title: "Motion Design – Asana",
-    description: "Exploration graphique en basse lumière avec effets de lueurs.",
-    src: "/vid/asana.webm",
-  },
-  {
-    title: "Cinematic – Sport Avenue",
-    description: "Sequence narrative pour tester la narration visuelle.",
-    src: "/vid/sport_avenue.webm",
-  },
-];
-
-const competences = [
-  { name: "HTML5/CSS3", categories: ["Frontend"] },
-  { name: "JavaScript", categories: ["Langage"] },
-  { name: "TypeScript", categories: ["Langage"] },
-  { name: "React", categories: ["Frontend"] },
-  { name: "Node.js", categories: ["Backend"] },
-  { name: "Next.js", categories: ["Frontend", "Backend"] },
-  { name: "C", categories: ["Langage"] },
-  { name: "C++", categories: ["Langage"] },
-  { name: "Git", categories: ["Outils"] },
-];
 
 export default function Home() {
   const [showContent, setShowContent] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
-  const [formStatus, setFormStatus] = useState<{ type: "success" | "error" | null; message: string }>({ type: null, message: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Calculer les catégories de compétences une seule fois au niveau du composant
+  const competencesData = useMemo(() => {
+    const categories = competences.reduce((acc, comp) => {
+      comp.categories.forEach((category) => {
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(comp.name);
+      });
+      return acc;
+    }, {} as Record<string, string[]>);
+
+    const sortedCategories = Object.entries(categories).sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a[0] as typeof categoryOrder[number]);
+      const indexB = categoryOrder.indexOf(b[0] as typeof categoryOrder[number]);
+      // Si la catégorie n'est pas dans l'ordre, la mettre à la fin
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+
+    return { categories, sortedCategories };
+  }, []);
 
   useEffect(() => {
     // Vérifier si l'intro a déjà été vue dans cette session
@@ -97,7 +98,9 @@ export default function Home() {
       {/* WebGL Shader Background - se lance uniquement après la fin de l'intro */}
       {showContent && (
         <>
-          <WebGLShader />
+          <ErrorBoundary>
+            <WebGLShader isActive={showContent} />
+          </ErrorBoundary>
           {/* Overlay avec flou et filtre de teinte pour améliorer la lisibilité */}
           <div className="fixed inset-0 -z-10 backdrop-blur-[2px] bg-black/20 pointer-events-none" />
         </>
@@ -213,71 +216,46 @@ export default function Home() {
                   </p>
                 </header>
 
-                {(() => {
-                  const categories = competences.reduce((acc, comp) => {
-                    comp.categories.forEach((category) => {
-                      if (!acc[category]) {
-                        acc[category] = [];
-                      }
-                      acc[category].push(comp.name);
-                    });
-                    return acc;
-                  }, {} as Record<string, string[]>);
-
-                  const categoryOrder = ["Frontend", "Backend", "Langage", "Outils"];
-                  const sortedCategories = Object.entries(categories).sort((a, b) => {
-                    const indexA = categoryOrder.indexOf(a[0]);
-                    const indexB = categoryOrder.indexOf(b[0]);
-                    // Si la catégorie n'est pas dans l'ordre, la mettre à la fin
-                    if (indexA === -1 && indexB === -1) return 0;
-                    if (indexA === -1) return 1;
-                    if (indexB === -1) return -1;
-                    return indexA - indexB;
-                  });
-
-                  return (
-                    <>
-                      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        {sortedCategories.map(([category, skills]) => (
-                          <div
-                            key={category}
-                            className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
-                          >
-                            <h3 className="mb-4 text-xl font-semibold text-indigo-300">
-                              {category}
-                            </h3>
-                            <ul className="flex flex-col gap-3">
-                              {skills.map((skill) => (
-                                <li
-                                  key={skill}
-                                  className="flex items-center gap-2 text-zinc-200 transition hover:text-white"
-                                >
-                                  <span className="h-2 w-2 rounded-full bg-indigo-400"></span>
-                                  <span>{skill}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Section avec toutes les compétences en badges */}
-                      <section className="mt-8">
-                        <h3 className="mb-6 text-2xl font-semibold">Toutes mes compétences</h3>
-                        <div className="flex flex-wrap gap-3">
-                          {competences.map((comp) => (
-                            <span
-                              key={comp.name}
-                              className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 transition hover:border-indigo-400/50 hover:bg-indigo-500/20"
+                <>
+                  <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    {competencesData.sortedCategories.map(([category, skills]) => (
+                      <div
+                        key={category}
+                        className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur"
+                      >
+                        <h3 className="mb-4 text-xl font-semibold text-indigo-300">
+                          {category}
+                        </h3>
+                        <ul className="flex flex-col gap-3">
+                          {skills.map((skill) => (
+                            <li
+                              key={skill}
+                              className="flex items-center gap-2 text-zinc-200 transition hover:text-white"
                             >
-                              {comp.name}
-                            </span>
+                              <span className="h-2 w-2 rounded-full bg-indigo-400"></span>
+                              <span>{skill}</span>
+                            </li>
                           ))}
-                        </div>
-                      </section>
-                    </>
-                  );
-                })()}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Section avec toutes les compétences en badges */}
+                  <section className="mt-8">
+                    <h3 className="mb-6 text-2xl font-semibold">Toutes mes compétences</h3>
+                    <div className="flex flex-wrap gap-3">
+                      {competences.map((comp) => (
+                        <span
+                          key={comp.name}
+                          className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 transition hover:border-indigo-400/50 hover:bg-indigo-500/20"
+                        >
+                          {comp.name}
+                        </span>
+                      ))}
+                    </div>
+                  </section>
+                </>
               </div>
             </section>
 
@@ -335,110 +313,7 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <form
-                    className="space-y-4"
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      setIsSubmitting(true);
-                      setFormStatus({ type: null, message: "" });
-
-                      const formData = new FormData(e.currentTarget);
-                      const data = {
-                        name: formData.get("name") as string,
-                        email: formData.get("email") as string,
-                        message: formData.get("message") as string,
-                      };
-
-                      try {
-                        const response = await fetch("/api/contact", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(data),
-                        });
-
-                        const result = await response.json();
-
-                        if (result.ok) {
-                          setFormStatus({
-                            type: "success",
-                            message: "Message envoyé avec succès !",
-                          });
-                          (e.target as HTMLFormElement).reset();
-                        } else {
-                          setFormStatus({
-                            type: "error",
-                            message: result.message || "Erreur lors de l'envoi du message.",
-                          });
-                        }
-                      } catch (error) {
-                        setFormStatus({
-                          type: "error",
-                          message: "Erreur lors de l'envoi du message.",
-                        });
-                      } finally {
-                        setIsSubmitting(false);
-                      }
-                    }}
-                  >
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm text-zinc-200">
-                        Nom
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
-                        placeholder="Votre nom"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm text-zinc-200">
-                        Email
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
-                        placeholder="vous@email.com"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="message" className="text-sm text-zinc-200">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={4}
-                        className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
-                        placeholder="Décrivez votre besoin"
-                        required
-                      />
-                    </div>
-                    {formStatus.message && (
-                      <div
-                        className={`rounded-lg px-4 py-2 text-sm ${
-                          formStatus.type === "success"
-                            ? "bg-green-500/20 text-green-300"
-                            : "bg-red-500/20 text-red-300"
-                        }`}
-                      >
-                        {formStatus.message}
-                      </div>
-                    )}
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isSubmitting ? "Envoi..." : "Envoyer"}
-                    </button>
-                  </form>
+                  <ContactForm className="space-y-4" />
                 </section>
               </div>
             </section>

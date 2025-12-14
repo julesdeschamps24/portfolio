@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 
 interface TypewriterTextProps {
   text: string;
@@ -26,14 +26,15 @@ export function TypewriterText({
   const [isTyping, setIsTyping] = useState(false);
   const [isDone, setIsDone] = useState(false);
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     setDisplayedText("");
     setIsTyping(false);
     setIsDone(false);
 
-    let timeoutId: NodeJS.Timeout | null = null;
-
-    const startTimer = setTimeout(() => {
+    startTimerRef.current = setTimeout(() => {
       setIsTyping(true);
       let currentIndex = 0;
 
@@ -52,7 +53,7 @@ export function TypewriterText({
             currentSpeed = speed - (speed - minSpeed) * easedProgress;
           }
 
-          timeoutId = setTimeout(typeNextChar, currentSpeed);
+          timeoutRef.current = setTimeout(typeNextChar, currentSpeed);
         } else {
           setIsTyping(false);
           setIsDone(true);
@@ -63,9 +64,11 @@ export function TypewriterText({
     }, delay);
 
     return () => {
-      clearTimeout(startTimer);
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      if (startTimerRef.current) {
+        clearTimeout(startTimerRef.current);
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
     };
   }, [text, speed, delay, accelerate, minSpeed]);

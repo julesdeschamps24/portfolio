@@ -1,36 +1,30 @@
+import { useMemo } from "react";
+import { competences, categoryOrder } from "@/lib/data";
+
 export default function CompetencesPage() {
-  const competences = [
-    { name: "HTML5/CSS3", categories: ["Frontend"] },
-    { name: "JavaScript", categories: ["Langage"] },
-    { name: "TypeScript", categories: ["Langage"] },
-    { name: "React", categories: ["Frontend"] },
-    { name: "Node.js", categories: ["Backend"] },
-    { name: "Next.js", categories: ["Frontend", "Backend"] },
-    { name: "C", categories: ["Langage"] },
-    { name: "C++", categories: ["Langage"] },
-    { name: "Git", categories: ["Outils"] },
-  ];
+  const { categories, sortedCategories } = useMemo(() => {
+    const cats = competences.reduce((acc, comp) => {
+      comp.categories.forEach((category) => {
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(comp.name);
+      });
+      return acc;
+    }, {} as Record<string, string[]>);
 
-  const categories = competences.reduce((acc, comp) => {
-    comp.categories.forEach((category) => {
-      if (!acc[category]) {
-        acc[category] = [];
-      }
-      acc[category].push(comp.name);
+    const sorted = Object.entries(cats).sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a[0] as typeof categoryOrder[number]);
+      const indexB = categoryOrder.indexOf(b[0] as typeof categoryOrder[number]);
+      // Si la catégorie n'est pas dans l'ordre, la mettre à la fin
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
     });
-    return acc;
-  }, {} as Record<string, string[]>);
 
-  const categoryOrder = ["Frontend", "Backend", "Langage", "Outils"];
-  const sortedCategories = Object.entries(categories).sort((a, b) => {
-    const indexA = categoryOrder.indexOf(a[0]);
-    const indexB = categoryOrder.indexOf(b[0]);
-    // Si la catégorie n'est pas dans l'ordre, la mettre à la fin
-    if (indexA === -1 && indexB === -1) return 0;
-    if (indexA === -1) return 1;
-    if (indexB === -1) return -1;
-    return indexA - indexB;
-  });
+    return { categories: cats, sortedCategories: sorted };
+  }, []);
 
   return (
     <main className="min-h-screen bg-black text-white">

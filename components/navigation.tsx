@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,23 +11,15 @@ export function Navigation() {
   const isHomePage = pathname === "/";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const scrollToSection = (targetId: string, smooth = true, retries = 3) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:scrollToSection',message:'scrollToSection called',data:{targetId,smooth,retries,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,windowHeight:window.innerHeight,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,D'})}).catch(()=>{});
-    // #endregion
+  const scrollToSection = useCallback((targetId: string, smooth = true, retries = 3) => {
     const attemptScroll = (attempt: number) => {
       const element = document.getElementById(targetId);
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'attemptScroll start',data:{targetId,attempt,elementFound:!!element,currentScrollY:window.pageYOffset},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B'})}).catch(()=>{});
-      // #endregion
       if (element) {
         // Obtenir la hauteur réelle du header
         const header = document.querySelector('header');
         const headerOffset = header ? header.offsetHeight : 80;
         
-        // Calculer la position absolue depuis le haut du document en remontant depuis l'élément
-        // jusqu'au body. Cette méthode est plus fiable que getBoundingClientRect() + pageYOffset
-        // car elle ne dépend pas de la position actuelle du scroll
+        // Calculer la position absolue depuis le haut du document
         let absoluteTop = 0;
         let currentElement: HTMLElement | null = element;
         while (currentElement && currentElement !== document.body) {
@@ -38,28 +30,10 @@ export function Navigation() {
         // Calculer la position de scroll pour amener le début de la section juste sous le header
         const scrollPosition = Math.max(0, absoluteTop - headerOffset);
         
-        // #region agent log
-        fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'scroll calculation',data:{targetId,attempt,pageYOffset:window.pageYOffset,headerOffset,absoluteTop,scrollPosition,elementOffsetTop:element.offsetTop},timestamp:Date.now(),sessionId:'debug-session',runId:'post-fix',hypothesisId:'A,B,C'})}).catch(()=>{});
-        // #endregion
-        
         window.scrollTo({
           top: scrollPosition,
           behavior: smooth ? "smooth" : "auto",
         });
-        
-        // #region agent log
-        fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'scroll executed',data:{targetId,attempt,scrollPosition,currentScrollY:window.pageYOffset},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-        // #endregion
-        
-        // Vérifier la position après un court délai pour voir si le scroll a atteint la position calculée
-        if (smooth) {
-          setTimeout(() => {
-            const finalRect = element.getBoundingClientRect();
-            // #region agent log
-            fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:attemptScroll',message:'scroll position after delay',data:{targetId,attempt,expectedScrollPosition:scrollPosition,actualScrollY:window.pageYOffset,elementTopAfterScroll:finalRect.top,elementOffsetTop:element.offsetTop},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-            // #endregion
-          }, 500);
-        }
         
         return true;
       }
@@ -78,43 +52,26 @@ export function Navigation() {
     };
     
     setTimeout(tryScroll, 50);
-  };
+  }, []);
 
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'handleScroll called',data:{targetId,isMobileMenuOpen,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,D'})}).catch(()=>{});
-    // #endregion
+  const handleScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     e.stopPropagation();
     
     // Fermer le menu d'abord
     setIsMobileMenuOpen(false);
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'menu closed, before timeout',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-    // #endregion
     
-    // Attendre que le useEffect ait restauré l'overflow et que le DOM soit stabilisé
-    // Utiliser requestAnimationFrame pour s'assurer que le DOM est mis à jour
-    // Ajouter un petit délai pour que le menu soit complètement fermé avant de scroller
+    // Attendre que le DOM soit stabilisé avant de scroller
     setTimeout(() => {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'timeout callback, before RAF',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
       requestAnimationFrame(() => {
-        // #region agent log
-        fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'first RAF, before second RAF',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-        // #endregion
         requestAnimationFrame(() => {
-          // #region agent log
-          fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:handleScroll',message:'second RAF, calling scrollToSection',data:{targetId,currentScrollY:window.pageYOffset,bodyOverflow:document.body.style.overflow,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-          // #endregion
           scrollToSection(targetId, true);
         });
       });
     }, 100);
-  };
+  }, [scrollToSection]);
 
-  const handleLinkClick = (href: string, e?: React.MouseEvent) => {
+  const handleLinkClick = useCallback((href: string, e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
     }
@@ -136,7 +93,15 @@ export function Navigation() {
         });
       }, 300);
     }
-  };
+  }, [router, scrollToSection]);
+
+  const navLinks = useMemo(() => [
+    { id: "accueil", label: "Accueil", href: "/", homeHref: "#accueil" },
+    { id: "projets", label: "Projets", href: "/projets", homeHref: "#projets" },
+    { id: "competences", label: "Compétences", href: "/competences", homeHref: "#competences" },
+    { id: "a-propos", label: "À propos", href: "/#a-propos", homeHref: "#a-propos" },
+    { id: "contact", label: "Contact", href: "/contact", homeHref: "#contact" },
+  ], []);
 
   useEffect(() => {
     // Gérer les ancres au chargement de la page
@@ -147,7 +112,7 @@ export function Navigation() {
         scrollToSection(hash, false);
       }, 100);
     }
-  }, []);
+  }, [scrollToSection]);
 
   useEffect(() => {
     // Écouter les changements de hash
@@ -160,13 +125,10 @@ export function Navigation() {
 
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
+  }, [scrollToSection]);
 
   // Empêcher le scroll du body quand le menu mobile est ouvert
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/ebde0495-8865-4dbb-a9a0-427bd006428b',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'navigation.tsx:useEffect overflow',message:'overflow state changed',data:{isMobileMenuOpen,newOverflow:isMobileMenuOpen?'hidden':'unset',currentScrollY:window.pageYOffset,documentHeight:document.documentElement.scrollHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-    // #endregion
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -176,14 +138,6 @@ export function Navigation() {
       document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
-
-  const navLinks = [
-    { id: "accueil", label: "Accueil", href: "/", homeHref: "#accueil" },
-    { id: "projets", label: "Projets", href: "/projets", homeHref: "#projets" },
-    { id: "competences", label: "Compétences", href: "/competences", homeHref: "#competences" },
-    { id: "a-propos", label: "À propos", href: "/#a-propos", homeHref: "#a-propos" },
-    { id: "contact", label: "Contact", href: "/contact", homeHref: "#contact" },
-  ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-black/60 backdrop-blur">

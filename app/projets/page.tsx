@@ -1,17 +1,5 @@
 import { VideoCard } from "@/components/video-card";
-
-const videos = [
-  {
-    title: "Motion Design – Asana",
-    description: "Exploration graphique en basse lumière avec effets de lueurs.",
-    src: "/vid/asana.webm",
-  },
-  {
-    title: "Cinematic – Sport Avenue",
-    description: "Sequence narrative pour tester la narration visuelle.",
-    src: "/vid/sport_avenue.webm",
-  },
-];
+import { videos } from "@/lib/data";
 
 export default function ProjetsPage() {
   return (

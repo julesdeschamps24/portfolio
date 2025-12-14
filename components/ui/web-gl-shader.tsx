@@ -3,7 +3,11 @@
 import { useEffect, useRef } from "react"
 import * as THREE from "three"
 
-export function WebGLShader() {
+interface WebGLShaderProps {
+  isActive?: boolean;
+}
+
+export function WebGLShader({ isActive = true }: WebGLShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<{
     scene: THREE.Scene | null
@@ -22,7 +26,7 @@ export function WebGLShader() {
   })
 
   useEffect(() => {
-    if (!canvasRef.current) return
+    if (!canvasRef.current || !isActive) return
 
     const canvas = canvasRef.current
     const { current: refs } = sceneRef
@@ -183,7 +187,7 @@ export function WebGLShader() {
       }
       refs.renderer?.dispose()
     }
-  }, [])
+  }, [isActive])
 
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-10">

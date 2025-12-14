@@ -1,3 +1,5 @@
+import { ContactForm } from "@/components/contact-form";
+
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-black text-white">
@@ -20,10 +22,10 @@ export default function ContactPage() {
             <p className="text-sm text-zinc-300">
               Email :{" "}
               <a
-                href="mailto:contact@Jules Deschamps.dev"
+                href="mailto:contact@julesdeschamps.dev"
                 className="text-indigo-300 underline underline-offset-4 hover:text-indigo-200"
               >
-                contact@Jules Deschamps.dev
+                contact@julesdeschamps.dev
               </a>
             </p>
             <p className="text-sm text-zinc-300">
@@ -31,52 +33,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <form className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm text-zinc-200">
-                Nom
-              </label>
-              <input
-                id="name"
-                name="name"
-                className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
-                placeholder="Votre nom"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm text-zinc-200">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
-                placeholder="vous@email.com"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="message" className="text-sm text-zinc-200">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={4}
-                className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
-                placeholder="Décrivez votre besoin"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500"
-            >
-              Envoyer
-            </button>
-          </form>
+          <ContactForm className="space-y-4" />
         </section>
       </div>
     </main>
