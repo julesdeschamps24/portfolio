@@ -4,6 +4,7 @@ import { SparklesCore } from "@/components/ui/sparkles";
 import { motion, AnimatePresence } from "framer-motion";
 import { VideoCard } from "@/components/video-card";
 import { TypewriterText } from "@/components/typewriter-text";
+import { WebGLShader } from "@/components/ui/web-gl-shader";
 
 const videos = [
   {
@@ -92,7 +93,16 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-black">
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* WebGL Shader Background - se lance uniquement après la fin de l'intro */}
+      {showContent && (
+        <>
+          <WebGLShader />
+          {/* Overlay avec flou et filtre de teinte pour améliorer la lisibilité */}
+          <div className="fixed inset-0 -z-10 backdrop-blur-[2px] bg-black/20 pointer-events-none" />
+        </>
+      )}
+      
       {/* Hero Section avec SparklesCore */}
       <AnimatePresence>
         {showIntro && !showContent && (
@@ -141,7 +151,7 @@ export default function Home() {
             className="min-h-screen w-full"
           >
             {/* Section Accueil */}
-            <section id="accueil" className="flex min-h-screen w-full flex-col items-center justify-center py-32 px-16 bg-black text-white">
+            <section id="accueil" className="flex min-h-screen w-full flex-col items-center justify-center py-32 px-16 text-white">
               <div className="flex flex-col items-center gap-6 text-center max-w-4xl">
                 <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                   <TypewriterText 
@@ -168,7 +178,7 @@ export default function Home() {
             </section>
 
             {/* Section Projets */}
-            <section id="projets" className="min-h-screen bg-black text-white">
+            <section id="projets" className="min-h-screen text-white">
               <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 py-20">
                 <header className="flex flex-col gap-4">
                   <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
@@ -191,7 +201,7 @@ export default function Home() {
             </section>
 
             {/* Section Compétences */}
-            <section id="competences" className="min-h-screen bg-black text-white">
+            <section id="competences" className="min-h-screen text-white">
               <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 py-20">
                 <header className="flex flex-col gap-4">
                   <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
@@ -272,7 +282,7 @@ export default function Home() {
             </section>
 
             {/* Section À propos */}
-            <section id="a-propos" className="min-h-screen bg-black text-white">
+            <section id="a-propos" className="min-h-screen text-white">
               <div className="mx-auto flex max-w-4xl flex-col gap-12 px-6 py-20">
                 <header className="flex flex-col gap-4">
                   <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
@@ -294,7 +304,7 @@ export default function Home() {
             </section>
 
             {/* Section Contact */}
-            <section id="contact" className="min-h-screen bg-black text-white">
+            <section id="contact" className="min-h-screen text-white">
               <div className="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-20">
                 <header className="flex flex-col gap-3">
                   <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
