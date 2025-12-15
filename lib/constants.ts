@@ -40,7 +40,7 @@ export const VIDEO = {
 
 // Configuration du WebGL Shader
 export const WEBGL_SHADER = {
-  DEFAULT_TARGET_FPS: 60,
+  DEFAULT_TARGET_FPS: 15,
   MAX_PIXEL_RATIO: 2,
 } as const;
 
