@@ -18,15 +18,26 @@ export default function Home() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       {/* WebGL Shader Background - se lance uniquement après la fin complète de l'intro */}
-      {isIntroCompletelyFinished && (
-        <>
-          <ErrorBoundary>
-            <WebGLShader isActive={isIntroCompletelyFinished} />
-          </ErrorBoundary>
-          {/* Overlay avec flou et filtre de teinte pour améliorer la lisibilité */}
-          <div className="fixed inset-0 -z-10 backdrop-blur-[2px] bg-black/20 pointer-events-none" />
-        </>
-      )}
+      <AnimatePresence>
+        {isIntroCompletelyFinished && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: ANIMATION.FADE_DURATION,
+              ease: ANIMATION.EASING,
+            }}
+            className="fixed inset-0 -z-10"
+          >
+            <ErrorBoundary>
+              <WebGLShader isActive={isIntroCompletelyFinished} />
+            </ErrorBoundary>
+            {/* Overlay avec flou et filtre de teinte pour améliorer la lisibilité */}
+            <div className="fixed inset-0 backdrop-blur-[2px] bg-black/20 pointer-events-none" />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section avec SparklesCore */}
       <IntroSection isVisible={isIntroVisible && !isContentVisible} />

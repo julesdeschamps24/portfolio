@@ -46,11 +46,11 @@ export function useIntro() {
         handleHashScroll(TIMING.SCROLL_DELAY_LONG);
       }, TIMING.INTRO_DURATION);
 
-      // Attendre que l'animation de sortie de l'intro soit presque terminée
-      // avant de marquer l'intro comme complètement finie (réduction légère du délai)
+      // Démarrer le fade de l'animation curve légèrement plus tôt
+      // pour une transition plus fluide avec l'animation de sortie de l'intro
       const finishTimer = setTimeout(() => {
         setIsIntroCompletelyFinished(true);
-      }, TIMING.INTRO_DURATION + ANIMATION.FADE_DURATION * 1000 - 300);
+      }, TIMING.INTRO_DURATION + ANIMATION.FADE_DURATION * 1000 - 800);
 
       return () => {
         clearTimeout(timer);
