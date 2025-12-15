@@ -1,17 +1,24 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-const MAX_BODY_SIZE = 5000; // characters
+const MAX_BODY_SIZE = 5000;
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 200;
 const MAX_MESSAGE_LENGTH = 2000;
+const DEFAULT_SMTP_PORT = 587;
 
-function isValidEmail(email: string) {
+function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function badRequest(message: string) {
+function badRequest(message: string): NextResponse {
   return NextResponse.json({ ok: false, message }, { status: 400 });
+}
+
+interface ContactPayload {
+  name?: unknown;
+  email?: unknown;
+  message?: unknown;
 }
 
 export async function POST(request: Request) {
@@ -52,18 +59,13 @@ export async function POST(request: Request) {
     return badRequest("Corps de requête invalide.");
   }
 
+  const contactData = payload as ContactPayload;
   const name =
-    typeof (payload as Record<string, unknown>).name === "string"
-      ? ((payload as Record<string, unknown>).name as string).trim()
-      : "";
+    typeof contactData.name === "string" ? contactData.name.trim() : "";
   const email =
-    typeof (payload as Record<string, unknown>).email === "string"
-      ? ((payload as Record<string, unknown>).email as string).trim()
-      : "";
+    typeof contactData.email === "string" ? contactData.email.trim() : "";
   const message =
-    typeof (payload as Record<string, unknown>).message === "string"
-      ? ((payload as Record<string, unknown>).message as string).trim()
-      : "";
+    typeof contactData.message === "string" ? contactData.message.trim() : "";
 
   if (!name || !email || !message) {
     return badRequest("Tous les champs sont requis.");
@@ -80,7 +82,7 @@ export async function POST(request: Request) {
 
   const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
-    port: Number(SMTP_PORT) || 587,
+    port: Number(SMTP_PORT) || DEFAULT_SMTP_PORT,
     secure: SMTP_SECURE === "true" || SMTP_SECURE === "1",
     auth: {
       user: SMTP_USER,

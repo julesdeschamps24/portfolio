@@ -1,23 +1,36 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import * as THREE from "three"
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { WEBGL_SHADER, TIMING } from "@/lib/constants";
 
 interface WebGLShaderProps {
   isActive?: boolean;
   targetFPS?: number;
 }
 
-export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const sceneRef = useRef<{
-    scene: THREE.Scene | null
-    camera: THREE.OrthographicCamera | null
-    renderer: THREE.WebGLRenderer | null
-    mesh: THREE.Mesh | null
-    uniforms: any
-    animationId: number | null
-  }>({
+interface ShaderUniforms {
+  resolution: { value: [number, number] };
+  time: { value: number };
+  xScale: { value: number };
+  yScale: { value: number };
+}
+
+interface SceneRefs {
+  scene: THREE.Scene | null;
+  camera: THREE.OrthographicCamera | null;
+  renderer: THREE.WebGLRenderer | null;
+  mesh: THREE.Mesh | null;
+  uniforms: ShaderUniforms | null;
+  animationId: number | null;
+}
+
+export function WebGLShader({
+  isActive = true,
+  targetFPS = WEBGL_SHADER.DEFAULT_TARGET_FPS,
+}: WebGLShaderProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sceneRef = useRef<SceneRefs>({
     scene: null,
     camera: null,
     renderer: null,
@@ -113,10 +126,12 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
     `
 
     const initScene = () => {
-      refs.scene = new THREE.Scene()
-      refs.renderer = new THREE.WebGLRenderer({ canvas })
-      refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-      refs.renderer.setClearColor(new THREE.Color(0x000000))
+      refs.scene = new THREE.Scene();
+      refs.renderer = new THREE.WebGLRenderer({ canvas });
+      refs.renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, WEBGL_SHADER.MAX_PIXEL_RATIO),
+      );
+      refs.renderer.setClearColor(new THREE.Color(0x000000));
 
       refs.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1)
 
@@ -125,7 +140,7 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
         time: { value: 0.0 },
         xScale: { value: 1.0 },
         yScale: { value: 0.5 },
-      }
+      };
 
       const position = [
         -1.0, -1.0, 0.0,
@@ -136,74 +151,77 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
          1.0,  1.0, 0.0,
       ]
 
-      const positions = new THREE.BufferAttribute(new Float32Array(position), 3)
-      const geometry = new THREE.BufferGeometry()
-      geometry.setAttribute("position", positions)
+      const positions = new THREE.BufferAttribute(
+        new Float32Array(position),
+        3,
+      );
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", positions);
 
       const material = new THREE.RawShaderMaterial({
         vertexShader,
         fragmentShader,
-        uniforms: refs.uniforms,
+        uniforms: refs.uniforms as THREE.ShaderMaterialParameters["uniforms"],
         side: THREE.DoubleSide,
-      })
+      });
 
-      refs.mesh = new THREE.Mesh(geometry, material)
-      refs.scene.add(refs.mesh)
+      refs.mesh = new THREE.Mesh(geometry, material);
+      refs.scene.add(refs.mesh);
 
-      handleResize()
+      handleResize();
     }
 
-    let lastFrameTime = 0
-    const frameInterval = 1000 / targetFPS
+    let lastFrameTime = 0;
+    const frameInterval = 1000 / targetFPS;
 
     const animate = (currentTime: number) => {
-      const elapsed = currentTime - lastFrameTime
-      
+      const elapsed = currentTime - lastFrameTime;
+
       if (elapsed >= frameInterval) {
-        if (refs.uniforms) refs.uniforms.time.value += 0.01
+        if (refs.uniforms) refs.uniforms.time.value += 0.01;
         if (refs.renderer && refs.scene && refs.camera) {
-          refs.renderer.render(refs.scene, refs.camera)
+          refs.renderer.render(refs.scene, refs.camera);
         }
-        lastFrameTime = currentTime - (elapsed % frameInterval)
+        lastFrameTime = currentTime - (elapsed % frameInterval);
       }
-      
-      refs.animationId = requestAnimationFrame(animate)
-    }
+
+      refs.animationId = requestAnimationFrame(animate);
+    };
 
     const handleResize = () => {
-      if (!refs.renderer || !refs.uniforms) return
-      const width = window.innerWidth
-      const height = window.innerHeight
-      refs.renderer.setSize(width, height, false)
-      refs.uniforms.resolution.value = [width, height]
-    }
+      if (!refs.renderer || !refs.uniforms) return;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      refs.renderer.setSize(width, height, false);
+      refs.uniforms.resolution.value = [width, height];
+    };
 
-    let resizeTimeout: ReturnType<typeof setTimeout> | null = null
+    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
     const debouncedHandleResize = () => {
-      if (resizeTimeout) clearTimeout(resizeTimeout)
+      if (resizeTimeout) clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        handleResize()
-      }, 150)
-    }
+        handleResize();
+      }, TIMING.DEBOUNCE_RESIZE);
+    };
 
-    initScene()
-    animate(performance.now())
-    window.addEventListener("resize", debouncedHandleResize)
+    initScene();
+    animate(performance.now());
+    window.addEventListener("resize", debouncedHandleResize);
 
     return () => {
-      if (refs.animationId) cancelAnimationFrame(refs.animationId)
-      if (resizeTimeout) clearTimeout(resizeTimeout)
-      window.removeEventListener("resize", debouncedHandleResize)
+      if (refs.animationId) cancelAnimationFrame(refs.animationId);
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", debouncedHandleResize);
       if (refs.mesh) {
-        refs.scene?.remove(refs.mesh)
-        refs.mesh.geometry.dispose()
+        refs.scene?.remove(refs.mesh);
+        refs.mesh.geometry.dispose();
         if (refs.mesh.material instanceof THREE.Material) {
-          refs.mesh.material.dispose()
+          refs.mesh.material.dispose();
         }
       }
-      refs.renderer?.dispose()
-    }
-  }, [isActive, targetFPS])
+      refs.renderer?.dispose();
+    };
+  }, [isActive, targetFPS]);
 
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-10">
@@ -217,4 +235,5 @@ export function WebGLShader({ isActive = true, targetFPS = 30 }: WebGLShaderProp
     </div>
   )
 }
+
 

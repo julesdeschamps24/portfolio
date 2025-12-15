@@ -1,14 +1,16 @@
 "use client";
+
 import { useEffect, useRef, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { VIDEO, TIMING, ANIMATION } from "@/lib/constants";
 
-type VideoCardProps = {
+interface VideoCardProps {
   title: string;
   description?: string;
   src: string;
   className?: string;
-};
+}
 
 export function VideoCard({
   title,
@@ -20,7 +22,6 @@ export function VideoCard({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const modalVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isHoveringEnlarge, setIsHoveringEnlarge] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePlay = useCallback((ref: React.RefObject<HTMLVideoElement | null>) => {
@@ -36,14 +37,15 @@ export function VideoCard({
     el.currentTime = 0;
   }, []);
 
-  const handleShowFirstFrame = useCallback((
-    ref: React.RefObject<HTMLVideoElement | null>,
-  ) => {
-    const el = ref.current;
-    if (!el) return;
-    el.currentTime = 0.001; // force render of first frame
-    el.pause();
-  }, []);
+  const handleShowFirstFrame = useCallback(
+    (ref: React.RefObject<HTMLVideoElement | null>) => {
+      const el = ref.current;
+      if (!el) return;
+      el.currentTime = VIDEO.FIRST_FRAME_TIME;
+      el.pause();
+    },
+    [],
+  );
 
   useEffect(() => {
     return () => {
@@ -55,13 +57,13 @@ export function VideoCard({
 
   useEffect(() => {
     if (!isExpanded) return;
-    
+
     // Démarrer la vidéo automatiquement quand le modal s'ouvre
     const timer = setTimeout(() => {
       if (modalVideoRef.current) {
         handlePlay(modalVideoRef);
       }
-    }, 100);
+    }, TIMING.VIDEO_MODAL_AUTO_PLAY_DELAY);
     
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -116,14 +118,12 @@ export function VideoCard({
           <button
             type="button"
             onMouseEnter={() => {
-              setIsHoveringEnlarge(true);
               // Ouvrir le modal après un court délai pour éviter les ouvertures accidentelles
               hoverTimeoutRef.current = setTimeout(() => {
                 setIsExpanded(true);
-              }, 300);
+              }, TIMING.VIDEO_HOVER_DELAY);
             }}
             onMouseLeave={() => {
-              setIsHoveringEnlarge(false);
               // Annuler l'ouverture si la souris quitte avant le délai
               if (hoverTimeoutRef.current) {
                 clearTimeout(hoverTimeoutRef.current);
@@ -135,7 +135,6 @@ export function VideoCard({
                 clearTimeout(hoverTimeoutRef.current);
                 hoverTimeoutRef.current = null;
               }
-              setIsHoveringEnlarge(false);
               setIsExpanded(true);
             }}
             className="pointer-events-auto rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur transition hover:bg-white/20"
@@ -157,8 +156,14 @@ export function VideoCard({
             <motion.div
               className="relative w-[92vw] max-w-5xl overflow-hidden rounded-2xl border border-white/15 bg-black shadow-2xl"
               initial={{ scale: 0.92 }}
-              animate={{ scale: 1, transition: { duration: 0.25 } }}
-              exit={{ scale: 0.95, transition: { duration: 0.2 } }}
+              animate={{
+                scale: 1,
+                transition: { duration: ANIMATION.MODAL_SCALE_DURATION },
+              }}
+              exit={{
+                scale: 0.95,
+                transition: { duration: ANIMATION.MODAL_EXIT_DURATION },
+              }}
               onClick={(e) => e.stopPropagation()}
               onMouseLeave={() => {
                 handlePause(modalVideoRef);

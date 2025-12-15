@@ -1,13 +1,22 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { MESSAGES } from "@/lib/constants";
 
 interface ContactFormProps {
   className?: string;
 }
 
+type FormStatus = {
+  type: "success" | "error" | null;
+  message: string;
+};
+
 export function ContactForm({ className }: ContactFormProps) {
-  const [formStatus, setFormStatus] = useState<{ type: "success" | "error" | null; message: string }>({ type: null, message: "" });
+  const [formStatus, setFormStatus] = useState<FormStatus>({
+    type: null,
+    message: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -36,19 +45,19 @@ export function ContactForm({ className }: ContactFormProps) {
       if (result.ok) {
         setFormStatus({
           type: "success",
-          message: "Message envoyé avec succès !",
+          message: MESSAGES.CONTACT_SUCCESS,
         });
         (e.target as HTMLFormElement).reset();
       } else {
         setFormStatus({
           type: "error",
-          message: result.message || "Erreur lors de l'envoi du message.",
+          message: result.message || MESSAGES.CONTACT_ERROR,
         });
       }
-    } catch (error) {
+    } catch {
       setFormStatus({
         type: "error",
-        message: "Erreur lors de l'envoi du message.",
+        message: MESSAGES.CONTACT_ERROR,
       });
     } finally {
       setIsSubmitting(false);

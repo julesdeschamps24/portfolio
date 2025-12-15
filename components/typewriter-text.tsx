@@ -1,5 +1,7 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+
+import { useState, useEffect, useRef } from "react";
+import { TYPEWRITER } from "@/lib/constants";
 
 interface TypewriterTextProps {
   text: string;
@@ -14,13 +16,13 @@ interface TypewriterTextProps {
 
 export function TypewriterText({
   text,
-  speed = 50,
-  delay = 0,
+  speed = TYPEWRITER.DEFAULT_SPEED,
+  delay = TYPEWRITER.DEFAULT_DELAY,
   className = "",
   showCursor = true,
   hideCursorWhenDone = false,
   accelerate = false,
-  minSpeed = 20,
+  minSpeed = TYPEWRITER.DEFAULT_MIN_SPEED,
 }: TypewriterTextProps) {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -46,7 +48,7 @@ export function TypewriterText({
           // Calculer la vitesse progressive si l'accélération est activée
           let currentSpeed = speed;
           if (accelerate && text.length > 0) {
-            // Progression avec courbe d'easing douce (ease-out cubic) pour une accélération constante et progressive
+            // Progression avec courbe d'easing douce (ease-out cubic)
             const progress = currentIndex / text.length;
             // Fonction ease-out cubic : 1 - (1 - t)^3
             const easedProgress = 1 - Math.pow(1 - progress, 3);

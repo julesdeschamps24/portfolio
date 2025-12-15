@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { competences, categoryOrder } from "@/lib/data";
 
 export default function CompetencesPage() {
-  const { categories, sortedCategories } = useMemo(() => {
+  const { sortedCategories } = useMemo(() => {
     const cats = competences.reduce((acc, comp) => {
       comp.categories.forEach((category) => {
         if (!acc[category]) {
@@ -23,7 +23,7 @@ export default function CompetencesPage() {
       return indexA - indexB;
     });
 
-    return { categories: cats, sortedCategories: sorted };
+    return { sortedCategories: sorted };
   }, []);
 
   return (

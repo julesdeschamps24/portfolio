@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { LAYOUT, TIMING, STORAGE_KEYS } from "@/lib/constants";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -11,13 +12,16 @@ export function Navigation() {
   const isHomePage = pathname === "/";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const scrollToSection = useCallback((targetId: string, smooth = true, retries = 3) => {
-    const attemptScroll = (attempt: number) => {
-      const element = document.getElementById(targetId);
-      if (element) {
-        // Obtenir la hauteur réelle du header
-        const header = document.querySelector('header');
-        const headerOffset = header ? header.offsetHeight : 80;
+  const scrollToSection = useCallback(
+    (targetId: string, smooth = true, retries = 3) => {
+      const attemptScroll = () => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          // Obtenir la hauteur réelle du header
+          const header = document.querySelector("header");
+          const headerOffset = header
+            ? header.offsetHeight
+            : LAYOUT.HEADER_OFFSET;
         
         // Calculer la position absolue depuis le haut du document
         let absoluteTop = 0;
@@ -41,18 +45,20 @@ export function Navigation() {
     };
 
     // Essayer immédiatement
-    if (attemptScroll(0)) return;
+    if (attemptScroll()) return;
 
-    // Si l'élément n'est pas trouvé, réessayer avec des délais progressifs
-    let attempt = 1;
-    const tryScroll = () => {
-      if (attemptScroll(attempt) || attempt >= retries) return;
-      attempt++;
-      setTimeout(tryScroll, 100 * attempt);
-    };
-    
-    setTimeout(tryScroll, 50);
-  }, []);
+      // Si l'élément n'est pas trouvé, réessayer avec des délais progressifs
+      let attempt = 1;
+      const tryScroll = () => {
+        if (attemptScroll() || attempt >= retries) return;
+        attempt++;
+        setTimeout(tryScroll, TIMING.SCROLL_DELAY_SHORT * attempt);
+      };
+
+      setTimeout(tryScroll, 50);
+    },
+    [],
+  );
 
   const handleScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -61,14 +67,14 @@ export function Navigation() {
     // Fermer le menu d'abord
     setIsMobileMenuOpen(false);
     
-    // Attendre que le DOM soit stabilisé avant de scroller
-    setTimeout(() => {
-      requestAnimationFrame(() => {
+      // Attendre que le DOM soit stabilisé avant de scroller
+      setTimeout(() => {
         requestAnimationFrame(() => {
-          scrollToSection(targetId, true);
+          requestAnimationFrame(() => {
+            scrollToSection(targetId, true);
+          });
         });
-      });
-    }, 100);
+      }, TIMING.SCROLL_DELAY_SHORT);
   }, [scrollToSection]);
 
   const handleLinkClick = useCallback((href: string, e?: React.MouseEvent) => {
@@ -84,6 +90,16 @@ export function Navigation() {
       const sectionId = href.replace("/#", "");
       // Naviguer vers la page d'accueil
       router.push("/");
+      
+      // Adapter le délai selon si l'intro a déjà été vue
+      // Si l'intro a été vue, le contenu se charge immédiatement, donc délai court
+      // Sinon, attendre la fin de l'animation d'intro
+      const hasSeenIntro = typeof window !== "undefined" && 
+        sessionStorage.getItem(STORAGE_KEYS.INTRO_SEEN);
+      const scrollDelay = hasSeenIntro 
+        ? TIMING.SCROLL_DELAY_SHORT * 3 // 300ms si intro déjà vue
+        : TIMING.INTRO_DURATION; // 1500ms pour attendre la fin de l'intro
+      
       // Attendre que la navigation soit terminée puis scroller
       setTimeout(() => {
         requestAnimationFrame(() => {
@@ -91,7 +107,7 @@ export function Navigation() {
             scrollToSection(sectionId, true);
           });
         });
-      }, 300);
+      }, scrollDelay);
     }
   }, [router, scrollToSection]);
 
@@ -110,13 +126,13 @@ export function Navigation() {
       // Attendre que le contenu soit chargé
       setTimeout(() => {
         scrollToSection(hash, false);
-      }, 100);
+      }, TIMING.SCROLL_DELAY_SHORT);
     }
   }, [scrollToSection]);
 
   useEffect(() => {
     // Écouter les changements de hash
-    const handleHashChange = () => {
+    const handleHashChange = (): void => {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
         scrollToSection(hash, true);
