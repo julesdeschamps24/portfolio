@@ -13,15 +13,15 @@ import { useIntro } from "@/lib/hooks/use-intro";
 import { ANIMATION } from "@/lib/constants";
 
 export default function Home() {
-  const { isContentVisible, isIntroVisible } = useIntro();
+  const { isContentVisible, isIntroVisible, isIntroCompletelyFinished } = useIntro();
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      {/* WebGL Shader Background - se lance uniquement après la fin de l'intro */}
-      {isContentVisible && (
+      {/* WebGL Shader Background - se lance uniquement après la fin complète de l'intro */}
+      {isIntroCompletelyFinished && (
         <>
           <ErrorBoundary>
-            <WebGLShader isActive={isContentVisible} />
+            <WebGLShader isActive={isIntroCompletelyFinished} />
           </ErrorBoundary>
           {/* Overlay avec flou et filtre de teinte pour améliorer la lisibilité */}
           <div className="fixed inset-0 -z-10 backdrop-blur-[2px] bg-black/20 pointer-events-none" />

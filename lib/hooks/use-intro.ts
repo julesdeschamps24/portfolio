@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { STORAGE_KEYS, TIMING } from "@/lib/constants";
+import { STORAGE_KEYS, TIMING, ANIMATION } from "@/lib/constants";
 import { handleHashScroll } from "@/lib/utils/scroll";
 
 /**
@@ -13,6 +13,7 @@ export function useIntro() {
   // Toujours initialiser à false pour garantir un rendu identique serveur/client
   const [isContentVisible, setIsContentVisible] = useState(false);
   const [isIntroVisible, setIsIntroVisible] = useState(false);
+  const [isIntroCompletelyFinished, setIsIntroCompletelyFinished] = useState(false);
 
   useEffect(() => {
     // Vérifier si l'intro a déjà été vue (uniquement côté client)
@@ -24,6 +25,7 @@ export function useIntro() {
       requestAnimationFrame(() => {
         setIsContentVisible(true);
         setIsIntroVisible(false);
+        setIsIntroCompletelyFinished(true);
       });
       // Gérer le scroll vers une ancre si présente dans l'URL
       handleHashScroll(TIMING.SCROLL_DELAY_SHORT);
@@ -44,13 +46,23 @@ export function useIntro() {
         handleHashScroll(TIMING.SCROLL_DELAY_LONG);
       }, TIMING.INTRO_DURATION);
 
-      return () => clearTimeout(timer);
+      // Attendre que l'animation de sortie de l'intro soit presque terminée
+      // avant de marquer l'intro comme complètement finie (réduction légère du délai)
+      const finishTimer = setTimeout(() => {
+        setIsIntroCompletelyFinished(true);
+      }, TIMING.INTRO_DURATION + ANIMATION.FADE_DURATION * 1000 - 300);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(finishTimer);
+      };
     }
   }, []);
 
   return {
     isContentVisible,
     isIntroVisible,
+    isIntroCompletelyFinished,
   };
 }
 
