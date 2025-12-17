@@ -15,19 +15,20 @@ export default function MentionsLegales() {
         <h2 className="text-xl font-semibold text-white">1. Éditeur du site</h2>
         <p>
           Le présent site est édité par :<br />
-          <strong>[Votre Nom / Raison Sociale]</strong><br />
-          [Statut juridique : ex. Entrepreneur individuel / SASU]<br />
-          [Adresse postale complète]<br />
-          [SIRET : XXX XXX XXX XXXXX]<br />
-          Email : [votre@email.com]
+          <strong>Jules Deschamps (Node4)</strong><br />
+          Entrepreneur individuel (Micro-entreprise)<br />
+          38 rue des Lilas<br />
+          16800 Soyaux, France<br />
+          SIRET : 994 400 232 00017<br />
+          Email : julesdeschamps24@gmail.com
         </p>
       </section>
 
       <section className="mb-8 space-y-4">
         <h2 className="text-xl font-semibold text-white">2. Directeur de la publication</h2>
         <p>
-          [Votre Nom]<br />
-          Contact : [votre@email.com]
+          Jules Deschamps<br />
+          Contact : julesdeschamps24@gmail.com
         </p>
       </section>
 

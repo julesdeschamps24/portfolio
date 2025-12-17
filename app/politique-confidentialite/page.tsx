@@ -69,7 +69,7 @@ export default function PolitiqueConfidentialite() {
           <li>Droit à la portabilité de vos données.</li>
         </ul>
         <p className="mt-4">
-          Pour exercer ces droits, vous pouvez nous contacter à l'adresse : <strong>[votre@email.com]</strong>.
+          Pour exercer ces droits, vous pouvez nous contacter à l'adresse : <strong>julesdeschamps24@gmail.com</strong>.
         </p>
         <p>
           Vous avez également le droit d'introduire une réclamation auprès de la CNIL (www.cnil.fr).
