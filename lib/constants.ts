@@ -59,9 +59,11 @@ export const STORAGE_KEYS = {
 
 // Configuration HubSpot Forms API
 export const HUBSPOT = {
-  PORTAL_ID: "147436504",
-  FORM_GUID: "e5053cc1-a296-4616-9816-56c111b75ada",
-  ENDPOINT: "https://api.hsforms.com/submissions/v3/integration/submit/147436504/e5053cc1-a296-4616-9816-56c111b75ada",
+  PORTAL_ID: process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID || "147436504",
+  FORM_GUID: process.env.NEXT_PUBLIC_HUBSPOT_FORM_GUID || "e5053cc1-a296-4616-9816-56c111b75ada",
+  get ENDPOINT() {
+    return `https://api.hsforms.com/submissions/v3/integration/submit/${this.PORTAL_ID}/${this.FORM_GUID}`;
+  },
   // Mapping des champs du formulaire vers les noms internes HubSpot
   FIELD_MAPPING: {
     firstname: "firstname",

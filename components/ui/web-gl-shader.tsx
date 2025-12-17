@@ -161,7 +161,7 @@ export function WebGLShader({
       const material = new THREE.RawShaderMaterial({
         vertexShader,
         fragmentShader,
-        uniforms: refs.uniforms as THREE.ShaderMaterialParameters["uniforms"],
+        uniforms: refs.uniforms as unknown as { [uniform: string]: THREE.IUniform },
         side: THREE.DoubleSide,
       });
 

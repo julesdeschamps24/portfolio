@@ -1,31 +1,35 @@
 import { NextResponse } from "next/server";
 import { HUBSPOT } from "@/lib/constants";
+import { z } from "zod";
 
 const MAX_BODY_SIZE = 5000;
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 200;
 const MAX_MESSAGE_LENGTH = 2000;
 
-function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+// Schéma de validation Zod
+const contactSchema = z.object({
+  firstname: z.string().trim().min(1, "Prénom requis").max(MAX_NAME_LENGTH, "Prénom trop long"),
+  lastname: z.string().trim().min(1, "Nom requis").max(MAX_NAME_LENGTH, "Nom trop long"),
+  email: z.string().trim().email("Email invalide").max(MAX_EMAIL_LENGTH, "Email trop long"),
+  message: z.string().trim().min(1, "Message requis").max(MAX_MESSAGE_LENGTH, "Message trop long"),
+  pageUri: z.string().optional().default(""),
+  pageName: z.string().optional().default(""),
+  hutk: z.string().optional().nullable(),
+});
 
 function badRequest(message: string): NextResponse {
   return NextResponse.json({ ok: false, message }, { status: 400 });
 }
 
-interface ContactPayload {
-  firstname?: unknown;
-  lastname?: unknown;
-  email?: unknown;
-  message?: unknown;
-  pageUri?: unknown;
-  pageName?: unknown;
-  hutk?: unknown;
-}
-
 export async function POST(request: Request) {
-  const rawBody = await request.text();
+  let rawBody: string;
+  try {
+    rawBody = await request.text();
+  } catch {
+    return badRequest("Impossible de lire le corps de la requête.");
+  }
+
   if (rawBody.length > MAX_BODY_SIZE) {
     return badRequest("Requête trop volumineuse.");
   }
@@ -34,45 +38,18 @@ export async function POST(request: Request) {
   try {
     payload = JSON.parse(rawBody);
   } catch {
-    return badRequest("Corps de requête invalide.");
+    return badRequest("Corps de requête invalide (JSON attendu).");
   }
 
-  const contactData = payload as ContactPayload;
-  const firstname =
-    typeof contactData.firstname === "string"
-      ? contactData.firstname.trim()
-      : "";
-  const lastname =
-    typeof contactData.lastname === "string"
-      ? contactData.lastname.trim()
-      : "";
-  const email =
-    typeof contactData.email === "string" ? contactData.email.trim() : "";
-  const message =
-    typeof contactData.message === "string" ? contactData.message.trim() : "";
-  const pageUri =
-    typeof contactData.pageUri === "string" ? contactData.pageUri : "";
-  const pageName =
-    typeof contactData.pageName === "string" ? contactData.pageName : "";
-  const hutk =
-    typeof contactData.hutk === "string" ? contactData.hutk : null;
+  const result = contactSchema.safeParse(payload);
 
-  // Validation des champs requis
-  if (!firstname || !lastname || !email || !message) {
-    return badRequest("Tous les champs sont requis.");
+  if (!result.success) {
+    // On retourne la première erreur rencontrée pour simplifier le feedback
+    const firstError = result.error.issues[0];
+    return badRequest(firstError.message);
   }
-  if (firstname.length > MAX_NAME_LENGTH) {
-    return badRequest("Prénom trop long.");
-  }
-  if (lastname.length > MAX_NAME_LENGTH) {
-    return badRequest("Nom trop long.");
-  }
-  if (email.length > MAX_EMAIL_LENGTH || !isValidEmail(email)) {
-    return badRequest("Email invalide.");
-  }
-  if (message.length > MAX_MESSAGE_LENGTH) {
-    return badRequest("Message trop long.");
-  }
+
+  const data = result.data;
 
   // Construction du payload HubSpot
   const hubspotPayload: {
@@ -82,26 +59,22 @@ export async function POST(request: Request) {
       pageName: string;
       hutk?: string;
     };
-    // TODO: Si HubSpot requiert un consentement RGPD, ajouter ici :
-    // legalConsentOptions: { ... }
   } = {
     fields: [
-      { name: HUBSPOT.FIELD_MAPPING.firstname, value: firstname },
-      { name: HUBSPOT.FIELD_MAPPING.lastname, value: lastname },
-      { name: HUBSPOT.FIELD_MAPPING.email, value: email },
-      // TODO: Si le champ "Message" dans HubSpot n'a pas le nom interne "message",
-      // modifier HUBSPOT.FIELD_MAPPING.message dans lib/constants.ts avec le nom interne correct
-      { name: HUBSPOT.FIELD_MAPPING.message, value: message },
+      { name: HUBSPOT.FIELD_MAPPING.firstname, value: data.firstname },
+      { name: HUBSPOT.FIELD_MAPPING.lastname, value: data.lastname },
+      { name: HUBSPOT.FIELD_MAPPING.email, value: data.email },
+      { name: HUBSPOT.FIELD_MAPPING.message, value: data.message },
     ],
     context: {
-      pageUri,
-      pageName,
+      pageUri: data.pageUri,
+      pageName: data.pageName,
     },
   };
 
   // Ajouter le cookie hubspotutk si présent
-  if (hutk) {
-    hubspotPayload.context.hutk = hutk;
+  if (data.hutk) {
+    hubspotPayload.context.hutk = data.hutk;
   }
 
   try {
@@ -135,7 +108,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-
-
-
