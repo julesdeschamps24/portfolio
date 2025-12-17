@@ -36,6 +36,14 @@ const nextConfig: NextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin'
           },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.hs-scripts.com https://*.hs-analytics.net https://*.hubspot.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*.hubspot.com; font-src 'self' data:; connect-src 'self' https://*.hubspot.com https://api.hsforms.com;"
+          },
         ],
       },
       // Cache pour les assets statiques uniquement (pas pour les pages HTML)

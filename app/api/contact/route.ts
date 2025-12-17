@@ -7,6 +7,49 @@ const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 200;
 const MAX_MESSAGE_LENGTH = 2000;
 
+// Configuration du Rate Limiting (en mémoire)
+// Note: Dans un environnement serverless (Vercel), ce cache est local à l'instance lambda
+// et sera réinitialisé à chaque démarrage à froid. Pour une persistance robuste, utiliser Redis/Upstash.
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 heure
+const MAX_REQUESTS_PER_WINDOW = 3;
+
+interface RateLimitInfo {
+  count: number;
+  resetTime: number;
+}
+
+const rateLimitMap = new Map<string, RateLimitInfo>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  
+  // Nettoyage paresseux si la map devient trop grande
+  if (rateLimitMap.size > 1000) {
+    for (const [key, value] of rateLimitMap.entries()) {
+      if (now > value.resetTime) {
+        rateLimitMap.delete(key);
+      }
+    }
+  }
+
+  const info = rateLimitMap.get(ip);
+
+  if (!info || now > info.resetTime) {
+    rateLimitMap.set(ip, {
+      count: 1,
+      resetTime: now + RATE_LIMIT_WINDOW,
+    });
+    return false;
+  }
+
+  if (info.count >= MAX_REQUESTS_PER_WINDOW) {
+    return true;
+  }
+
+  info.count += 1;
+  return false;
+}
+
 // Schéma de validation Zod
 const contactSchema = z.object({
   firstname: z.string().trim().min(1, "Prénom requis").max(MAX_NAME_LENGTH, "Prénom trop long"),
@@ -23,6 +66,16 @@ function badRequest(message: string): NextResponse {
 }
 
 export async function POST(request: Request) {
+  // Vérification du Rate Limit
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
+  
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { ok: false, message: "Trop de tentatives. Veuillez réessayer plus tard." },
+      { status: 429 }
+    );
+  }
+
   let rawBody: string;
   try {
     rawBody = await request.text();
@@ -75,6 +128,15 @@ export async function POST(request: Request) {
   // Ajouter le cookie hubspotutk si présent
   if (data.hutk) {
     hubspotPayload.context.hutk = data.hutk;
+  }
+
+  // Vérification de la configuration HubSpot
+  if (!HUBSPOT.PORTAL_ID || !HUBSPOT.FORM_GUID) {
+    console.error("Configuration HubSpot manquante (PORTAL_ID ou FORM_GUID)");
+    return NextResponse.json(
+      { ok: false, message: "Erreur de configuration serveur" },
+      { status: 500 }
+    );
   }
 
   try {
