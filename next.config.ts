@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
+    // Ajouter ces optimisations Vercel
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   
   // Headers de sécurité et performance
@@ -32,6 +35,16 @@ const nextConfig: NextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin'
+          },
+        ],
+      },
+      // Cache pour les assets statiques uniquement (pas pour les pages HTML)
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

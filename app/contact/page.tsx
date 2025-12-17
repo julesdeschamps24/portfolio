@@ -12,24 +12,18 @@ export default function ContactPage() {
             Discutons de votre projet
           </h1>
           <p className="text-base text-zinc-300">
-            Vous avez une idée ou une mission ? Écrivez-moi, je réponds sous 24h.
+            Vous avez une idée ou une mission ? Utilisez le formulaire ci-dessous pour me contacter, je réponds sous 24h.
           </p>
         </header>
 
         <section className="grid gap-8 rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg backdrop-blur md:grid-cols-2">
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Coordonnées</h2>
-            <p className="text-sm text-zinc-300">
-              Email :{" "}
-              <a
-                href="mailto:contact@julesdeschamps.dev"
-                className="text-indigo-300 underline underline-offset-4 hover:text-indigo-200"
-              >
-                contact@julesdeschamps.dev
-              </a>
-            </p>
+            <h2 className="text-xl font-semibold">Informations</h2>
             <p className="text-sm text-zinc-300">
               Disponible pour missions freelance et projets collaboratifs.
+            </p>
+            <p className="text-sm text-zinc-300">
+              Remplissez le formulaire ci-contre pour me contacter directement.
             </p>
           </div>
 
