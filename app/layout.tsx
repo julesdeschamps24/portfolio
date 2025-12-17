@@ -20,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Jules Deschamps - Portfolio",
   description: "Portfolio personnel",
+  icons: {
+    icon: "/img/favicon.ico",
+  },
 };
 
 export default function RootLayout({
