@@ -12,7 +12,7 @@ export default function ContactPage() {
             Discutons de votre projet
           </h1>
           <p className="text-base text-zinc-300">
-            Vous avez une idée ou une mission ? Utilisez le formulaire ci-dessous pour me contacter, je réponds sous 24h.
+            Vous avez une idée ou une mission ? Utilisez le formulaire ci-dessous pour me contacter.
           </p>
         </header>
 
@@ -20,10 +20,11 @@ export default function ContactPage() {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Informations</h2>
             <p className="text-sm text-zinc-300">
-              Disponible pour missions freelance et projets collaboratifs.
+              Disponible pour des missions freelance et des projets collaboratifs ponctuels.
             </p>
             <p className="text-sm text-zinc-300">
-              Remplissez le formulaire ci-contre pour me contacter directement.
+              Pour toute demande d’information ou prise de contact,
+              merci de compléter le formulaire ci-contre. Je vous répondrai dans les meilleurs délais.
             </p>
           </div>
 

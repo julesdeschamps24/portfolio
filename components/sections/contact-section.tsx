@@ -10,7 +10,7 @@ export function ContactSection() {
         <SectionHeader
           label="Contact"
           title="Discutons de votre projet"
-          description="Vous avez une idée ou une mission ? Utilisez le formulaire ci-dessous pour me contacter, je réponds sous 24h."
+          description="Vous avez une idée ou une mission ? Utilisez le formulaire ci-dessous pour me contacter."
         />
 
         <section className="grid gap-8 rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg backdrop-blur md:grid-cols-2">
