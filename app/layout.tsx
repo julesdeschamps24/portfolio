@@ -5,6 +5,8 @@ import { Navigation } from "@/components/navigation";
 import { CookieBanner } from "@/components/cookie-banner";
 import { HubSpotScript } from "@/components/hubspot-script";
 
+import { Footer } from "@/components/footer";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,6 +36,7 @@ export default function RootLayout({
         <HubSpotScript />
         <Navigation />
         {children}
+        <Footer />
         <CookieBanner />
       </body>
     </html>

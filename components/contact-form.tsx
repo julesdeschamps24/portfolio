@@ -131,7 +131,7 @@ export function ContactForm({ className }: ContactFormProps) {
         <input
           id="firstname"
           name="firstname"
-          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
+          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
           placeholder="Votre prénom"
           required
         />
@@ -143,7 +143,7 @@ export function ContactForm({ className }: ContactFormProps) {
         <input
           id="lastname"
           name="lastname"
-          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
+          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
           placeholder="Votre nom"
           required
         />
@@ -156,7 +156,7 @@ export function ContactForm({ className }: ContactFormProps) {
           id="email"
           name="email"
           type="email"
-          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
+          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
           placeholder="vous@email.com"
           required
         />
@@ -169,7 +169,7 @@ export function ContactForm({ className }: ContactFormProps) {
           id="message"
           name="message"
           rows={4}
-          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400"
+          className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2 text-sm text-white outline-none transition focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
           placeholder="Décrivez votre besoin"
           required
         />

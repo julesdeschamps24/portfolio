@@ -41,6 +41,10 @@ const nextConfig: NextConfig = {
             value: 'max-age=63072000; includeSubDomains; preload'
           },
           {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+          },
+          {
             key: 'Content-Security-Policy',
             value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.hs-scripts.com https://*.hs-analytics.net https://*.hubspot.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*.hubspot.com; font-src 'self' data:; connect-src 'self' https://*.hubspot.com https://api.hsforms.com;"
           },
