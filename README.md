@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Professionnel
 
-## Getting Started
+Ce projet est un portfolio interactif et moderne, conçu pour présenter mes compétences et projets avec une expérience utilisateur fluide.
 
-First, run the development server:
+## 🛠 Technologies Utilisées
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Ce projet utilise une stack technique récente et performante :
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Framework** : [Next.js](https://nextjs.org/) (App Router)
+- **Langage** : [TypeScript](https://www.typescriptlang.org/)
+- **Core** : [React 19](https://react.dev/)
+- **Styling** : [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations** : [Framer Motion](https://www.framer.com/motion/) & [Tw-animate-css](https://github.com/animate-css/tw-animate-css)
+- **Graphisme & 3D** : [Three.js](https://threejs.org/) (Custom WebGL Shaders) & tsparticles
+- **Icônes** : [Lucide React](https://lucide.dev/)
+- **Validation** : [Zod](https://zod.dev/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Fonctionnalités
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Design Responsive** : Interface adaptative pour tous les écrans.
+- **Effets Visuels** : 
+  - Shaders WebGL personnalisés.
+  - Composants "Liquid Glass" et effets de particules.
+  - Animations au scroll et transitions fluides.
+- **Contact** : Formulaire intégré et connecté (HubSpot/API).
+- **Structure** : Architecture modulaire basée sur les composants Next.js.
 
-## Learn More
+## 📦 Installation et Développement
 
-To learn more about Next.js, take a look at the following resources:
+Pour lancer le projet localement :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Installer les dépendances** :
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Lancer le serveur de développement** :
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+3. **Accéder au site** :
+   Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚢 Déploiement
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Le projet est optimisé pour un déploiement sur [Vercel](https://vercel.com).
+
+1. Poussez le code sur un dépôt Git (GitHub/GitLab/Bitbucket).
+2. Importez le projet dans Vercel.
+3. Vercel détectera automatiquement la configuration Next.js.
+4. Si vous utilisez des variables d'environnement (pour HubSpot ou autre), n'oubliez pas de les ajouter dans les paramètres du projet sur Vercel.
