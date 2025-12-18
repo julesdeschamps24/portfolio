@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://julesdeschamps.dev'),
   title: {
-    default: "Jules Deschamps - Développeur Web Freelance & Creative Developer",
+    default: "Jules Deschamps - Développeur Web Freelance",
     template: "%s | Jules Deschamps"
   },
   description: "Portfolio de Jules Deschamps, développeur web spécialisé en React, Next.js et TypeScript. Création de sites web performants et esthétiques.",

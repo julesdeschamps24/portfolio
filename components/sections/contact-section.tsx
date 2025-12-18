@@ -26,8 +26,8 @@ export function ContactSection() {
               </p>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="text-sm font-medium text-zinc-400 uppercase tracking-wider">Retrouvez-moi sur</h4>
+            <div className="space-y-4 pt-2">
+              <h4 className="text-sm font-medium text-zinc-200 uppercase tracking-wider">Retrouvez-moi sur</h4>
               <div className="flex gap-4">
                 {SOCIAL_LINKS.map((link) => (
                   <a
