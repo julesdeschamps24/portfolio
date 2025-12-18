@@ -3,8 +3,11 @@ import { videos } from "@/lib/data";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Projets",
+  title: "Projets Web & Réalisations",
   description: "Explorez mes projets de développement web : applications, sites vitrines et expériences interactives.",
+  alternates: {
+    canonical: '/projets',
+  },
 };
 
 export default function ProjetsPage() {

@@ -20,13 +20,16 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://julesdeschamps.dev'),
   title: {
-    default: "Jules Deschamps - Portfolio",
+    default: "Jules Deschamps - Développeur Web Freelance & Creative Developer",
     template: "%s | Jules Deschamps"
   },
-  description: "Portfolio de Jules Deschamps, développeur web spécialisé en React, Next.js et TypeScript. Découvrez mes projets et compétences.",
-  keywords: ["Développeur Web", "React", "Next.js", "TypeScript", "Portfolio", "Jules Deschamps", "Frontend", "Fullstack"],
+  description: "Portfolio de Jules Deschamps, développeur web spécialisé en React, Next.js et TypeScript. Création de sites web performants et esthétiques.",
+  keywords: ["Développeur Web", "Freelance", "React", "Next.js", "TypeScript", "Portfolio", "Jules Deschamps", "Creative Developer", "Frontend", "Fullstack"],
   authors: [{ name: "Jules Deschamps", url: "https://julesdeschamps.dev" }],
   creator: "Jules Deschamps",
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: "Jules Deschamps - Portfolio",
     description: "Découvrez mon portfolio et mes projets web.",
@@ -61,12 +64,24 @@ export default function RootLayout({
     '@type': 'Person',
     name: 'Jules Deschamps',
     url: 'https://julesdeschamps.dev',
-    jobTitle: 'Développeur Web',
+    image: 'https://julesdeschamps.dev/img/favicon.ico',
+    jobTitle: 'Développeur Web Freelance',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'Freelance'
+    },
     sameAs: [
-      'https://www.linkedin.com/in/jules-deschamps/', 
-      // Ajoutez d'autres réseaux sociaux ici si nécessaire
+      'https://www.linkedin.com/in/-jules-/',
+      'https://github.com/julesdeschamps24',
+      'https://gitlab.com/julesdeschamps24',
     ],
     description: 'Développeur web passionné spécialisé dans la création d\'expériences numériques modernes.',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Soyaux',
+      addressRegion: 'Nouvelle-Aquitaine',
+      addressCountry: 'FR'
+    }
   }
 
   return (

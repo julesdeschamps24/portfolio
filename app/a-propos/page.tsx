@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "À propos",
-  description: "Découvrez mon parcours, ma formation à l'école 42 et ma passion pour le développement web.",
+  title: "À propos de Moi",
+  description: "Découvrez le parcours de Jules Deschamps, développeur web formé à l'école 42. Passionné par la conception d'applications performantes.",
+  alternates: {
+    canonical: '/a-propos',
+  },
 };
 
 export default function AProposPage() {
