@@ -1,5 +1,11 @@
 import { VideoCard } from "@/components/video-card";
 import { videos } from "@/lib/data";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projets",
+  description: "Explorez mes projets de développement web : applications, sites vitrines et expériences interactives.",
+};
 
 export default function ProjetsPage() {
   return (
@@ -26,4 +32,3 @@ export default function ProjetsPage() {
     </main>
   );
 }
-

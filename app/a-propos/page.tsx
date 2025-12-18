@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "À propos",
+  description: "Découvrez mon parcours, ma formation à l'école 42 et ma passion pour le développement web.",
+};
+
 export default function AProposPage() {
   return (
     <main className="min-h-screen bg-black text-white">
@@ -22,4 +29,3 @@ export default function AProposPage() {
     </main>
   );
 }
-

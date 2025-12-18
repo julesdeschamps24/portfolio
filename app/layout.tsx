@@ -18,8 +18,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jules Deschamps - Portfolio",
-  description: "Portfolio personnel",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://julesdeschamps.dev'),
+  title: {
+    default: "Jules Deschamps - Portfolio",
+    template: "%s | Jules Deschamps"
+  },
+  description: "Portfolio de Jules Deschamps, développeur web spécialisé en React, Next.js et TypeScript. Découvrez mes projets et compétences.",
+  keywords: ["Développeur Web", "React", "Next.js", "TypeScript", "Portfolio", "Jules Deschamps", "Frontend", "Fullstack"],
+  authors: [{ name: "Jules Deschamps", url: "https://julesdeschamps.dev" }],
+  creator: "Jules Deschamps",
+  openGraph: {
+    title: "Jules Deschamps - Portfolio",
+    description: "Découvrez mon portfolio et mes projets web.",
+    url: process.env.NEXT_PUBLIC_URL || 'https://julesdeschamps.dev',
+    siteName: 'Jules Deschamps Portfolio',
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: "/img/favicon.ico",
   },
@@ -30,11 +56,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Jules Deschamps',
+    url: 'https://julesdeschamps.dev',
+    jobTitle: 'Développeur Web',
+    sameAs: [
+      'https://www.linkedin.com/in/jules-deschamps/', 
+      // Ajoutez d'autres réseaux sociaux ici si nécessaire
+    ],
+    description: 'Développeur web passionné spécialisé dans la création d\'expériences numériques modernes.',
+  }
+
   return (
     <html lang="fr" style={{ scrollBehavior: "smooth" }}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {/* HubSpot Tracking Script - chargé uniquement après consentement */}
         <HubSpotScript />
         <Navigation />
