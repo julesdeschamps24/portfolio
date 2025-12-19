@@ -70,6 +70,11 @@ export default function RootLayout({
       '@type': 'Organization',
       name: 'Freelance'
     },
+    alumniOf: {
+      '@type': 'EducationalOrganization',
+      name: 'École 42'
+    },
+    knowsAbout: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Node.js', 'C', 'C++'],
     sameAs: [
       'https://www.linkedin.com/in/-jules-/',
       'https://github.com/julesdeschamps24',
