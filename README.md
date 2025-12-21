@@ -25,30 +25,21 @@ Ce projet utilise une stack technique récente et performante :
 - **Contact** : Formulaire intégré et connecté (HubSpot/API).
 - **Structure** : Architecture modulaire basée sur les composants Next.js.
 
-## 📦 Installation et Développement
+## 🎯 Points techniques notables
 
-Pour lancer le projet localement :
+- **Performance** : Optimisations SSR/SSG avec Next.js App Router, lazy loading des composants lourds
+- **Sécurité** : Headers HTTP configurés (CSP, HSTS, X-Frame-Options), validation des entrées avec Zod, rate limiting sur l'API
+- **Accessibilité** : Navigation au clavier, structure sémantique HTML5
+- **RGPD** : Gestion du consentement cookies, mentions légales conformes
 
-1. **Installer les dépendances** :
-   ```bash
-   npm install
-   # ou
-   yarn install
-   ```
+## 🌐 Voir le site en ligne
 
-2. **Lancer le serveur de développement** :
-   ```bash
-   npm run dev
-   ```
+👉 [julesdeschamps.dev](https://julesdeschamps.dev)
 
-3. **Accéder au site** :
-   Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
+## 📄 Licence
 
-## 🚢 Déploiement
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-Le projet est optimisé pour un déploiement sur [Vercel](https://vercel.com).
+---
 
-1. Poussez le code sur un dépôt Git (GitHub/GitLab/Bitbucket).
-2. Importez le projet dans Vercel.
-3. Vercel détectera automatiquement la configuration Next.js.
-4. Si vous utilisez des variables d'environnement (pour HubSpot ou autre), n'oubliez pas de les ajouter dans les paramètres du projet sur Vercel.
+*N'hésitez pas à explorer le code source pour voir l'implémentation des différentes fonctionnalités !*
