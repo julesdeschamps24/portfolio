@@ -25,7 +25,7 @@ export default function AProposPage() {
           </p>
           
           <p className="text-lg leading-7 text-zinc-300">
-            Mon apprentissage se base principalement sur la réalisation de projets concrets, favorisant une progression rapide et une adaptation efficace aux nouvelles technologies. Curieux et motivé, j&apos;apprécie relever de nouveaux défis techniques et faire évoluer ses compétences en continu.
+            Mon apprentissage se base principalement sur la réalisation de projets concrets, favorisant une progression rapide et une adaptation efficace aux nouvelles technologies. Curieux et motivé, j&apos;apprécie relever de nouveaux défis techniques et faire évoluer ces compétences en continu.
           </p>
         </div>
       </div>

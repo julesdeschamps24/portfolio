@@ -21,7 +21,7 @@ export function AboutSection() {
             Mon apprentissage se base principalement sur la réalisation de
             projets concrets, favorisant une progression rapide et une adaptation
             efficace aux nouvelles technologies. Curieux et motivé, j&apos;apprécie
-            relever de nouveaux défis techniques et faire évoluer ses compétences
+            relever de nouveaux défis techniques et faire évoluer ces compétences
             en continu.
           </p>
         </div>
