@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terre &amp; Matière — Jules Deschamps · sites web pour paysagistes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:wght@400;500;600&display=swap');
+
+:root{
+  --paper:#ece2d0; --paper-2:#e4d8c2; --cream:#f6f0e2;
+  --ink:#262417; --ink-soft:#4a4634;
+  --soil:#6e3b1e; --soil-deep:#54290f;
+  --moss:#5c7a2e; --moss-deep:#43591f;
+  --stone:#9a9279; --sand:#d8c8a8; --line:#cabf a6;
+  --line:#c9bda4;
+  --disp:'Bricolage Grotesque',sans-serif;
+  --serif:'Fraunces',serif;
+  --body:'Hanken Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:multiply;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 40px;position:relative;z-index:2;}
+section{position:relative;z-index:2;}
+h1,h2,h3{font-family:var(--disp);font-weight:700;letter-spacing:-.02em;line-height:1.04;}
+em.s{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:0;}
+.eyebrow{font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;display:inline-flex;align-items:center;gap:9px;}
+.eyebrow::before{content:"";width:26px;height:1.5px;background:currentColor;display:inline-block;}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:600;font-size:15px;padding:15px 28px;border-radius:999px;border:none;cursor:pointer;text-decoration:none;transition:transform .18s ease, box-shadow .18s ease;}
+.btn:hover{transform:translateY(-2px);}
+.btn-soil{background:var(--soil);color:#f5ecdc;box-shadow:0 8px 22px -10px rgba(84,41,15,.7);}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+.btn-ghost:hover{background:var(--ink);color:var(--paper);}
+.btn-cream{background:var(--cream);color:var(--soil-deep);}
+
+/* ---- reveal on scroll ---- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);}
+.rv.in{opacity:1;transform:none;}
+
+/* ---------------- NAV ---------------- */
+header{position:sticky;top:0;z-index:50;background:rgba(236,226,208,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+nav{display:flex;align-items:center;justify-content:space-between;height:72px;}
+.brand{display:flex;flex-direction:column;line-height:1.1;}
+.brand b{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:-.01em;}
+.brand small{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--soil);font-weight:600;}
+.navlinks{display:flex;gap:30px;font-size:14.5px;font-weight:500;}
+.navlinks a{color:var(--ink-soft);text-decoration:none;transition:color .15s;}
+.navlinks a:hover{color:var(--soil);}
+
+/* ---------------- HERO ---------------- */
+.hero{padding:88px 0 96px;}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:64px;align-items:center;}
+.hero h1{font-size:clamp(40px,5.4vw,68px);margin:22px 0 0;}
+.hero .sub{font-size:19px;color:var(--ink-soft);max-width:480px;margin-top:26px;}
+.uline{position:relative;display:inline-block;}
+.uline svg{position:absolute;left:0;bottom:-12px;width:100%;height:14px;}
+.hero .btns{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;}
+.swatches{display:flex;gap:12px;margin-top:46px;max-width:480px;}
+.sw{flex:1;border-radius:14px;padding:14px 14px 16px;color:#f3ecdc;position:relative;overflow:hidden;min-width:0;}
+.sw span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;}
+.sw b{display:block;font-family:var(--disp);font-weight:600;font-size:16px;margin-top:30px;}
+/* hero visual */
+.hero-visual{position:relative;}
+.blob{aspect-ratio:1/1.02;border-radius:48% 52% 56% 44%/54% 46% 54% 46%;overflow:hidden;border:2px solid var(--ink);
+  background:linear-gradient(168deg,#cfe0bf 0%,#9cc187 34%,#6d9450 58%,#4d6f33 100%);position:relative;}
+.blob .grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:100% 34px;}
+.blob .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.blob .ph span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--paper);padding:9px 18px;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;}
+.badge{position:absolute;top:8px;right:0;background:var(--moss);color:#f3ecdc;font-family:var(--disp);font-weight:600;font-size:13.5px;padding:13px 18px;border-radius:50%;width:104px;height:104px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;transform:rotate(8deg);box-shadow:0 10px 24px -12px rgba(67,89,31,.8);z-index:3;animation:spinwobble 9s ease-in-out infinite;}
+@keyframes spinwobble{0%,100%{transform:rotate(8deg);}50%{transform:rotate(-4deg);}}
+.branch{position:absolute;left:-46px;bottom:-30px;width:150px;opacity:.85;z-index:0;}
+
+/* ---------------- BANDE PROBLÈME (dark) ---------------- */
+.dark{background:var(--ink);color:var(--paper);}
+.problem{padding:84px 0;}
+.problem .eyebrow{color:var(--sand);}
+.problem h2{font-size:clamp(28px,3.6vw,42px);margin:18px 0 0;max-width:760px;}
+.problem h2 em.s{color:#cdb389;}
+.problem .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:54px;}
+.problem .pt{border-top:1.5px solid rgba(216,200,168,.35);padding-top:18px;}
+.problem .pt i{font-family:var(--serif);font-style:italic;font-size:30px;color:var(--sand);}
+.problem .pt h3{font-size:18px;margin:10px 0 6px;color:var(--paper);}
+.problem .pt p{font-size:14.5px;color:#b7af98;}
+
+/* ---------------- RÉALISATIONS (vitrine) ---------------- */
+.work{background:var(--cream);padding:90px 0;}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap;}
+.sec-head .eyebrow{color:var(--soil);}
+.sec-head h2{font-size:clamp(30px,4vw,48px);margin-top:14px;max-width:560px;}
+.sec-head p{color:var(--ink-soft);max-width:330px;font-size:15px;}
+.work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:50px;}
+.card-work{background:var(--paper);border:1.5px solid var(--ink);border-radius:18px;overflow:hidden;transition:transform .25s ease;}
+.card-work:hover{transform:translateY(-6px);}
+.card-work .thumb{aspect-ratio:16/10;position:relative;display:flex;align-items:center;justify-content:center;border-bottom:1.5px solid var(--ink);}
+.card-work .thumb span{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:rgba(246,240,226,.92);padding:8px 16px;border-radius:999px;font-weight:600;border:1.5px solid var(--ink);}
+.t1{background:repeating-linear-gradient(135deg,#cde0bd 0 18px,#c3d8b2 18px 36px);}
+.t2{background:linear-gradient(160deg,#d7c4a0,#b89a73);}
+.t3{background:linear-gradient(160deg,#a9b98f,#7e9a5b);}
+.t4{background:repeating-linear-gradient(45deg,#c9bda0 0 14px,#bfb293 14px 28px);}
+.card-work .info{padding:18px 20px 20px;display:flex;align-items:center;justify-content:space-between;}
+.card-work .info b{font-family:var(--disp);font-weight:600;font-size:17px;}
+.card-work .info small{display:block;color:var(--ink-soft);font-size:13px;margin-top:2px;}
+.card-work .info .num{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--soil);}
+
+/* ---------------- OFFRE ---------------- */
+.offer{padding:90px 0;}
+.offer .eyebrow{color:var(--moss-deep);}
+.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px;}
+.feat{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:26px 24px;transition:border-color .2s,transform .2s;}
+.feat:hover{transform:translateY(-4px);border-color:var(--soil);}
+.feat .ic{width:48px;height:48px;border-radius:14px;background:var(--moss);color:#f3ecdc;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;}
+.feat h3{font-size:19px;}
+.feat p{font-size:14.5px;color:var(--ink-soft);margin-top:8px;}
+
+/* ---------------- MÉTHODE ---------------- */
+.method{background:var(--paper-2);padding:90px 0;}
+.method .eyebrow{color:var(--soil);}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:50px;}
+.step{position:relative;}
+.step .n{font-family:var(--disp);font-weight:800;font-size:46px;color:var(--soil);line-height:1;}
+.step h3{font-size:18px;margin:12px 0 6px;}
+.step p{font-size:14px;color:var(--ink-soft);}
+.step::after{content:"";position:absolute;top:22px;right:-11px;width:22px;height:2px;background:var(--soil);opacity:.4;}
+.step:last-child::after{display:none;}
+
+/* ---------------- RÉASSURANCE + CTA (dark) ---------------- */
+.cta{background:var(--soil-deep);color:#f4ead8;padding:96px 0;text-align:center;position:relative;overflow:hidden;}
+.cta .eyebrow{color:#d7b88f;justify-content:center;}
+.cta .eyebrow::before{display:none;}
+.cta h2{font-size:clamp(34px,5vw,60px);margin:18px auto 0;max-width:820px;}
+.cta h2 em.s{color:#e3c79e;}
+.cta p{max-width:520px;margin:22px auto 0;color:#d8c9b1;font-size:17px;}
+.cta .btns{display:flex;gap:14px;justify-content:center;margin-top:38px;flex-wrap:wrap;}
+.trust{display:flex;gap:34px;justify-content:center;margin-top:54px;flex-wrap:wrap;}
+.trust div{display:flex;align-items:center;gap:9px;font-size:14px;color:#e7d9c2;}
+.trust div i{color:#9bc06a;font-style:normal;font-size:18px;}
+.cta .leafbg{position:absolute;bottom:-40px;right:-30px;width:260px;opacity:.13;}
+
+footer{background:var(--ink);color:#9a937f;padding:40px 0;font-size:13.5px;}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+footer b{color:var(--paper);font-family:var(--disp);}
+
+@media(max-width:900px){
+  .wrap{padding:0 22px;}
+  .hero-grid{grid-template-columns:1fr;gap:48px;}
+  .navlinks{display:none;}
+  .problem .grid3,.offer-grid{grid-template-columns:1fr;}
+  .work-grid{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr 1fr;}
+  .step::after{display:none;}
+}
+</style>
+</head>
+<body>
+
+<svg class="noise"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="brand"><b>Jules Deschamps</b><small>Studio web · paysagistes</small></div>
+      <div class="navlinks">
+        <a href="#work">Réalisations</a>
+        <a href="#offer">Offre</a>
+        <a href="#method">Méthode</a>
+        <a href="#cta">Contact</a>
+      </div>
+      <a href="#cta" class="btn btn-soil" style="padding:11px 22px;font-size:14px;">Devis gratuit</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow rv" style="color:var(--soil)">Fait main · ancré dans votre région</div>
+      <h1 class="rv" style="transition-delay:.08s">Un site web taillé<br>pour les pros aux<br>
+        <span class="uline"><em class="s">racines</em>
+          <svg viewBox="0 0 260 14" preserveAspectRatio="none"><path d="M3 9 C70 2 150 13 257 5" stroke="var(--moss)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+        </span> solides.
+      </h1>
+      <p class="sub rv" style="transition-delay:.16s">Pas un template de plus. Un site sur-mesure qui respire votre métier — la terre, la pierre, le vivant — et qui transforme les curieux en demandes de devis.</p>
+      <div class="btns rv" style="transition-delay:.24s">
+        <a href="#cta" class="btn btn-soil">Parlons de votre projet</a>
+        <a href="#work" class="btn btn-ghost">Voir des exemples</a>
+      </div>
+      <div class="swatches rv" style="transition-delay:.32s">
+        <div class="sw" style="background:var(--soil)"><span>Terre</span><b>Authentique</b></div>
+        <div class="sw" style="background:var(--stone)"><span>Pierre</span><b>Solide</b></div>
+        <div class="sw" style="background:var(--moss)"><span>Feuillage</span><b>Vivant</b></div>
+      </div>
+    </div>
+    <div class="hero-visual rv" style="transition-delay:.2s">
+      <div class="badge">100%<br>sur-mesure</div>
+      <div class="blob">
+        <div class="grid-lines"></div>
+        <div class="ph"><span>Votre réalisation ici</span></div>
+      </div>
+      <svg class="branch" viewBox="0 0 120 120" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round">
+        <path d="M60 118 C60 80 50 60 60 18"/>
+        <path d="M60 60 C44 52 36 38 34 24 M60 60 C76 54 84 42 88 30 M60 86 C46 80 40 70 38 60 M60 40 C72 36 80 28 82 20"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLÈME ===== -->
+<section class="dark problem">
+  <div class="wrap">
+    <div class="eyebrow rv">Le constat</div>
+    <h2 class="rv" style="transition-delay:.08s">Vos plus beaux chantiers finissent enterrés sur une page Facebook. Vos futurs clients, eux, cherchent <em class="s">sur Google</em>.</h2>
+    <div class="grid3">
+      <div class="pt rv"><i>01</i><h3>Invisible sur Google</h3><p>Sans site, vous n'apparaissez pas quand on cherche « paysagiste » près de chez vous.</p></div>
+      <div class="pt rv" style="transition-delay:.1s"><i>02</i><h3>Une image qui ne suit pas</h3><p>Un travail haut de gamme mérite mieux qu'une galerie de photos floues sur les réseaux.</p></div>
+      <div class="pt rv" style="transition-delay:.2s"><i>03</i><h3>Des devis qui filent</h3><p>Pas de moyen simple de vous contacter = des projets qui partent chez le concurrent.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RÉALISATIONS ===== -->
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow rv">Réalisations</div>
+        <h2 class="rv" style="transition-delay:.06s">Des sites qui mettent vos jardins en valeur.</h2>
+      </div>
+      <p class="rv" style="transition-delay:.12s">Voici des emplacements d'exemples — ils accueilleront bientôt de vrais sites de paysagistes. En attendant, imaginez le vôtre à la place.</p>
+    </div>
+    <div class="work-grid">
+      <div class="card-work rv"><div class="thumb t1"><span>Votre réalisation ici</span></div><div class="info"><div><b>Aménagement de jardin</b><small>Exemple à venir</small></div><div class="num">01</div></div></div>
+      <div class="card-work rv" style="transition-delay:.08s"><div class="thumb t2"><span>Votre réalisation ici</span></div><div class="info"><div><b>Terrasse &amp; dallage</b><small>Exemple à venir</small></div><div class="num">02</div></div></div>
+      <div class="card-work rv" style="transition-delay:.16s"><div class="thumb t3"><span>Votre réalisation ici</span></div><div class="info"><div><b>Création paysagère</b><small>Exemple à venir</small></div><div class="num">03</div></div></div>
+      <div class="card-work rv" style="transition-delay:.24s"><div class="thumb t4"><span>Votre réalisation ici</span></div><div class="info"><div><b>Clôture &amp; entrée</b><small>Exemple à venir</small></div><div class="num">04</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OFFRE ===== -->
+<section class="offer" id="offer">
+  <div class="wrap">
+    <div class="eyebrow rv">Ce que vous obtenez</div>
+    <h2 class="rv" style="transition-delay:.06s;font-size:clamp(30px,4vw,46px);">Tout pour être trouvé,<br>et donner envie.</h2>
+    <div class="offer-grid">
+      <div class="feat rv"><div class="ic">✦</div><h3>Site vitrine sur-mesure</h3><p>Une identité unique, pensée pour votre métier — pas un thème recyclé.</p></div>
+      <div class="feat rv" style="transition-delay:.08s"><div class="ic">◎</div><h3>Visible sur Google</h3><p>Optimisé pour ressortir quand on cherche un paysagiste dans votre secteur.</p></div>
+      <div class="feat rv" style="transition-delay:.16s"><div class="ic">⌁</div><h3>Parfait sur mobile</h3><p>8 visiteurs sur 10 viennent du téléphone. Votre site sera impeccable partout.</p></div>
+      <div class="feat rv"><div class="ic">✉</div><h3>Formulaire de devis</h3><p>Un bouton clair pour vous contacter — les demandes arrivent direct dans votre boîte mail.</p></div>
+      <div class="feat rv" style="transition-delay:.08s"><div class="ic">❏</div><h3>Galerie avant / après</h3><p>Vos transformations mises en scène, l'argument de vente le plus efficace de votre métier.</p></div>
+      <div class="feat rv" style="transition-delay:.16s"><div class="ic">♺</div><h3>Suivi &amp; tranquillité</h3><p>Hébergement, mises à jour, petites modifs : je m'occupe de la technique, vous du terrain.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MÉTHODE ===== -->
+<section class="method" id="method">
+  <div class="wrap">
+    <div class="eyebrow rv">La méthode</div>
+    <h2 class="rv" style="transition-delay:.06s;font-size:clamp(30px,4vw,46px);">Simple, du premier échange à la mise en ligne.</h2>
+    <div class="steps">
+      <div class="step rv"><div class="n">1</div><h3>On échange</h3><p>Un appel pour comprendre votre activité, vos clients et vos objectifs.</p></div>
+      <div class="step rv" style="transition-delay:.08s"><div class="n">2</div><h3>Je conçois</h3><p>Maquette sur-mesure validée ensemble avant la moindre ligne de code.</p></div>
+      <div class="step rv" style="transition-delay:.16s"><div class="n">3</div><h3>On met en ligne</h3><p>Votre site en ligne, rapide et soigné, sous quelques jours.</p></div>
+      <div class="step rv" style="transition-delay:.24s"><div class="n">4</div><h3>Je vous suis</h3><p>Accompagnement et ajustements pour que ça rapporte des clients.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA FINAL ===== -->
+<section class="cta" id="cta">
+  <svg class="leafbg" viewBox="0 0 120 120" fill="#f4ead8"><path d="M60 115 C60 70 30 55 60 5 C90 55 60 70 60 115"/></svg>
+  <div class="wrap">
+    <div class="eyebrow rv">Parlons-en</div>
+    <h2 class="rv" style="transition-delay:.06s">Donnons à votre savoir-faire<br>le site qu'il <em class="s">mérite</em>.</h2>
+    <p class="rv" style="transition-delay:.12s">Un échange sans engagement pour estimer votre projet. Réponse sous 24 h, devis gratuit et clair.</p>
+    <div class="btns rv" style="transition-delay:.18s">
+      <a href="#" class="btn btn-cream">Demander mon devis gratuit</a>
+      <a href="#" class="btn btn-ghost" style="color:#f4ead8;border-color:#f4ead8;">Voir des exemples</a>
+    </div>
+    <div class="trust rv" style="transition-delay:.24s">
+      <div><i>✓</i> Sans engagement</div>
+      <div><i>✓</i> Réponse sous 24 h</div>
+      <div><i>✓</i> Prix clair, pas de surprise</div>
+      <div><i>✓</i> 100% sur-mesure</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b>Jules Deschamps</b> — sites web pour paysagistes</div>
+    <div>Maquette « Terre &amp; Matière » · placeholders à remplacer par vos photos</div>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

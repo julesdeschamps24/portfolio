@@ -5,47 +5,43 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-black/60 backdrop-blur py-8 mt-20">
-      <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4">
-        <div className="text-zinc-500 text-sm text-center md:text-left order-2 md:order-1">
-          © {currentYear} Jules Deschamps. Tous droits réservés.
-        </div>
-        
-        <div className="flex flex-col md:flex-row items-center gap-6 order-1 md:order-2">
-          <div className="flex gap-4">
+    <footer className="site-footer">
+      <div className="site-footer__inner">
+        <div className="site-footer__top">
+          <div className="fb">
+            Studio — Jules Deschamps
+          </div>
+
+          <div className="fcol">
+            <h4>Menu</h4>
+            <Link href="/#work">Réalisations</Link>
+            <Link href="/#services">Services</Link>
+            <Link href="/#about">Approche</Link>
+            <Link href="/#contact">Contact</Link>
+          </div>
+
+          <div className="fcol">
+            <h4>Réseaux</h4>
             {SOCIAL_LINKS.map((link) => (
-              <a
-                key={link.name}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-zinc-500 hover:text-white transition"
-                aria-label={link.name}
-              >
-                <link.icon className="w-5 h-5" />
+              <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer">
+                {link.name}
               </a>
             ))}
           </div>
-          
-          <div className="hidden md:block w-px h-4 bg-white/10" />
-          
-          <div className="flex gap-6 text-sm">
-            <Link 
-              href="/mentions-legales" 
-              className="text-zinc-500 hover:text-white transition"
-            >
-              Mentions Légales
-            </Link>
-            <Link 
-              href="/politique-confidentialite" 
-              className="text-zinc-500 hover:text-white transition"
-            >
-              Politique de Confidentialité
-            </Link>
+
+          <div className="fcol">
+            <h4>Contact</h4>
+            <a href="mailto:contact@julesdeschamps.dev">contact@julesdeschamps.dev</a>
+            <Link href="/mentions-legales">Mentions légales</Link>
+            <Link href="/politique-confidentialite">Politique de confidentialité</Link>
           </div>
+        </div>
+
+        <div className="site-footer__bottom">
+          <div>© {currentYear} Studio — Jules Deschamps. Tous droits réservés.</div>
+          <div>Création de sites web pour entreprises locales</div>
         </div>
       </div>
     </footer>
   );
 }
-

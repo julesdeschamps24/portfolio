@@ -20,7 +20,7 @@ export default function MentionsLegales() {
           38 rue des Lilas<br />
           16800 Soyaux, France<br />
           SIRET : 994 400 232 00017<br />
-          Email : julesdeschamps24@gmail.com
+          Email : contact@julesdeschamps.dev
         </p>
       </section>
 
@@ -28,7 +28,7 @@ export default function MentionsLegales() {
         <h2 className="text-xl font-semibold text-white">2. Directeur de la publication</h2>
         <p>
           Jules Deschamps<br />
-          Contact : julesdeschamps24@gmail.com
+          Contact : contact@julesdeschamps.dev
         </p>
       </section>
 

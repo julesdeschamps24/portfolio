@@ -2,16 +2,17 @@ import { Metadata } from "next";
 import { ContactSection } from "@/components/sections/contact-section";
 
 export const metadata: Metadata = {
-  title: "Contact & Devis",
-  description: "Contactez-moi pour discuter de vos projets ou opportunités de collaboration.",
+  title: "Contact",
+  description:
+    "Parlez-moi de votre projet de site web. Studio — Jules Deschamps, création de sites pour entreprises locales.",
   alternates: {
-    canonical: '/contact',
+    canonical: "/contact",
   },
 };
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="studio">
       <ContactSection />
     </main>
   );

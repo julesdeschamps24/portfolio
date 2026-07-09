@@ -1,8 +1,5 @@
-export { IntroSection } from "./intro-section";
-export { HomeSection } from "./home-section";
-export { ProjectsSection } from "./projects-section";
-export { SkillsSection } from "./skills-section";
-export { AboutSection } from "./about-section";
+export { HeroSection } from "./hero-section";
+export { WorkSection } from "./work-section";
+export { ServicesSection } from "./services-section";
+export { ApprocheSection } from "./approche-section";
 export { ContactSection } from "./contact-section";
-export { SectionHeader } from "./section-header";
-

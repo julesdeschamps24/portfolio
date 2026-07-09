@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nuances bleues — Studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#14181e; --bg2:#1c222b; --glow:#232c39; --text:#e8ebf0; --soft:#abb3c0; --muted:#7b8493; --line:#2a323d; --acc:#6f93c9;
+  --disp:'Syne',sans-serif; --body:'Schibsted Grotesk',sans-serif; --serif:'Instrument Serif',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:90px;
+  background:radial-gradient(125% 85% at 50% -12%, var(--glow), transparent 56%), var(--bg);transition:background .45s,color .45s;}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 44px;position:relative;z-index:2;}
+section{position:relative;z-index:2;}
+h1,h2,h3{font-family:var(--disp);font-weight:800;letter-spacing:-.03em;line-height:.98;}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;color:var(--acc);}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:10px;}
+.eyebrow::before{content:"";width:24px;height:1.5px;background:var(--acc);}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--body);font-weight:600;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;border:1.5px solid var(--text);color:var(--text);background:transparent;cursor:pointer;transition:.2s;}
+.btn:hover{background:var(--text);color:var(--bg);}
+.arrow{transition:transform .2s;color:var(--acc);}.btn:hover .arrow{transform:translateY(3px);color:inherit;}
+.link{font-weight:600;color:inherit;text-decoration:none;position:relative;}
+.link::after{content:"";position:absolute;left:0;bottom:-3px;width:100%;height:1.5px;background:var(--acc);transition:transform .25s;transform-origin:right;}
+.link:hover::after{transform:scaleX(0);}
+
+header{position:sticky;top:0;z-index:40;background:color-mix(in srgb, var(--bg) 82%, transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:border-color .45s;}
+nav{display:flex;align-items:center;justify-content:space-between;height:74px;}
+.logo{font-family:var(--disp);font-weight:800;font-size:19px;}.logo sup{font-size:10px;color:var(--acc);}
+.navlinks{display:flex;gap:30px;font-size:14px;font-weight:500;}
+.navlinks a{color:var(--soft);text-decoration:none;}
+
+.hero{padding:90px 0 52px;}
+.hero .eyebrow{margin-bottom:28px;}
+.hero h1{font-size:clamp(46px,8.4vw,124px);}
+.hero-bottom{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-top:42px;}
+.hero-bottom p{max-width:470px;font-size:17px;color:var(--soft);}
+.hero-bottom .meta{text-align:right;font-size:13px;color:var(--muted);line-height:1.9;}
+.hero .btns{display:flex;gap:24px;margin-top:34px;align-items:center;flex-wrap:wrap;}
+
+.marquee{border-top:1px solid var(--text);border-bottom:1px solid var(--text);padding:18px 0;overflow:hidden;white-space:nowrap;margin-top:60px;transition:border-color .45s;}
+.mq-track{display:inline-block;animation:scroll 32s linear infinite;}
+.mq-track span{font-family:var(--disp);font-weight:600;font-size:24px;margin:0 6px;}
+.mq-track i{font-style:italic;font-family:var(--serif);font-weight:400;margin:0 24px;color:var(--acc);}
+@keyframes scroll{to{transform:translateX(-50%);}}
+
+.sec{padding:96px 0;}
+.band{background:var(--bg2);transition:background .45s;}
+.shead{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:20px;}
+.shead .lbl{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.shead h2{font-size:clamp(30px,4.2vw,54px);}
+
+.idx-row{display:grid;grid-template-columns:64px 1fr auto 70px;gap:20px;align-items:center;padding:28px 8px;border-bottom:1px solid var(--line);cursor:pointer;transition:padding .3s,background .3s;}
+.idx-row:hover{padding-left:24px;background:var(--bg2);}
+.idx-row .no{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--acc);}
+.idx-row .ti{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,36px);}
+.idx-row .tag{font-size:13px;color:var(--muted);}
+.idx-row .yr{font-size:14px;color:var(--muted);text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:12px;}
+.idx-row .ar{opacity:0;transform:translateX(-6px);transition:.25s;color:var(--acc);}
+.idx-row:hover .ar{opacity:1;transform:none;}
+.cursor-img{position:fixed;top:0;left:0;width:290px;height:190px;border-radius:14px;pointer-events:none;z-index:30;opacity:0;transform:translate(-50%,-50%) scale(.85);transition:opacity .25s,transform .25s;background:linear-gradient(140deg,var(--acc),var(--bg2));border:1px solid var(--soft);display:flex;align-items:center;justify-content:center;}
+.cursor-img.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.cursor-img span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.35);padding:6px 12px;border-radius:999px;font-weight:600;}
+
+.svc{display:grid;grid-template-columns:90px 1fr 1.2fr;gap:30px;align-items:start;padding:40px 8px;border-bottom:1px solid var(--line);transition:background .3s;}
+.svc:hover{background:var(--bg);}
+.svc .no{font-family:var(--serif);font-style:italic;font-size:34px;color:var(--acc);}
+.svc h3{font-size:clamp(24px,2.6vw,34px);color:var(--text);}
+.svc p{color:var(--soft);font-size:16px;max-width:460px;}
+
+.manifesto{text-align:center;}
+.manifesto .big{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4.4vw,58px);line-height:1.06;max-width:1000px;margin:0 auto;letter-spacing:-.025em;}
+.principes{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:70px;border-top:1px solid var(--line);padding-top:40px;text-align:left;}
+.principe .n{font-family:var(--serif);font-style:italic;font-size:30px;color:var(--acc);}
+.principe h3{font-family:var(--disp);font-weight:700;font-size:19px;margin:8px 0 6px;}
+.principe p{font-size:14px;color:var(--muted);}
+
+.contact{text-align:center;padding:110px 0;}
+.contact .eyebrow{justify-content:center;}
+.contact h2{font-size:clamp(42px,8vw,130px);}
+.contact h2 em.s{color:var(--soft);}
+.contact p{max-width:480px;margin:22px auto 0;color:var(--soft);font-size:16px;}
+.contact .mail{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,38px);color:var(--text);display:inline-block;margin-top:24px;border-bottom:1px solid var(--acc);text-decoration:none;}
+
+footer{padding:54px 0 36px;border-top:1px solid var(--line);}
+.fcols{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:34px;}
+.fcols .fb{font-family:var(--disp);font-weight:800;font-size:clamp(28px,5vw,60px);color:var(--text);letter-spacing:-.03em;}
+.fcols .fb sup{color:var(--acc);}
+.fcols .col h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:600;}
+.fcols .col a{display:block;color:var(--soft);text-decoration:none;font-size:15px;margin-bottom:8px;}
+.fcols .col a:hover{color:var(--acc);}
+.fbot{display:flex;justify-content:space-between;margin-top:22px;font-size:13px;flex-wrap:wrap;gap:10px;color:var(--muted);}
+
+.pbar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:#070a10;border-top:1px solid #1c2330;padding:12px 16px;display:flex;gap:10px;align-items:center;overflow-x:auto;}
+.pbar .lab{color:#8a93a2;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-right:6px;white-space:nowrap;}
+.pchip{display:flex;align-items:center;gap:9px;background:#121826;border:1.5px solid #243043;border-radius:12px;padding:8px 13px;cursor:pointer;white-space:nowrap;transition:.18s;}
+.pchip:hover{border-color:#5a6a85;}.pchip.active{border-color:#fff;background:#1a2233;}
+.pchip i{width:16px;height:16px;border-radius:50%;display:block;border:1.5px solid #070a10;}
+.pchip b{color:#e7ebf2;font-family:var(--disp);font-weight:600;font-size:13px;}
+
+@media(max-width:900px){.wrap{padding:0 22px;}.navlinks{display:none;}.hero-bottom{grid-template-columns:1fr;}.hero-bottom .meta{text-align:left;}.idx-row{grid-template-columns:40px 1fr 50px;}.idx-row .tag{display:none;}.svc{grid-template-columns:1fr;gap:10px;}.principes{grid-template-columns:1fr 1fr;}.cursor-img{display:none;}}
+</style>
+</head>
+<body>
+
+<svg class="noise"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div class="cursor-img" id="cimg"><span>Votre réalisation ici</span></div>
+
+<header><div class="wrap"><nav>
+  <div class="logo">Deschamps<sup>®</sup></div>
+  <div class="navlinks"><a href="#work">Réalisations</a><a href="#services">Services</a><a href="#about">Approche</a><a href="#contact">Contact</a></div>
+  <a href="#contact" class="link">Me contacter</a>
+</nav></div></header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Studio web · entreprises &amp; commerces locaux</div>
+    <h1>Des sites web<br>sur-mesure pour les<br><em class="s">entreprises locales</em>.</h1>
+    <div class="hero-bottom">
+      <p>Studio indépendant. Je conçois et développe des sites soignés pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.</p>
+      <div class="meta">Conception &amp; développement<br>Identité &amp; design<br>Visibilité locale</div>
+    </div>
+    <div class="btns">
+      <a href="#work" class="btn">Voir mes réalisations <span class="arrow">↓</span></a>
+      <a href="#contact" class="link">Un projet ? Écrivez-moi</a>
+    </div>
+  </div>
+  <div class="marquee"><div class="mq-track">
+    <span>Restaurants</span><i>&amp;</i><span>Artisans</span><i>&amp;</i><span>Boutiques</span><i>&amp;</i><span>Coachs</span><i>&amp;</i><span>Praticiens</span><i>&amp;</i><span>Commerces</span><i>&amp;</i>
+    <span>Restaurants</span><i>&amp;</i><span>Artisans</span><i>&amp;</i><span>Boutiques</span><i>&amp;</i><span>Coachs</span><i>&amp;</i><span>Praticiens</span><i>&amp;</i><span>Commerces</span><i>&amp;</i>
+  </div></div>
+</section>
+
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="shead"><span class="lbl">Réalisations</span><h2>Le soin dans chaque détail.</h2></div>
+    <div id="idx">
+      <div class="idx-row"><div class="no">01</div><div class="ti">Restaurant &amp; brasserie</div><div class="tag">Site vitrine + carte</div><div class="yr"><span class="ar">↗</span>2025</div></div>
+      <div class="idx-row"><div class="no">02</div><div class="ti">Artisan &amp; BTP</div><div class="tag">Vitrine + demande de devis</div><div class="yr"><span class="ar">↗</span>2025</div></div>
+      <div class="idx-row"><div class="no">03</div><div class="ti">Boutique &amp; commerce</div><div class="tag">Vitrine de produits</div><div class="yr"><span class="ar">↗</span>2025</div></div>
+      <div class="idx-row"><div class="no">04</div><div class="ti">Coach &amp; indépendant</div><div class="tag">Personal branding</div><div class="yr"><span class="ar">↗</span>2025</div></div>
+    </div>
+    <p style="margin-top:30px;color:var(--muted);font-size:14px;">Emplacements d'exemples — survolez une ligne pour l'aperçu.</p>
+  </div>
+</section>
+
+<section class="sec band" id="services">
+  <div class="wrap">
+    <div class="shead"><span class="lbl">Ce que je fais</span><h2>Du design à la mise en ligne.</h2></div>
+    <div class="svc"><div class="no">01</div><h3>Design &amp; identité</h3><p>Une image soignée et cohérente, qui vous distingue de la concurrence du quartier.</p></div>
+    <div class="svc"><div class="no">02</div><h3>Site sur-mesure</h3><p>Conçu autour de votre métier — pas un thème générique recyclé pour tout le monde.</p></div>
+    <div class="svc"><div class="no">03</div><h3>Visible localement</h3><p>Pensé pour ressortir sur Google quand on cherche votre activité dans votre ville.</p></div>
+    <div class="svc"><div class="no">04</div><h3>Suivi &amp; sérénité</h3><p>Hébergement, mises à jour, petites modifs : la technique, c'est mon affaire.</p></div>
+  </div>
+</section>
+
+<section class="sec manifesto" id="about">
+  <div class="wrap">
+    <p class="big">Pas de template recyclé. Chaque site est <em class="s">dessiné</em> autour de votre métier, de vos clients et de votre quartier — pour qu'il vous <em class="s">ressemble</em> vraiment.</p>
+    <div class="principes">
+      <div class="principe"><div class="n">i</div><h3>Sur-mesure</h3><p>Aucun site identique à un autre. Le vôtre est unique.</p></div>
+      <div class="principe"><div class="n">ii</div><h3>Rapide &amp; mobile</h3><p>Impeccable sur téléphone, où viennent la plupart des visiteurs.</p></div>
+      <div class="principe"><div class="n">iii</div><h3>Trouvé localement</h3><p>Optimisé pour le référencement de votre zone.</p></div>
+      <div class="principe"><div class="n">iv</div><h3>Accompagnement</h3><p>Un seul interlocuteur, du premier échange au suivi.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec band contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h2>Un projet<br>de <em class="s">site</em> ?</h2>
+    <p>Parlez-moi de votre entreprise. Je vous réponds avec plaisir, sans engagement.</p>
+    <a href="mailto:contact@julesdeschamps.dev" class="mail">contact@julesdeschamps.dev</a>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <div class="fcols">
+    <div class="fb">Deschamps<sup style="font-size:.4em;">®</sup></div>
+    <div class="col"><h4>Menu</h4><a href="#work">Réalisations</a><a href="#services">Services</a><a href="#about">Approche</a><a href="#contact">Contact</a></div>
+    <div class="col"><h4>Suivez</h4><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">Behance</a></div>
+    <div class="col"><h4>Contact</h4><a href="mailto:contact@julesdeschamps.dev">contact@julesdeschamps.dev</a></div>
+  </div>
+  <div class="fbot"><div>© 2025 Jules Deschamps — Studio web pour entreprises locales</div><div>Maquette « Bleu » · placeholders à remplacer</div></div>
+</div></footer>
+
+<div class="pbar" id="pbar"><span class="lab">Teinte →</span></div>
+
+<script>
+const themes=[
+  {name:"Ardoise", v:{'--bg':'#14181e','--bg2':'#1c222b','--glow':'#232c39','--text':'#e8ebf0','--soft':'#abb3c0','--muted':'#7b8493','--line':'#2a323d','--acc':'#6f93c9'}},
+  {name:"Ardoise bleutée", v:{'--bg':'#111722','--bg2':'#18202e','--glow':'#1f2c44','--text':'#e6ebf3','--soft':'#a7b2c6','--muted':'#76829a','--line':'#283248','--acc':'#6f9bdd'}},
+  {name:"Bleu nuit", v:{'--bg':'#0c1424','--bg2':'#121d33','--glow':'#1a2c52','--text':'#e6ecf6','--soft':'#a6b4cf','--muted':'#7484a3','--line':'#1f3050','--acc':'#5b86e8'}},
+  {name:"Nuit profonde", v:{'--bg':'#091022','--bg2':'#0e1830','--glow':'#14245a','--text':'#e6ecf7','--soft':'#a3b2d1','--muted':'#7080a3','--line':'#1b2c55','--acc':'#5180f0'}},
+  {name:"Bleu roi", v:{'--bg':'#0c1647','--bg2':'#122060','--glow':'#1a2f8f','--text':'#e9edff','--soft':'#adb8e6','--muted':'#7c88c2','--line':'#233a86','--acc':'#6d8dff'}},
+  {name:"Cobalt", v:{'--bg':'#14227a','--bg2':'#1b2c95','--glow':'#2740c0','--text':'#eef0ff','--soft':'#bcc2f2','--muted':'#8e96d6','--line':'#2c3aa0','--acc':'#8aa0ff'}},
+  {name:"Cobalt vif", v:{'--bg':'#1a2c9e','--bg2':'#2238ba','--glow':'#3a55e0','--text':'#eff1ff','--soft':'#c3c9f6','--muted':'#99a1e0','--line':'#3a49c0','--acc':'#aab8ff'}},
+  {name:"Indigo", v:{'--bg':'#14165e','--bg2':'#1b1f7a','--glow':'#2a2fa8','--text':'#ecedff','--soft':'#b9bcf0','--muted':'#8a8ed4','--line':'#2f33a0','--acc':'#9b9bff'}},
+];
+const bar=document.getElementById('pbar');
+function apply(t,el){for(const k in t.v){document.documentElement.style.setProperty(k,t.v[k]);}document.querySelectorAll('.pchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+themes.forEach((t,i)=>{
+  const chip=document.createElement('div');chip.className='pchip'+(i===0?' active':'');
+  chip.innerHTML='<i style="background:'+t.v['--bg']+'"></i><i style="background:'+t.v['--acc']+'"></i><b>'+t.name+'</b>';
+  chip.onclick=()=>apply(t,chip);bar.appendChild(chip);
+});
+const cimg=document.getElementById('cimg');
+document.querySelectorAll('.idx-row').forEach(r=>{r.addEventListener('mouseenter',()=>cimg.classList.add('show'));r.addEventListener('mouseleave',()=>cimg.classList.remove('show'));});
+window.addEventListener('mousemove',e=>{cimg.style.left=e.clientX+'px';cimg.style.top=e.clientY+'px';});
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Syne, Schibsted_Grotesk, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { CookieBanner } from "@/components/cookie-banner";
@@ -7,36 +7,60 @@ import { HubSpotScript } from "@/components/hubspot-script";
 
 import { Footer } from "@/components/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const schibsted = Schibsted_Grotesk({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
+
+const instrument = Instrument_Serif({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+});
+
+const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://julesdeschamps.dev";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://julesdeschamps.dev'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Jules Deschamps - Développeur Web Freelance",
-    template: "%s | Jules Deschamps"
+    default: "Studio — Jules Deschamps · Création de sites web pour entreprises locales",
+    template: "%s · Studio — Jules Deschamps",
   },
-  description: "Portfolio de Jules Deschamps, développeur web spécialisé en React, Next.js et TypeScript. Création de sites web performants et esthétiques.",
-  keywords: ["Développeur Web", "Freelance", "React", "Next.js", "TypeScript", "Portfolio", "Jules Deschamps", "Creative Developer", "Frontend", "Fullstack"],
-  authors: [{ name: "Jules Deschamps", url: "https://julesdeschamps.dev" }],
+  description:
+    "Studio web indépendant. Je conçois et développe des sites soignés et sur-mesure pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.",
+  keywords: [
+    "création site web",
+    "site internet",
+    "studio web",
+    "site vitrine",
+    "commerce local",
+    "artisan",
+    "TPE",
+    "PME",
+    "référencement local",
+    "Jules Deschamps",
+  ],
+  authors: [{ name: "Jules Deschamps", url: SITE_URL }],
   creator: "Jules Deschamps",
   alternates: {
-    canonical: '/',
+    canonical: "/",
   },
   openGraph: {
-    title: "Jules Deschamps - Portfolio",
-    description: "Découvrez mon portfolio et mes projets web.",
-    url: process.env.NEXT_PUBLIC_URL || 'https://julesdeschamps.dev',
-    siteName: 'Jules Deschamps Portfolio',
-    locale: 'fr_FR',
-    type: 'website',
+    title: "Studio — Jules Deschamps · Sites web pour entreprises locales",
+    description:
+      "Des sites web sur-mesure pour les commerces, artisans et indépendants. Soignés, rapides, pensés pour être trouvés localement.",
+    url: SITE_URL,
+    siteName: "Studio — Jules Deschamps",
+    locale: "fr_FR",
+    type: "website",
   },
   robots: {
     index: true,
@@ -44,9 +68,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   icons: {
@@ -60,39 +84,46 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Jules Deschamps',
-    url: 'https://julesdeschamps.dev',
-    image: 'https://julesdeschamps.dev/img/favicon.ico',
-    jobTitle: 'Développeur Web Freelance',
-    worksFor: {
-      '@type': 'Organization',
-      name: 'Freelance'
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "Studio — Jules Deschamps",
+    url: SITE_URL,
+    image: `${SITE_URL}/img/favicon.ico`,
+    description:
+      "Studio web indépendant : création de sites web sur-mesure pour les commerces, artisans et indépendants locaux.",
+    email: "contact@julesdeschamps.dev",
+    founder: {
+      "@type": "Person",
+      name: "Jules Deschamps",
+      alumniOf: {
+        "@type": "EducationalOrganization",
+        name: "École 42",
+      },
     },
-    alumniOf: {
-      '@type': 'EducationalOrganization',
-      name: 'École 42'
-    },
-    knowsAbout: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Node.js', 'C', 'C++'],
-    sameAs: [
-      'https://www.linkedin.com/in/-jules-/',
-      'https://github.com/julesdeschamps24',
-      'https://gitlab.com/julesdeschamps24',
+    knowsAbout: [
+      "Création de sites web",
+      "Sites vitrines",
+      "Référencement local",
+      "Design web",
     ],
-    description: 'Développeur web passionné spécialisé dans la création d\'expériences numériques modernes.',
+    areaServed: "France",
+    sameAs: [
+      "https://www.linkedin.com/in/-jules-/",
+      "https://github.com/julesdeschamps24",
+      "https://gitlab.com/julesdeschamps24",
+    ],
     address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Soyaux',
-      addressRegion: 'Nouvelle-Aquitaine',
-      addressCountry: 'FR'
-    }
-  }
+      "@type": "PostalAddress",
+      addressLocality: "Soyaux",
+      addressRegion: "Nouvelle-Aquitaine",
+      addressCountry: "FR",
+    },
+  };
 
   return (
     <html lang="fr" style={{ scrollBehavior: "smooth" }}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
+        className={`${syne.variable} ${schibsted.variable} ${instrument.variable} antialiased`}
       >
         <script
           type="application/ld+json"

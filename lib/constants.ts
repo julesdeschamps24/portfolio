@@ -26,24 +26,6 @@ export const ANIMATION = {
   MODAL_EXIT_DURATION: 0.2,
 } as const;
 
-// Configuration du typewriter
-export const TYPEWRITER = {
-  DEFAULT_SPEED: 50,
-  DEFAULT_MIN_SPEED: 20,
-  DEFAULT_DELAY: 0,
-} as const;
-
-// Configuration des vidéos
-export const VIDEO = {
-  FIRST_FRAME_TIME: 0.001,
-} as const;
-
-// Configuration du WebGL Shader
-export const WEBGL_SHADER = {
-  DEFAULT_TARGET_FPS: 15,
-  MAX_PIXEL_RATIO: 2,
-} as const;
-
 // Messages et textes
 export const MESSAGES = {
   CONTACT_SUCCESS: "Message envoyé",

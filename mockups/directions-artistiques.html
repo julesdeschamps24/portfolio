@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Directions Artistiques — Studio web pour paysagistes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; color: #16201a; background: #0f0f0f; }
+
+/* ---------- TOP NAV (comparateur) ---------- */
+.switcher {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 18px; background: rgba(17,17,17,.92);
+  backdrop-filter: blur(10px); border-bottom: 1px solid #2a2a2a;
+  font-family: 'Inter', sans-serif; flex-wrap: wrap;
+}
+.switcher b { color: #fff; font-weight: 600; font-size: 13px; margin-right: 8px; letter-spacing: .02em; }
+.switcher a {
+  color: #cfcfcf; text-decoration: none; font-size: 12.5px; font-weight: 500;
+  padding: 6px 12px; border-radius: 999px; border: 1px solid #333; transition: .15s;
+}
+.switcher a:hover { color: #fff; border-color: #666; background: #1d1d1d; }
+.switcher .tag { margin-left: auto; color: #6f6f6f; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+
+/* ---------- Étiquette de direction ---------- */
+.da-label {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: .22em;
+  text-transform: uppercase; padding: 7px 16px; border-radius: 999px; z-index: 20;
+}
+
+.da { position: relative; min-height: 760px; display: flex; align-items: center; overflow: hidden; }
+.wrap { width: 100%; max-width: 1180px; margin: 0 auto; padding: 96px 48px 72px; }
+
+/* mini-navbar interne à chaque maquette */
+.nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 64px; }
+.nav .logo { font-weight: 600; font-size: 16px; letter-spacing: -.01em; }
+.nav .links { display: flex; gap: 26px; font-size: 13.5px; }
+.nav .links span { opacity: .72; }
+.nav .cta { font-size: 13px; padding: 9px 18px; border-radius: 999px; font-weight: 600; }
+
+.eyebrow { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
+.btn-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+.btn { padding: 14px 26px; border-radius: 999px; font-size: 14.5px; font-weight: 600; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+.btn-ghost { background: transparent; }
+
+/* ============================================================
+   DA A — LE CAHIER BOTANIQUE  (éditorial premium / revue de jardin)
+   ============================================================ */
+#da-a { background: #f5efe3; color: #1b2a20; }
+#da-a .da-label { background: #1b2a20; color: #f5efe3; }
+#da-a .nav .cta { background: #1b2a20; color: #f5efe3; }
+#da-a .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 60px; align-items: center; }
+#da-a .eyebrow { color: #b5673f; }
+#da-a h1 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 62px; line-height: 1.04; letter-spacing: -.015em; }
+#da-a h1 em { font-style: italic; color: #6f8466; }
+#da-a .sub { font-size: 18px; line-height: 1.6; color: #44513f; max-width: 460px; margin-top: 26px; }
+#da-a .btn-primary { background: #b5673f; color: #fff; }
+#da-a .btn-ghost { color: #1b2a20; border: 1px solid #c3bba6; }
+#da-a .rule { height: 1px; background: #cfc7b4; margin-top: 40px; }
+#da-a .meta { display: flex; justify-content: space-between; margin-top: 16px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8a8472; }
+#da-a .frame { position: relative; border: 1px solid #1b2a20; aspect-ratio: 4/5; background:
+  linear-gradient(180deg,#cfe0d2 0%,#cfe0d2 38%, #9bbf9a 38%, #7aa978 64%, #5d7d4e 64%, #4a6a3e 100%); }
+#da-a .frame .ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+#da-a .frame .ph span { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #1b2a20; background: #f5efe3; padding: 6px 14px; border: 1px solid #1b2a20; }
+#da-a .cap { position: absolute; bottom: -34px; left: 0; font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; color: #44513f; }
+#da-a .leaf { position: absolute; bottom: -10px; right: -10px; width: 150px; opacity: .5; }
+
+/* ============================================================
+   DA B — AVANT / APRÈS  (cinématique, transformation)
+   ============================================================ */
+#da-b { background: radial-gradient(120% 120% at 20% 0%, #16271c 0%, #0c150f 55%, #080d0a 100%); color: #eef3ec; }
+#da-b .da-label { background: #c7f03f; color: #16271c; }
+#da-b .nav .logo { color: #fff; }
+#da-b .nav .links { color: #c4cfc4; }
+#da-b .nav .cta { background: #c7f03f; color: #14231a; }
+#da-b .grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+#da-b .eyebrow { color: #c7f03f; }
+#da-b h1 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 68px; line-height: .98; text-transform: uppercase; letter-spacing: .005em; }
+#da-b h1 .accent { color: #c7f03f; }
+#da-b .sub { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: #b9c5b9; max-width: 470px; margin-top: 24px; }
+#da-b .btn-primary { background: #c7f03f; color: #14231a; }
+#da-b .btn-ghost { color: #eef3ec; border: 1px solid #3a4d3f; }
+#da-b .stats { display: flex; gap: 14px; margin-top: 36px; flex-wrap: wrap; }
+#da-b .stat { background: rgba(199,240,63,.08); border: 1px solid rgba(199,240,63,.25); border-radius: 14px; padding: 14px 18px; }
+#da-b .stat b { display: block; font-family: 'Anton',sans-serif; font-weight: 400; font-size: 26px; color: #c7f03f; }
+#da-b .stat span { font-size: 12.5px; color: #9fb09f; }
+/* before / after visual */
+#da-b .ba { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid #2c3c30; }
+#da-b .ba .before { position: absolute; inset: 0; background: linear-gradient(180deg,#5b5e57 0%,#6d655a 45%,#7a6f5e 45%,#8a7d68 100%); filter: grayscale(.6) brightness(.85); }
+#da-b .ba .after { position: absolute; inset: 0; clip-path: polygon(50% 0,100% 0,100% 100%,50% 100%);
+  background: linear-gradient(180deg,#bfe6c4 0%,#7fc98a 40%, #58a866 40%, #2f7d45 78%, #245f37 100%); }
+#da-b .ba .divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #c7f03f; transform: translateX(-50%); }
+#da-b .ba .handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; border-radius: 50%; background: #c7f03f; color:#14231a; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+#da-b .ba .lbl { position: absolute; bottom: 16px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: 5px 12px; border-radius: 999px; }
+#da-b .ba .lbl.a { left: 16px; background: rgba(0,0,0,.45); color: #e9e9e9; }
+#da-b .ba .lbl.b { right: 16px; background: #c7f03f; color: #14231a; }
+
+/* ============================================================
+   DA C — TERRE & MATIÈRE  (tactile, terroir designé)
+   ============================================================ */
+#da-c { color: #34301d; background:
+  radial-gradient(140% 90% at 85% 10%, #efe7d6 0%, #e7ddc8 45%, #ddd0b6 100%); }
+#da-c .da-label { background: #6e3b1e; color: #f0e7d6; }
+#da-c .nav .cta { background: #6e3b1e; color: #f3ecdc; }
+#da-c .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+#da-c .eyebrow { color: #6e3b1e; }
+#da-c h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 58px; line-height: 1.05; letter-spacing: -.02em; }
+#da-c h1 em { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; color: #5c7a2e; }
+#da-c .sub { font-size: 18px; line-height: 1.6; color: #514b35; max-width: 460px; margin-top: 24px; }
+#da-c .btn-primary { background: #6e3b1e; color: #f3ecdc; }
+#da-c .btn-ghost { color: #34301d; border: 1px solid #b8a888; }
+#da-c .swatches { display: flex; gap: 10px; margin-top: 34px; }
+#da-c .sw { flex: 1; border-radius: 12px; padding: 12px 12px 14px; color: #fff; min-width: 0; }
+#da-c .sw span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .9; }
+#da-c .sw b { display: block; font-family: 'Space Grotesk',sans-serif; font-weight: 600; font-size: 15px; margin-top: 28px; }
+#da-c .badge { position: absolute; top: 18px; right: 18px; background: #5c7a2e; color: #fff; font-size: 12px; font-weight: 600; padding: 10px 16px; border-radius: 999px; z-index: 5; transform: rotate(4deg); }
+#da-c .blob { position: relative; aspect-ratio: 1/1; border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+  overflow: hidden; background: linear-gradient(170deg,#cfe2c4 0%, #98c08a 40%, #6e9457 62%, #4f7239 100%);
+  border: 2px solid #34301d; }
+#da-c .blob .ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+#da-c .blob .ph span { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #34301d; background: #f0e7d6; padding: 8px 16px; border-radius: 999px; }
+#da-c .underline { display: inline-block; }
+#da-c .underline svg { display: block; margin-top: -6px; }
+
+/* ============================================================
+   DA D — BOTANIQUE VIVANT  (lumineux, illustré, animé)
+   ============================================================ */
+#da-d { background: #fbfdf8; color: #1d2c23; }
+#da-d .da-label { background: #2fa45a; color: #fff; }
+#da-d .nav .cta { background: #1d2c23; color: #fff; }
+#da-d .grid { display: grid; grid-template-columns: 1fr .9fr; gap: 56px; align-items: center; }
+#da-d .eyebrow { display: inline-block; color: #1f7a45; background: #e4f3e8; padding: 7px 16px; border-radius: 999px; letter-spacing: .08em; }
+#da-d h1 { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 60px; line-height: 1.05; letter-spacing: -.02em; }
+#da-d h1 .hl { color: #2fa45a; position: relative; }
+#da-d .sub { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 19px; line-height: 1.55; color: #475a4e; max-width: 440px; margin-top: 22px; }
+#da-d .btn { font-family: 'Outfit', sans-serif; }
+#da-d .btn-primary { background: #2fa45a; color: #fff; }
+#da-d .btn-ghost { color: #1d2c23; border: 1px solid #cfe0d2; }
+#da-d .cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 40px; }
+#da-d .card { background: #fff; border: 1px solid #e6efe6; border-radius: 16px; padding: 16px 14px; }
+#da-d .card .ic { width: 34px; height: 34px; border-radius: 10px; background: #e4f3e8; color: #1f7a45; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
+#da-d .card b { font-family: 'Outfit',sans-serif; font-weight: 600; font-size: 14px; }
+#da-d .card span { display: block; font-size: 12.5px; color: #6a7b6f; margin-top: 3px; }
+#da-d .illus { position: relative; display: flex; align-items: center; justify-content: center; }
+#da-d .pot { width: 320px; height: 380px; }
+#da-d .sway { transform-origin: bottom center; animation: sway 5s ease-in-out infinite; }
+#da-d .sway2 { transform-origin: bottom center; animation: sway 6.5s ease-in-out infinite; }
+@keyframes sway { 0%,100% { transform: rotate(-2.5deg);} 50% { transform: rotate(2.5deg);} }
+#da-d .draw { stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw 2.4s ease forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+footer { background: #0f0f0f; color: #8a8a8a; text-align: center; padding: 30px; font-size: 12.5px; }
+
+@media (max-width: 880px) {
+  .wrap { padding: 90px 24px 56px; }
+  #da-a .grid, #da-b .grid, #da-c .grid, #da-d .grid { grid-template-columns: 1fr; gap: 44px; }
+  #da-a h1, #da-c h1, #da-d h1 { font-size: 42px; } #da-b h1 { font-size: 46px; }
+  .nav .links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <b>4 directions artistiques</b>
+  <a href="#da-a">A · Le Cahier Botanique</a>
+  <a href="#da-b">B · Avant / Après</a>
+  <a href="#da-c">C · Terre &amp; Matière</a>
+  <a href="#da-d">D · Botanique Vivant</a>
+  <span class="tag">Jules Deschamps — sites pour paysagistes</span>
+</div>
+
+<!-- ============ DA A ============ -->
+<section class="da" id="da-a">
+  <span class="da-label">Direction A — Le Cahier Botanique</span>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo">Jules Deschamps</div>
+      <div class="links"><span>Réalisations</span><span>Méthode</span><span>Offre</span><span>Contact</span></div>
+      <div class="cta">Devis gratuit</div>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="eyebrow">Studio web · spécial paysagistes</div>
+        <h1>Vos jardins méritent<br>un site aussi <em>soigné</em><br>que vos aménagements.</h1>
+        <p class="sub">Je conçois des sites élégants pour les paysagistes qui veulent attirer une clientèle haut de gamme — et transformer les visiteurs en demandes de devis.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary">Parlons de votre projet</a>
+          <a class="btn btn-ghost">Voir des exemples</a>
+        </div>
+        <div class="rule"></div>
+        <div class="meta"><span>Conception sur-mesure</span><span>Photos mises en valeur</span><span>01 / 04</span></div>
+      </div>
+      <div style="position:relative;">
+        <div class="frame">
+          <div class="ph"><span>Votre réalisation ici</span></div>
+        </div>
+        <div class="cap">Fig. 01 — Terrasse &amp; massifs contemporains</div>
+        <svg class="leaf" viewBox="0 0 100 100" fill="none" stroke="#1b2a20" stroke-width="1.4">
+          <path d="M50 95 C50 60 30 40 50 8 C70 40 50 60 50 95"/><path d="M50 30 L36 42 M50 45 L64 55 M50 58 L38 68"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DA B ============ -->
+<section class="da" id="da-b">
+  <span class="da-label">Direction B — Avant / Après</span>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo">JULES DESCHAMPS</div>
+      <div class="links"><span>Transformations</span><span>Méthode</span><span>Tarifs</span><span>Contact</span></div>
+      <div class="cta">Demander un devis</div>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="eyebrow">Création de sites · paysagistes</div>
+        <h1>Vous transformez<br>les jardins.<br><span class="accent">Je transforme</span><br>votre visibilité.</h1>
+        <p class="sub">Un site qui montre vos chantiers comme une transformation : avant / après immersifs, et la première page de Google pour votre zone.</p>
+        <div class="stats">
+          <div class="stat"><b>+38%</b><span>de demandes de devis</span></div>
+          <div class="stat"><b>1<span style="font-size:14px">re</span> page</b><span>sur Google local</span></div>
+          <div class="stat"><b>7 j</b><span>pour être en ligne</span></div>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary">Parlons de votre projet →</a>
+          <a class="btn btn-ghost">Voir une démo</a>
+        </div>
+      </div>
+      <div class="ba">
+        <div class="before"></div>
+        <div class="after"></div>
+        <div class="divider"></div>
+        <div class="handle">⇄</div>
+        <div class="lbl a">Avant</div>
+        <div class="lbl b">Après</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DA C ============ -->
+<section class="da" id="da-c">
+  <span class="da-label">Direction C — Terre &amp; Matière</span>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo">Jules Deschamps</div>
+      <div class="links"><span>Réalisations</span><span>Savoir-faire</span><span>Offre</span><span>Contact</span></div>
+      <div class="cta">Devis gratuit</div>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="eyebrow">Fait main · ancré dans votre région</div>
+        <h1>Un site web taillé<br>pour les pros<br>aux <em>racines</em>
+          <span class="underline">solides.
+            <svg width="180" height="14" viewBox="0 0 180 14"><path d="M2 8 C40 2 90 12 178 5" stroke="#5c7a2e" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+          </span>
+        </h1>
+        <p class="sub">Pas un template de plus. Un site sur-mesure qui respire votre métier — la terre, la pierre, le vivant — et qui rassure vos futurs clients.</p>
+        <div class="swatches">
+          <div class="sw" style="background:#6e3b1e"><span>Terre</span><b>Authentique</b></div>
+          <div class="sw" style="background:#8a8268"><span>Pierre</span><b>Solide</b></div>
+          <div class="sw" style="background:#5c7a2e"><span>Feuillage</span><b>Vivant</b></div>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary">Parlons de votre projet</a>
+          <a class="btn btn-ghost">Voir des exemples</a>
+        </div>
+      </div>
+      <div style="position:relative;">
+        <div class="badge">100% sur-mesure</div>
+        <div class="blob"><div class="ph"><span>Votre réalisation ici</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DA D ============ -->
+<section class="da" id="da-d">
+  <span class="da-label">Direction D — Botanique Vivant</span>
+  <div class="wrap">
+    <div class="nav">
+      <div class="logo">Jules Deschamps</div>
+      <div class="links"><span>Réalisations</span><span>Comment ça marche</span><span>Offre</span><span>Contact</span></div>
+      <div class="cta">Devis gratuit</div>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="eyebrow">Création de sites · paysagistes</div>
+        <h1 style="margin-top:18px;">Faites <span class="hl">pousser</span><br>votre activité<br>en ligne.</h1>
+        <p class="sub">Un site clair et vivant qui travaille pour vous toute l'année — même quand vous êtes sur le terrain. Plus de visibilité, plus de jardins à créer.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary">Demander mon devis gratuit</a>
+          <a class="btn btn-ghost">Voir des exemples</a>
+        </div>
+        <div class="cards">
+          <div class="card"><div class="ic">✦</div><b>Site vitrine</b><span>Beau sur mobile &amp; PC</span></div>
+          <div class="card"><div class="ic">⌖</div><b>Visible</b><span>Trouvé sur Google</span></div>
+          <div class="card"><div class="ic">✉</div><b>Devis</b><span>Formulaire qui convertit</span></div>
+        </div>
+      </div>
+      <div class="illus">
+        <svg class="pot" viewBox="0 0 300 360" fill="none">
+          <g class="sway">
+            <path class="draw" d="M150 250 C150 190 150 150 150 110" stroke="#2fa45a" stroke-width="4" stroke-linecap="round"/>
+            <path d="M150 170 C120 150 100 120 96 96 C130 100 150 130 150 165 Z" fill="#8fd6a3"/>
+            <path d="M150 200 C182 182 200 150 206 122 C172 128 150 160 150 196 Z" fill="#5fbf7d"/>
+            <path d="M150 140 C128 124 116 100 116 78 C140 86 152 110 150 138 Z" fill="#2fa45a"/>
+          </g>
+          <g class="sway2">
+            <circle cx="208" cy="96" r="13" fill="#f4c232"/><circle cx="208" cy="96" r="5" fill="#e07a1f"/>
+            <circle cx="92" cy="120" r="11" fill="#f4c232"/><circle cx="92" cy="120" r="4" fill="#e07a1f"/>
+          </g>
+          <path d="M104 250 L196 250 L184 340 Q150 352 116 340 Z" fill="#d98b4a"/>
+          <rect x="98" y="238" width="104" height="20" rx="6" fill="#c2762f"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Maquettes de comparaison — Jules Deschamps · studio web pour paysagistes · placeholders « votre réalisation » à remplacer par vos photos</footer>
+
+</body>
+</html>
