@@ -3,6 +3,7 @@ import { WorkSection } from "@/components/sections/work-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { ApprocheSection } from "@/components/sections/approche-section";
 import { ContactSection } from "@/components/sections/contact-section";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <ServicesSection />
       <ApprocheSection />
       <ContactSection />
+      <ScrollReveal />
     </main>
   );
 }

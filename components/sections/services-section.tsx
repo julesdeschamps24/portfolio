@@ -25,12 +25,12 @@ export function ServicesSection() {
   return (
     <section id="services" className="sec band">
       <div className="wrap">
-        <div className="shead">
+        <div className="shead reveal">
           <span className="lbl">Ce que je fais</span>
           <h2>Du design à la mise en ligne.</h2>
         </div>
-        {SERVICES.map((s) => (
-          <div key={s.no} className="svc">
+        {SERVICES.map((s, i) => (
+          <div key={s.no} className="svc reveal" style={{ transitionDelay: `${i * 70}ms` }}>
             <div className="no">{s.no}</div>
             <h3>{s.title}</h3>
             <p>{s.desc}</p>

@@ -23,7 +23,8 @@ const WORKS: Work[] = [
   { slug: "bl-paysages", name: "BL Paysages", tag: "Paysagiste · Création & entretien", url: "https://bl-paysages.julesdeschamps.dev" },
 ];
 
-function Card({ w }: { w: Work }) {
+function Card({ w, i }: { w: Work; i: number }) {
+  const delay = { transitionDelay: `${Math.min(i, 9) * 45}ms` };
   const media = (
     <div className="rcard-media">
       <Image src={`/img/realisations/${w.slug}.jpg`} alt={`Site web ${w.name}`} width={1280} height={800} />
@@ -41,14 +42,14 @@ function Card({ w }: { w: Work }) {
 
   if (w.url) {
     return (
-      <a className="rcard" href={w.url} target="_blank" rel="noopener noreferrer">
+      <a className="rcard reveal" style={delay} href={w.url} target="_blank" rel="noopener noreferrer">
         {media}
         {meta}
       </a>
     );
   }
   return (
-    <div className="rcard rcard--static">
+    <div className="rcard rcard--static reveal" style={delay}>
       {media}
       {meta}
     </div>
@@ -72,18 +73,23 @@ export function WorkSection() {
   return (
     <section id="work" className="sec">
       <div className="wrap">
-        <div className="shead">
+        <div className="shead reveal">
           <span className="lbl">Réalisations</span>
           <h2>Des sites qui leur ressemblent.</h2>
         </div>
 
         <div className="rgrid">
-          {WORKS.map((w) => (
-            <Card key={w.slug} w={w} />
+          {WORKS.map((w, i) => (
+            <Card key={w.slug} w={w} i={i} />
           ))}
 
           {/* Motion design — Asana (conservé) */}
-          <div className="rcard rcard--static" onMouseEnter={playAsana} onMouseLeave={pauseAsana}>
+          <div
+            className="rcard rcard--static reveal"
+            style={{ transitionDelay: `${Math.min(WORKS.length, 9) * 45}ms` }}
+            onMouseEnter={playAsana}
+            onMouseLeave={pauseAsana}
+          >
             <div className="rcard-media">
               <video ref={videoRef} src="/vid/asana.webm" muted loop playsInline preload="metadata" />
             </div>
@@ -97,7 +103,7 @@ export function WorkSection() {
           </div>
         </div>
 
-        <p className="work-note">
+        <p className="work-note reveal">
           Restaurants, artisans, indépendants, professions libérales… Chaque secteur, sa
           création. Les sites en ligne sont cliquables.
         </p>
