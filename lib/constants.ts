@@ -18,14 +18,6 @@ export const LAYOUT = {
   INTRO_MIN_HEIGHT: 600,
 } as const;
 
-// Configuration des animations
-export const ANIMATION = {
-  FADE_DURATION: 1.5,
-  EASING: "easeInOut" as const,
-  MODAL_SCALE_DURATION: 0.25,
-  MODAL_EXIT_DURATION: 0.2,
-} as const;
-
 // Messages et textes
 export const MESSAGES = {
   CONTACT_SUCCESS: "Message envoyé",

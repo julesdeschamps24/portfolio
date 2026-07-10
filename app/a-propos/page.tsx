@@ -1,31 +1,72 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "À propos de Moi",
-  description: "Découvrez le parcours de Jules Deschamps, développeur web formé à l'école 42. Passionné par la conception d'applications performantes.",
+  title: "À propos",
+  description:
+    "Jules Deschamps, studio web indépendant. Je conçois des sites sur-mesure pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.",
   alternates: {
-    canonical: '/a-propos',
+    canonical: "/a-propos",
   },
 };
 
 export default function AProposPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto flex max-w-4xl flex-col gap-12 px-6 py-20">
-        <header className="flex flex-col gap-4">
-          <p className="text-sm uppercase tracking-[0.2em] text-indigo-300">
-            À propos
-          </p>
-          <h1 className="text-4xl font-bold md:text-5xl">À propos de moi</h1>
+    <main className="studio">
+      <div className="wrap page">
+        <header className="page-head">
+          <div className="eyebrow">À propos</div>
+          <h1>
+            Un studio,
+            <br />
+            un seul <em className="s">interlocuteur</em>.
+          </h1>
         </header>
 
-        <div className="flex flex-col gap-6">
-          <p className="text-lg leading-7 text-zinc-300">
-            Je m&apos;appelle Jules Deschamps, formé au développement à l&apos;école 42, passionné par la compréhension approfondie des systèmes afin de concevoir des applications web fiables et bien structurées. Cette formation m&apos;a permis d&apos;acquérir rigueur, autonomie et sens du code propre, des valeurs appliquées dans chacun des projets réalisés.
+        <div className="prose">
+          <p className="lead-p">
+            Je m&apos;appelle Jules Deschamps. Je conçois et développe des sites web pour les
+            commerces, artisans et indépendants qui veulent une présence en ligne à la
+            hauteur de leur travail.
           </p>
-          
-          <p className="text-lg leading-7 text-zinc-300">
-            Mon apprentissage se base principalement sur la réalisation de projets concrets, favorisant une progression rapide et une adaptation efficace aux nouvelles technologies. Curieux et motivé, j&apos;apprécie relever de nouveaux défis techniques et faire évoluer ces compétences en continu.
+
+          <h2>Pourquoi les entreprises locales</h2>
+          <p>
+            Un artisan qui fait un travail remarquable mérite mieux qu&apos;une page qui
+            n&apos;en dit rien. Beaucoup d&apos;entreprises locales sont invisibles sur
+            Google, ou renvoient une image qui ne leur ressemble pas. C&apos;est exactement
+            là que je peux aider : rendre visible ce qui existe déjà, et le présenter avec
+            le soin qu&apos;il mérite.
+          </p>
+
+          <h2>Comment je travaille</h2>
+          <p>
+            <strong>Un seul interlocuteur, du premier échange à la mise en ligne.</strong>{" "}
+            On parle de votre métier, de vos clients, de votre secteur. Je dessine une
+            proposition qui vous est propre, puis je la développe. Pas de thème générique
+            recyclé : chaque site est conçu pour l&apos;entreprise qu&apos;il représente.
+          </p>
+          <p>
+            Ensuite, je reste là. Hébergement, mises à jour, petites modifications : la
+            technique reste de mon côté, pour que vous puissiez rester du vôtre.
+          </p>
+
+          <h2>D&apos;où je viens</h2>
+          <p>
+            J&apos;ai appris le développement à l&apos;<strong>école 42</strong>, une formation
+            exigeante fondée sur la pratique et l&apos;autonomie. Ce n&apos;est pas mon
+            argument de vente : c&apos;est simplement la garantie que la partie technique
+            de votre site est entre de bonnes mains, et que vous n&apos;aurez pas à vous
+            en soucier.
+          </p>
+
+          <h2>Parlons de votre projet</h2>
+          <p>
+            Vous avez une entreprise et pas encore de site, ou un site qui ne vous
+            ressemble plus ? Écrivez-moi à{" "}
+            <a href="mailto:contact@julesdeschamps.dev">contact@julesdeschamps.dev</a>, ou
+            passez par la <Link href="/#contact">page de contact</Link>. Je réponds avec
+            plaisir, sans engagement.
           </p>
         </div>
       </div>
