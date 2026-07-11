@@ -274,12 +274,16 @@
   .nav-burger { display: flex; }
   .mobile-menu.open { display: block; }
   .studio .wrap { padding: 0 22px; }
-  .studio .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
-  .studio .hero-portrait { max-width: 420px; }
+  .studio .hero-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 32px; }
   .studio .hero .meta { gap: 16px 22px; }
   .studio .rgrid { grid-template-columns: 1fr; }
   .studio .svc { grid-template-columns: 1fr; gap: 10px; }
   .studio .principes { grid-template-columns: 1fr 1fr; }
   .studio .form .row2 { grid-template-columns: 1fr; }
   .site-footer__inner { padding: 0 22px; }
+}
+
+@media (max-width: 760px) {
+  .studio .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .studio .hero-portrait { max-width: 380px; }
 }
