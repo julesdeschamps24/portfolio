@@ -9,7 +9,7 @@ durable et les règles à respecter dans toute session de travail.
 conçu comme un **outil commercial** : il doit donner envie à des commerces et artisans locaux
 de me confier la création de leur site.
 
-> **Nom de marque : « Studio — Jules Deschamps » partout.** L'ancien nom « Node4 » est
+> **Nom de marque : « Studio Jules Deschamps » partout.** L'ancien nom « Node4 » est
 > abandonné (y compris, à terme, dans les mentions légales).
 
 ### Cap actuel — on démarre la refonte
