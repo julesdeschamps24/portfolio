@@ -167,6 +167,83 @@ body.cta-reflet .cta:hover::after{transform:translateX(130%);}
 body.cta-refraction .cta{-webkit-backdrop-filter:url(#verre) blur(6px) saturate(160%);backdrop-filter:url(#verre) blur(6px) saturate(160%);}
 
 
+
+/* =====================================================================
+   F / H / I - CAPSULE DE VERRE SOUS LE LIEN SURVOLE (esprit iOS 26 :
+   dans ses barres de navigation, Apple pose une capsule de materiau
+   translucide derriere l'element actif). Le libelle passe au-dessus (i,
+   z-index 1), la capsule est en ::before.
+   NB : le verre a besoin de matiere derriere lui. Sur le creme il ne
+   floute rien et ne reste qu'une pastille pale.
+   ===================================================================== */
+body.opt-f .nl, body.opt-h .nl, body.opt-i .nl{padding:8px 14px;margin:-8px -14px;border-radius:999px;}
+body.opt-f .nl i, body.opt-h .nl i, body.opt-i .nl i{position:relative;z-index:1;}
+body.opt-f .nl::before, body.opt-h .nl::before, body.opt-i .nl::before{
+  content:"";position:absolute;inset:0;border-radius:999px;z-index:0;
+  opacity:0;transform:scale(.86);
+  transition:opacity .28s cubic-bezier(.3,1.3,.5,1),transform .28s cubic-bezier(.3,1.3,.5,1);
+  background:rgba(241,240,234,.14);
+  border:1px solid rgba(241,240,234,.30);
+  -webkit-backdrop-filter:blur(12px) saturate(180%);
+  backdrop-filter:blur(12px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,0,0,.16),0 4px 18px rgba(0,0,0,.20);
+}
+body.opt-f .strip.light .nl::before, body.opt-h .strip.light .nl::before, body.opt-i .strip.light .nl::before{
+  background:rgba(22,21,15,.05);border-color:rgba(22,21,15,.14);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 4px 14px rgba(22,21,15,.07);
+}
+body.opt-f .nl:hover::before, body.opt-h .nl:hover::before, body.opt-i .nl:hover::before{opacity:1;transform:scale(1);}
+body.opt-f .nl:hover, body.opt-h .nl:hover, body.opt-i .nl:hover{color:var(--text);}
+body.opt-f .strip.dark .nl:hover, body.opt-h .strip.dark .nl:hover, body.opt-i .strip.dark .nl:hover{color:var(--bg);}
+
+/* H : la capsule porte en plus un reflet speculaire qui la traverse */
+body.opt-h .nl{overflow:hidden;}
+body.opt-h .nl::after{content:"";position:absolute;inset:0;border-radius:999px;z-index:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 34%,rgba(255,255,255,.5) 50%,transparent 66%);
+  transform:translateX(-130%);transition:transform .6s cubic-bezier(.4,0,.2,1);}
+body.opt-h .nl:hover::after{transform:translateX(130%);}
+
+/* I : la capsule refracte reellement le fond (feTurbulence + feDisplacementMap
+   via backdrop-filter: url(), technique de l'ancien liquid-glass-button.tsx).
+   Uniquement supporte par Chromium. */
+body.opt-i .nl::before{-webkit-backdrop-filter:url(#verre) blur(5px) saturate(170%);backdrop-filter:url(#verre) blur(5px) saturate(170%);}
+
+
+/* =====================================================================
+   J - CAPSULE D'ENCRE DEPOLIE. Meme matiere que F (flou du fond,
+   saturation, lisere, reflet), mais teintee ENCRE au lieu de clair.
+   Raison mesuree : au-dessus du heros, le voile est deja tres sombre et
+   le libelle creme y tient 9.24:1. Une capsule CLAIRE eclaircit ce fond
+   et fait tomber le contraste a 3.36:1. Une capsule ENCRE le fonce
+   encore : le materiau est conserve, la lisibilite aussi.
+   Sur le creme, la capsule fonce oblige a inverser le libelle : on
+   retrouve le volet de k72.ca, mais en verre depoli.
+   ===================================================================== */
+body.opt-j .nl{padding:8px 14px;margin:-8px -14px;border-radius:999px;overflow:hidden;}
+body.opt-j .nl i{position:relative;z-index:1;transition:color .2s;}
+body.opt-j .nl::before{
+  content:"";position:absolute;inset:0;border-radius:999px;z-index:0;
+  opacity:0;transform:scale(.86);
+  transition:opacity .28s cubic-bezier(.3,1.3,.5,1),transform .28s cubic-bezier(.3,1.3,.5,1);
+  background:rgba(22,21,15,.55);
+  border:1px solid rgba(241,240,234,.22);
+  -webkit-backdrop-filter:blur(10px) saturate(140%);
+  backdrop-filter:blur(10px) saturate(140%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.3),0 4px 18px rgba(0,0,0,.28);
+}
+body.opt-j .nl::after{content:"";position:absolute;inset:0;border-radius:999px;z-index:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 36%,rgba(255,255,255,.28) 50%,transparent 64%);
+  transform:translateX(-130%);transition:transform .6s cubic-bezier(.4,0,.2,1);}
+body.opt-j .nl:hover::before{opacity:1;transform:scale(1);}
+body.opt-j .nl:hover::after{transform:translateX(130%);}
+body.opt-j .nl:hover i{color:var(--bg);}
+/* Sur le creme il n'y a rien derriere a flouter : le verre ne sert plus a rien,
+   et a .55 la capsule tombe dans un gris moyen ou RIEN ne passe (mesure : creme
+   dessus 3.88:1, encre dessus 4.13:1, seuil 4.5). On la rend donc quasi opaque :
+   la matiere se voit la ou il y a de quoi la voir, et degenere proprement en
+   aplat d'encre ailleurs. */
+body.opt-j .strip.light .nl::before{background:rgba(22,21,15,.92);border-color:rgba(22,21,15,.92);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 4px 16px rgba(22,21,15,.22);}
+
 /* barre de choix */
 .bar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:#0a0a08;border-top:1px solid #2a2a24;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 .bar .lab{color:#8f8b7e;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-right:6px;}
@@ -238,6 +315,10 @@ body.cta-refraction .cta{-webkit-backdrop-filter:url(#verre) blur(6px) saturate(
   <button data-o="c">C · Index chiffré</button>
   <button data-o="d">D · Trait qui traverse</button>
   <button data-o="e">E · Les autres reculent</button>
+  <button data-o="f">F · Capsule de verre</button>
+  <button data-o="h">H · Capsule + reflet</button>
+  <button data-o="i">I · Capsule + réfraction</button>
+  <button data-o="j">J · Capsule d'encre dépolie</button>
   <span class="hint">Survolez les liens pour comparer.</span>
   <div style="flex-basis:100%;height:0"></div>
   <span class="lab">CTA →</span>
@@ -256,6 +337,10 @@ const REFS = {
   d:   "<b>D · Le trait qui traverse</b> — relevé chez <b>quentinhocde.com</b> : le trait est un <code>background-image</code> en <code>background-size: 0% 1px</code> ancré à droite au repos, et seule la taille est animée (vérifié : <code>transition-property: background-size, 0.3s</code>). Résultat : il entre par la gauche et <b>ressort par la droite</b> au lieu de se rétracter. Même principe chez <b>exoape.com</b>. Sobre, c'est le raffinement de l'actuel plutôt que sa rupture.",
   e:   "<b>E · Les autres reculent</b> — <b>wadeandleta.com</b> groupe ses liens dans un <code>.hover-links</code> avec une transition d'opacité, sous <code>@media (hover: hover)</code>. Eux estompent le lien survolé ; ici l'inverse, plus intuitif : les voisins reculent, le survolé reste net. Effet de groupe, pas de décoration. Ne se déclenche pas au doigt.",
   g:   "<b>G · Le CTA plein</b> — <b>alt-web.fr</b> (ton métier) remplit son CTA d'un aplat au survol, texte inversé. Ne touche que « Me contacter » : se combine avec n'importe quelle option ci-dessus.",
+  f:   "<b>F · Capsule de verre</b> — une capsule de matériau translucide apparaît sous le lien survolé, dans l'esprit des barres de navigation d'iOS 26. Sur la photo du héros, le flou <b>unifie</b> le fond sous le mot. Sur le crème, il n'y a rien à flouter : il ne reste qu'une pastille pâle.",
+  h:   "<b>H · Capsule + reflet</b> — la même capsule, plus une bande de lumière qui la traverse (ce qu'Apple fait bouger avec l'inclinaison de l'appareil).",
+  i:   "<b>I · Capsule + réfraction</b> — la capsule déforme réellement le fond (<code>feTurbulence</code> + <code>feDisplacementMap</code> via <code>backdrop-filter: url()</code>), la technique de ton ancien composant liquid glass. <b>Chromium uniquement</b> : sur Safari, donc sur iPhone, il ne reste que le flou.",
+  j:   "<b>J · Capsule d'encre dépolie</b> — la même matière que F (flou du fond, saturation, liseré, reflet qui traverse) mais <b>teintée encre</b>. Mesuré : la capsule claire fait tomber le libellé à 3.36:1 parce qu'elle éclaircit un voile déjà sombre ; la capsule encre le fonce et préserve la lisibilité. Sur le crème, il n'y a rien à réfracter et un gris moyen ne passe ni avec un texte crème (3.88:1) ni avec un texte encre (4.13:1) : la capsule y devient quasi opaque et dégénère proprement en aplat d'encre (13.28:1). Le liquid glass là où il a de quoi exister, et rien de bancal ailleurs.",
   c:   "<b>C · Index chiffré</b> — un chiffre romain apparaît devant le libellé et le trait entre par la droite. Reprend les chiffres romains déjà utilisés dans la section Services. L'originalité vient de la structure, pas d'un effet."
 };
 let OPT = 'now', CTA = 'now';
@@ -303,7 +388,7 @@ function debrancherBrouillage() {
 }
 // #now / #a / #b / #c : selectionne l'option depuis l'URL (sert aux captures)
 const [ho, hc] = location.hash.replace('#', '').split('/');
-setOpt(['now', 'a', 'b', 'c', 'd', 'e'].includes(ho) ? ho : 'now');
+setOpt(['now', 'a', 'b', 'c', 'd', 'e', 'f', 'h', 'i', 'j'].includes(ho) ? ho : 'now');
 setCta(['now', 'plein', 'verre', 'reflet', 'refraction'].includes(hc) ? hc : 'now');
 </script>
 </body>
