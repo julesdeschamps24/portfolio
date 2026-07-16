@@ -31,15 +31,16 @@ const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://julesdeschamps.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Studio — Jules Deschamps · Création de sites web pour entreprises locales",
-    template: "%s · Studio — Jules Deschamps",
+    default: "Jules Deschamps · Créateur de sites internet pour entreprises locales",
+    template: "%s · Jules Deschamps",
   },
   description:
-    "Studio web indépendant. Je conçois et développe des sites soignés et sur-mesure pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.",
+    "Créateur de sites internet indépendant. Je conçois et développe des sites soignés et sur-mesure pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.",
   keywords: [
     "création site web",
     "site internet",
-    "studio web",
+    "créateur de sites internet",
+    "développeur web indépendant",
     "site vitrine",
     "commerce local",
     "artisan",
@@ -54,11 +55,11 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Studio — Jules Deschamps · Sites web pour entreprises locales",
+    title: "Jules Deschamps · Sites internet pour entreprises locales",
     description:
-      "Des sites web sur-mesure pour les commerces, artisans et indépendants. Soignés, rapides, pensés pour être trouvés localement.",
+      "Des sites internet sur-mesure pour les commerces, artisans et indépendants. Soignés, rapides, pensés pour être trouvés localement.",
     url: SITE_URL,
-    siteName: "Studio — Jules Deschamps",
+    siteName: "Jules Deschamps",
     locale: "fr_FR",
     type: "website",
   },
@@ -86,11 +87,11 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Studio — Jules Deschamps",
+    name: "Jules Deschamps",
     url: SITE_URL,
     image: `${SITE_URL}/img/favicon.ico`,
     description:
-      "Studio web indépendant : création de sites web sur-mesure pour les commerces, artisans et indépendants locaux.",
+      "Créateur de sites internet indépendant : création de sites sur-mesure pour les commerces, artisans et indépendants locaux.",
     email: "contact@julesdeschamps.dev",
     founder: {
       "@type": "Person",

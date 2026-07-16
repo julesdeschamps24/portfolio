@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Politique de confidentialité",
   description:
-    "Politique de confidentialité et gestion des données personnelles du site Studio — Jules Deschamps.",
+    "Politique de confidentialité et gestion des données personnelles du site Jules Deschamps.",
   alternates: {
     canonical: "/politique-confidentialite",
   },

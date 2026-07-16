@@ -20,7 +20,7 @@ export function ContactSection() {
             height={160}
           />
           <span>
-            Jules Deschamps — c&apos;est moi qui vous répond, sans engagement.
+            Jules Deschamps. C&apos;est moi qui vous répond, sans engagement.
           </span>
         </div>
 

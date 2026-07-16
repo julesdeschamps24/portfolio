@@ -7,7 +7,7 @@ const SERVICES = [
   {
     no: "02",
     title: "Site sur-mesure",
-    desc: "Conçu autour de votre métier — pas un thème générique recyclé pour tout le monde.",
+    desc: "Conçu autour de votre métier, pas un thème générique recyclé pour tout le monde.",
   },
   {
     no: "03",

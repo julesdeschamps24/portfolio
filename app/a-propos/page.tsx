@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "À propos",
   description:
-    "Jules Deschamps, studio web indépendant. Je conçois des sites sur-mesure pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.",
+    "Jules Deschamps, créateur de sites internet indépendant. Je conçois des sites sur-mesure pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.",
   alternates: {
     canonical: "/a-propos",
   },
@@ -17,7 +17,7 @@ export default function AProposPage() {
         <header className="page-head">
           <div className="eyebrow">À propos</div>
           <h1>
-            Un studio,
+            Un artisan du web,
             <br />
             un seul <em className="s">interlocuteur</em>.
           </h1>

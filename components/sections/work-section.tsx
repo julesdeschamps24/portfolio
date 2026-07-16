@@ -5,7 +5,7 @@ import Image from "next/image";
 
 type Work = { slug: string; name: string; tag: string; url?: string };
 
-// url présent = site en ligne (cliquable). Sans url = concept sectoriel (démo studio).
+// url présent = site en ligne (cliquable). Sans url = concept sectoriel (démo).
 const ROW_TOP: Work[] = [
   { slug: "dauffy-paysage", name: "Dauffy Paysage", tag: "Paysagiste · Issé (44)", url: "https://dauffy-paysage.julesdeschamps.dev" },
   { slug: "estelle-fonder", name: "Estelle Fonder", tag: "Psychologue · Albi", url: "https://estelle-fonder.julesdeschamps.dev" },
@@ -95,11 +95,11 @@ export function WorkSection() {
       <div className="wrap">
         <div className="work-foot reveal">
           <p className="work-note">
-            Sites en ligne pour de vraies entreprises — les cartes sont cliquables.
+            Sites en ligne pour de vraies entreprises. Les cartes sont cliquables.
             Survolez pour mettre en pause.
           </p>
 
-          {/* Motion design — Asana (conservé) */}
+          {/* Motion design : Asana (conservé) */}
           <div className="asana-card" onMouseEnter={playAsana} onMouseLeave={pauseAsana}>
             <video ref={videoRef} src="/vid/asana.webm" muted loop playsInline preload="metadata" />
             <div>

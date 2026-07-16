@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Mentions légales",
-  description: "Mentions légales du site Studio — Jules Deschamps.",
+  description: "Mentions légales du site Jules Deschamps.",
   alternates: {
     canonical: "/mentions-legales",
   },
@@ -21,7 +21,7 @@ export default function MentionsLegales() {
           <h2>1. Éditeur du site</h2>
           <p>
             Le présent site est édité par :<br />
-            <strong>Studio — Jules Deschamps</strong>
+            <strong>Jules Deschamps</strong>
             <br />
             Entrepreneur individuel (micro-entreprise)
             <br />

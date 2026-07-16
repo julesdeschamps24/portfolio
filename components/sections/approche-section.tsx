@@ -11,7 +11,7 @@ export function ApprocheSection() {
       <div className="wrap">
         <p className="big reveal">
           Pas de template recyclé. Chaque site est <em className="s">dessiné</em> autour de votre
-          métier, de vos clients et de votre quartier — pour qu&apos;il vous{" "}
+          métier, de vos clients et de votre quartier, pour qu&apos;il vous{" "}
           <em className="s">ressemble</em> vraiment.
         </p>
         <div className="principes">

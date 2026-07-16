@@ -39,7 +39,7 @@ export function MobileSection() {
 
         <p className="mobile-lead reveal">
           8 visiteurs sur 10 découvrent votre entreprise depuis leur téléphone.
-          Chaque site est conçu pour le mobile d&apos;abord — pas adapté après coup.
+          Chaque site est conçu pour le mobile d&apos;abord, pas adapté après coup.
         </p>
 
         <div className="phones">

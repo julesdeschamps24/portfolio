@@ -9,7 +9,7 @@ export function Footer() {
       <div className="site-footer__inner">
         <div className="site-footer__top">
           <div className="fb">
-            Studio — Jules Deschamps
+            Jules Deschamps
           </div>
 
           <div className="fcol">
@@ -38,7 +38,7 @@ export function Footer() {
         </div>
 
         <div className="site-footer__bottom">
-          <div>© {currentYear} Studio — Jules Deschamps. Tous droits réservés.</div>
+          <div>© {currentYear} Jules Deschamps. Tous droits réservés.</div>
           <div>Création de sites web pour entreprises locales</div>
         </div>
       </div>
