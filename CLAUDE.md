@@ -3,6 +3,11 @@
 Ce dépôt est le site vitrine du studio web de Jules Deschamps. Ce fichier donne le contexte
 durable et les règles à respecter dans toute session de travail.
 
+> **Style : lire `style.md` avant toute proposition visuelle.** C'est la référence
+> permanente du goût de Jules (références réelles validées, DA, anti-patterns).
+
+@style.md
+
 ## 1. Le projet & positionnement
 
 **« Studio — Jules Deschamps »** — un studio web. Ce dépôt est le **site vitrine du studio**,

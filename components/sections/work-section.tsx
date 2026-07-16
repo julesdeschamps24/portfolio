@@ -6,7 +6,7 @@ import Image from "next/image";
 type Work = { slug: string; name: string; tag: string; url?: string };
 
 // url présent = site en ligne (cliquable). Sans url = concept sectoriel (démo studio).
-const WORKS: Work[] = [
+const ROW_TOP: Work[] = [
   { slug: "dauffy-paysage", name: "Dauffy Paysage", tag: "Paysagiste · Issé (44)", url: "https://dauffy-paysage.julesdeschamps.dev" },
   { slug: "estelle-fonder", name: "Estelle Fonder", tag: "Psychologue · Albi", url: "https://estelle-fonder.julesdeschamps.dev" },
   { slug: "poelier-chauffagiste", name: "Atelier Braise", tag: "Poêlier · Périgueux (24)" },
@@ -14,6 +14,9 @@ const WORKS: Work[] = [
   { slug: "toilettage-canin", name: "Au Poil", tag: "Toilettage canin · Angoulême" },
   { slug: "avocat", name: "Camille Rivière", tag: "Avocat · Aix-en-Provence" },
   { slug: "bs-atout-vert", name: "BS Atout Vert", tag: "Paysagiste · Création & entretien", url: "https://bs-atout-vert.julesdeschamps.dev" },
+];
+
+const ROW_BOTTOM: Work[] = [
   { slug: "medecine-alternative", name: "Léa Roussel", tag: "Naturopathe · Bordeaux" },
   { slug: "grimpe-o-arbres", name: "Grimpe Ô Arbres", tag: "Élagage & grimpe", url: "https://grimpe-o-arbres.julesdeschamps.dev" },
   { slug: "brice-paysage", name: "Brice Paysage", tag: "Paysagiste · Création & entretien", url: "https://brice-paysage.julesdeschamps.dev" },
@@ -23,35 +26,40 @@ const WORKS: Work[] = [
   { slug: "bl-paysages", name: "BL Paysages", tag: "Paysagiste · Création & entretien", url: "https://bl-paysages.julesdeschamps.dev" },
 ];
 
-function Card({ w, i }: { w: Work; i: number }) {
-  const delay = { transitionDelay: `${Math.min(i, 9) * 45}ms` };
-  const media = (
-    <div className="rcard-media">
-      <Image src={`/img/realisations/${w.slug}.jpg`} alt={`Site web ${w.name}`} width={1280} height={800} />
-    </div>
-  );
-  const meta = (
-    <div className="rcard-meta">
-      <div>
-        <b>{w.name}</b>
-        <span className="tag">{w.tag}</span>
+function Card({ w }: { w: Work }) {
+  const inner = (
+    <>
+      <div className="wcard-media">
+        <Image src={`/img/realisations/${w.slug}.jpg`} alt={`Site web ${w.name}`} width={1280} height={800} />
       </div>
-      {w.url && <span className="rcard-go">Voir le site ↗</span>}
-    </div>
+      <div className="wcard-meta">
+        <div>
+          <b>{w.name}</b>
+          <span className="tag">{w.tag}</span>
+        </div>
+        {w.url && <span className="wcard-go">Voir ↗</span>}
+      </div>
+    </>
   );
-
   if (w.url) {
     return (
-      <a className="rcard reveal" style={delay} href={w.url} target="_blank" rel="noopener noreferrer">
-        {media}
-        {meta}
+      <a className="wcard" href={w.url} target="_blank" rel="noopener noreferrer">
+        {inner}
       </a>
     );
   }
+  return <div className="wcard wcard--static">{inner}</div>;
+}
+
+function Row({ works, dir }: { works: Work[]; dir: "right" | "left" }) {
+  // contenu doublé pour une boucle infinie sans couture
   return (
-    <div className="rcard rcard--static reveal" style={delay}>
-      {media}
-      {meta}
+    <div className={`wmq-row wmq-${dir}`}>
+      <div className="wmq-track">
+        {[...works, ...works].map((w, i) => (
+          <Card key={`${w.slug}-${i}`} w={w} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -77,36 +85,29 @@ export function WorkSection() {
           <span className="lbl">Réalisations</span>
           <h2>Des sites qui leur ressemblent.</h2>
         </div>
+      </div>
 
-        <div className="rgrid">
-          {WORKS.map((w, i) => (
-            <Card key={w.slug} w={w} i={i} />
-          ))}
+      <div className="wmq reveal">
+        <Row works={ROW_TOP} dir="right" />
+        <Row works={ROW_BOTTOM} dir="left" />
+      </div>
+
+      <div className="wrap">
+        <div className="work-foot reveal">
+          <p className="work-note">
+            Sites en ligne pour de vraies entreprises — les cartes sont cliquables.
+            Survolez pour mettre en pause.
+          </p>
 
           {/* Motion design — Asana (conservé) */}
-          <div
-            className="rcard rcard--static reveal"
-            style={{ transitionDelay: `${Math.min(WORKS.length, 9) * 45}ms` }}
-            onMouseEnter={playAsana}
-            onMouseLeave={pauseAsana}
-          >
-            <div className="rcard-media">
-              <video ref={videoRef} src="/vid/asana.webm" muted loop playsInline preload="metadata" />
-            </div>
-            <div className="rcard-meta">
-              <div>
-                <b>Asana</b>
-                <span className="tag">Motion design</span>
-              </div>
-              <span className="rcard-go">Survolez ▸</span>
+          <div className="asana-card" onMouseEnter={playAsana} onMouseLeave={pauseAsana}>
+            <video ref={videoRef} src="/vid/asana.webm" muted loop playsInline preload="metadata" />
+            <div>
+              <b>Asana</b>
+              <span>Motion design · survolez</span>
             </div>
           </div>
         </div>
-
-        <p className="work-note reveal">
-          Restaurants, artisans, indépendants, professions libérales… Chaque secteur, sa
-          création. Les sites en ligne sont cliquables.
-        </p>
       </div>
     </section>
   );
