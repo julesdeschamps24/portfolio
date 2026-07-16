@@ -1,29 +1,21 @@
 import Image from "next/image";
 
-type Phone = { slug: string; name: string };
+type Group = { name: string; home: string; contact: string };
 
-// 2 groupes de 2 téléphones superposés (pattern vanholtz.co/work/studiomega)
-const GROUPS: [Phone, Phone][] = [
-  [
-    { slug: "dauffy-paysage", name: "Dauffy Paysage" },
-    { slug: "laborde-services", name: "Laborde Services" },
-  ],
-  [
-    { slug: "estelle-fonder", name: "Estelle Fonder" },
-    { slug: "bs-atout-vert", name: "BS Atout Vert" },
-  ],
+// 2 groupes de 2 téléphones superposés (pattern vanholtz.co/work/studiomega).
+// Un groupe = UN site : son accueil devant, sa page contact derrière. Montrer le
+// formulaire de contact du même site prouve que le mobile est soigné jusqu'au
+// bout du parcours, pas seulement sur la page d'accueil.
+const GROUPS: Group[] = [
+  { name: "Au Poil", home: "au-poil", contact: "au-poil-contact" },
+  { name: "Dauffy Paysage", home: "dauffy-paysage", contact: "dauffy-paysage-contact" },
 ];
 
-function PhoneFrame({ p }: { p: Phone }) {
+function PhoneFrame({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="phone">
       <div className="phone-notch" />
-      <Image
-        src={`/img/mobile/${p.slug}.jpg`}
-        alt={`Version mobile du site ${p.name}`}
-        width={500}
-        height={1084}
-      />
+      <Image src={`/img/mobile/${src}.jpg`} alt={alt} width={500} height={1084} />
     </div>
   );
 }
@@ -43,15 +35,13 @@ export function MobileSection() {
         </p>
 
         <div className="phones">
-          {GROUPS.map(([a, b], gi) => (
-            <div className="phone-group reveal" style={{ transitionDelay: `${gi * 120}ms` }} key={gi}>
-              <PhoneFrame p={a} />
+          {GROUPS.map((g, gi) => (
+            <div className="phone-group reveal" style={{ transitionDelay: `${gi * 120}ms` }} key={g.home}>
+              <PhoneFrame src={g.home} alt={`Accueil du site ${g.name} sur téléphone`} />
               <div className="phone-back">
-                <PhoneFrame p={b} />
+                <PhoneFrame src={g.contact} alt={`Page de contact du site ${g.name} sur téléphone`} />
               </div>
-              <p className="phone-cap">
-                {a.name} · {b.name}
-              </p>
+              <p className="phone-cap">{g.name} · accueil &amp; contact</p>
             </div>
           ))}
         </div>
