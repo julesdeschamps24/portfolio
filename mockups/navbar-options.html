@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Navbar : survol et originalité</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#f1f0ea; --bg2:#e7e5dd; --text:#16150f; --soft:#57544a; --muted2:#666357; --line2:#d9d6cb; --acc:#16150f;
+  --disp:'Syne',sans-serif; --body:'Schibsted Grotesk',sans-serif; --serif:'Instrument Serif',serif;
+  --header-h:74px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:90px;}
+
+.note{max-width:900px;margin:0 auto;padding:34px 44px 0;}
+.note h1{font-family:var(--disp);font-size:26px;letter-spacing:-.02em;margin-bottom:8px;}
+.note p{color:var(--muted2);font-size:14.5px;}
+.note code{background:var(--bg2);padding:1px 6px;border-radius:4px;font-size:13px;}
+
+.demo{margin-top:30px;}
+.demo-lab{max-width:1280px;margin:0 auto;padding:0 44px 8px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);font-weight:600;}
+
+/* le bandeau sombre reproduit l'entete par-dessus le heros */
+.strip{position:relative;overflow:hidden;}
+.strip.dark{background:var(--text);}
+.strip.dark::before{content:"";position:absolute;inset:0;background:url('../public/img/hero-atelier.jpg') center/cover;filter:grayscale(1) contrast(1.05);}
+.strip.dark::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,21,15,.93),rgba(22,21,15,.80) 45%,rgba(22,21,15,.42));}
+.strip.light{background:var(--bg);border-bottom:1px solid var(--line2);}
+.hdr{position:relative;z-index:2;max-width:1280px;margin:0 auto;height:var(--header-h);padding:0 44px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:var(--disp);font-weight:800;font-size:18px;letter-spacing:-.02em;text-decoration:none;color:var(--text);}
+.strip.dark .brand{color:var(--bg);}
+.nav{display:flex;gap:30px;align-items:center;}
+.nl{font-size:14px;font-weight:500;text-decoration:none;color:var(--soft);position:relative;display:inline-block;}
+.strip.dark .nl{color:rgba(241,240,234,.78);}
+.cta{font-size:14px;font-weight:600;text-decoration:none;color:var(--text);border-bottom:1.5px solid var(--text);padding-bottom:2px;}
+.strip.dark .cta{color:var(--bg);border-bottom-color:var(--bg);}
+.nl i{font-style:normal;display:inline-block;}
+.lab{font-weight:inherit;}
+.num{position:relative;z-index:1;font-family:var(--disp);font-weight:700;font-size:11px;letter-spacing:.1em;color:var(--muted2);margin-right:8px;opacity:0;transition:opacity .25s,color .25s;}
+
+/* =====================================================================
+   ACTUEL : le trait qui grandit de gauche a droite.
+   Le survol le plus repandu du web. C'est ce qu'on a aujourd'hui.
+   ===================================================================== */
+body.opt-now .nl::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:1.5px;background:var(--acc);transition:width .25s;}
+body.opt-now .strip.dark .nl::after{background:var(--bg);}
+body.opt-now .nl:hover{color:var(--text);}
+body.opt-now .strip.dark .nl:hover{color:var(--bg);}
+body.opt-now .nl:hover::after{width:100%;}
+
+/* =====================================================================
+   A - VOLET D'ENCRE (ref. k72.ca, releve dans son CSS le 2026-07-16) :
+   .c-header_link::after est un bloc plein cache au-dessus
+   (transform: translate3d(0,-102%,0)) qui descend couvrir le lien au
+   survol, pendant que le texte s'inverse. Eux le font en vert lime ; ici
+   en encre, ce qui reste os & encre.
+   ===================================================================== */
+body.opt-a .nl{padding:7px 11px;margin:-7px -11px;overflow:hidden;}
+body.opt-a .nl i{position:relative;z-index:1;transition:color .15s;}
+body.opt-a .nl::after{content:"";position:absolute;inset:0;background:var(--text);transform:translate3d(0,-102%,0);transition:transform .18s cubic-bezier(.65,0,.2,1);z-index:0;}
+body.opt-a .strip.dark .nl::after{background:var(--bg);}
+body.opt-a .nl:hover::after{transform:translate3d(0,0,0);}
+body.opt-a .nl:hover i{color:var(--bg);}
+body.opt-a .strip.dark .nl:hover i{color:var(--text);}
+
+/* =====================================================================
+   B - LETTRES BROUILLEES (ref. locomotive.ca : leur marque porte un
+   attribut data-hover-shuffle, les lettres se melangent au survol puis
+   se reposent). Discret, dure ~0.4s, ne deplace rien.
+   ===================================================================== */
+body.opt-b .nl:hover{color:var(--text);}
+body.opt-b .strip.dark .nl:hover{color:var(--bg);}
+
+/* =====================================================================
+   C - INDEX CHIFFRE : un chiffre romain apparait devant le libelle et le
+   trait se pose sous le seul mot. Reprend les chiffres romains deja
+   utilises dans la section Services (cf. style.md : majuscules I II III).
+   L'originalite vient de la structure, pas d'un effet.
+   ===================================================================== */
+body.opt-c .num{opacity:.5;}
+body.opt-c .strip.dark .num{color:#b8b3a4;}
+body.opt-c .nl:hover .num{opacity:1;color:var(--text);}
+body.opt-c .strip.dark .nl:hover .num{color:var(--bg);}
+body.opt-c .nl::after{content:"";position:absolute;right:0;bottom:-5px;width:0;height:1px;background:var(--acc);transition:width .3s cubic-bezier(.65,0,.2,1);}
+body.opt-c .strip.dark .nl::after{background:var(--bg);}
+body.opt-c .nl:hover::after{width:100%;left:0;right:auto;}
+body.opt-c .nl:hover{color:var(--text);}
+body.opt-c .strip.dark .nl:hover{color:var(--bg);}
+
+/* barre de choix */
+.bar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:#0a0a08;border-top:1px solid #2a2a24;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.bar .lab{color:#8f8b7e;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-right:6px;}
+.bar button{background:#16150f;border:2px solid #2a2a24;color:#b8b3a4;border-radius:8px;padding:8px 15px;font-family:var(--body);font-size:13px;font-weight:600;cursor:pointer;}
+.bar button:hover{border-color:#6b675a;}
+.bar button.on{border-color:#f1f0ea;color:#f1f0ea;}
+.bar .hint{margin-left:auto;color:#6b675a;font-size:12px;}
+.ref{max-width:900px;margin:26px auto 0;padding:0 44px;font-size:13.5px;color:var(--muted2);}
+.ref b{color:var(--text);}
+</style>
+</head>
+<body class="opt-now">
+
+<div class="note">
+  <h1>Navbar : survol et originalité</h1>
+  <p>Chaque option est relevée dans le CSS d'un vrai site, pas inventée.
+     Survolez les liens des deux bandeaux : au-dessus du héros (sombre) et sur le reste du site (crème).</p>
+</div>
+
+<div class="demo">
+  <div class="demo-lab">Au-dessus du héros</div>
+  <div class="strip dark">
+    <div class="hdr">
+      <a class="brand" href="#">Jules Deschamps</a>
+      <nav class="nav">
+        <a class="nl" href="#"><i><span class="num">I</span><b class="lab">Réalisations</b></i></a>
+        <a class="nl" href="#"><i><span class="num">II</span><b class="lab">Services</b></i></a>
+        <a class="nl" href="#"><i><span class="num">III</span><b class="lab">Approche</b></i></a>
+        <a class="nl" href="#"><i><span class="num">IV</span><b class="lab">Contact</b></i></a>
+      </nav>
+      <a class="cta" href="#">Me contacter</a>
+    </div>
+  </div>
+</div>
+
+<div class="demo">
+  <div class="demo-lab">Sur le reste du site</div>
+  <div class="strip light">
+    <div class="hdr">
+      <a class="brand" href="#">Jules Deschamps</a>
+      <nav class="nav">
+        <a class="nl" href="#"><i><span class="num">I</span><b class="lab">Réalisations</b></i></a>
+        <a class="nl" href="#"><i><span class="num">II</span><b class="lab">Services</b></i></a>
+        <a class="nl" href="#"><i><span class="num">III</span><b class="lab">Approche</b></i></a>
+        <a class="nl" href="#"><i><span class="num">IV</span><b class="lab">Contact</b></i></a>
+      </nav>
+      <a class="cta" href="#">Me contacter</a>
+    </div>
+  </div>
+</div>
+
+<div class="ref" id="ref"></div>
+
+<div class="bar">
+  <span class="lab">Survol →</span>
+  <button data-o="now" class="on">Actuel</button>
+  <button data-o="a">A · Volet d'encre</button>
+  <button data-o="b">B · Lettres brouillées</button>
+  <button data-o="c">C · Index chiffré</button>
+  <span class="hint">Survolez les liens pour comparer.</span>
+</div>
+
+<script>
+const REFS = {
+  now: "<b>Actuel</b> — un trait de 1,5px qui grandit de gauche à droite. C'est le survol le plus répandu du web : correct, mais vu partout.",
+  a:   "<b>A · Volet d'encre</b> — relevé dans le CSS de <b>k72.ca</b> : un bloc plein, caché au-dessus du lien (<code>translate3d(0,-102%,0)</code>), descend le couvrir au survol pendant que le texte s'inverse. Eux le font en vert lime ; ici en encre, ce qui reste dans « os & encre ». Franc, net, aucun dégradé.",
+  b:   "<b>B · Lettres brouillées</b> — <b>locomotive.ca</b> pose un <code>data-hover-shuffle</code> sur sa marque : les lettres se mélangent puis se reposent. Dure 0,4s, ne déplace rien. Original, mais c'est un effet « de dev » : à voir s'il rassure un commerçant.",
+  c:   "<b>C · Index chiffré</b> — un chiffre romain apparaît devant le libellé et le trait entre par la droite. Reprend les chiffres romains déjà utilisés dans la section Services. L'originalité vient de la structure, pas d'un effet."
+};
+const setOpt = (o) => {
+  document.body.className = 'opt-' + o;
+  document.querySelectorAll('.bar button').forEach(b => b.classList.toggle('on', b.dataset.o === o));
+  document.getElementById('ref').innerHTML = REFS[o];
+  if (o === 'b') brancherBrouillage(); else debrancherBrouillage();
+};
+document.querySelectorAll('.bar button').forEach(b => { b.onclick = () => setOpt(b.dataset.o); });
+
+// --- B : brouillage des lettres (ref. locomotive.ca) ---
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const timers = new WeakMap();
+function brouiller(e) {
+  const el = e.currentTarget.querySelector('.lab');
+  const vrai = el.dataset.vrai || (el.dataset.vrai = el.textContent);
+  clearInterval(timers.get(el));
+  let tour = 0;
+  const t = setInterval(() => {
+    el.textContent = vrai.split('').map((c, i) => {
+      if (c === ' ') return ' ';
+      return i < tour / 2 ? vrai[i] : CHARS[Math.floor(Math.random() * CHARS.length)];
+    }).join('');
+    if (tour / 2 >= vrai.length) { clearInterval(t); el.textContent = vrai; }
+    tour++;
+  }, 28);
+  timers.set(el, t);
+}
+function brancherBrouillage() {
+  document.querySelectorAll('.nl').forEach(a => a.addEventListener('mouseenter', brouiller));
+}
+function debrancherBrouillage() {
+  document.querySelectorAll('.nl').forEach(a => {
+    a.removeEventListener('mouseenter', brouiller);
+    const i = a.querySelector('.lab');
+    if (i && i.dataset.vrai) i.textContent = i.dataset.vrai;
+  });
+}
+// #now / #a / #b / #c : selectionne l'option depuis l'URL (sert aux captures)
+const h = location.hash.replace('#', '');
+setOpt(['now', 'a', 'b', 'c'].includes(h) ? h : 'now');
+</script>
+</body>
+</html>
