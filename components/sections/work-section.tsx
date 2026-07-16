@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 type Work = { slug: string; name: string; tag: string; url?: string; video?: string };
@@ -17,7 +17,7 @@ const ROW_TOP: Work[] = [
 const ROW_BOTTOM: Work[] = [
   { slug: "medecine-alternative", name: "Léa Roussel", tag: "Naturopathe · Bordeaux" },
   { slug: "kerinou-bois", name: "Kerinou Bois", tag: "Paysagiste & bois", url: "https://kerinou-bois.julesdeschamps.dev" },
-  { slug: "asana", name: "Asana", tag: "Motion design · survolez", video: "/vid/asana.webm" },
+  { slug: "asana", name: "Asana", tag: "Motion design", video: "/vid/asana.webm" },
   { slug: "ab-paysage", name: "AB Paysage", tag: "Paysagiste · Création & entretien", url: "https://ab-paysage.julesdeschamps.dev" },
   { slug: "bl-paysages", name: "BL Paysages", tag: "Paysagiste · Création & entretien", url: "https://bl-paysages.julesdeschamps.dev" },
 ];
@@ -25,22 +25,34 @@ const ROW_BOTTOM: Work[] = [
 function Card({ w }: { w: Work }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const play = () => {
-    videoRef.current?.play().catch(() => {});
-  };
-  const stop = () => {
+  // La video tourne en boucle. C'est tenable parce qu'elle a ete re-encodee de
+  // 12 Mo (VP8 1913px) a 348 Ko (VP9 800px) : a l'ancien poids, 3 exemplaires en
+  // boucle auraient ete inacceptables.
+  // On pilote la lecture a l'entree dans le champ plutot que par l'attribut
+  // autoPlay : un simple play() au montage ne suffit pas, Chrome met en pause les
+  // videos hors ecran et ne les relance pas si la lecture a ete demandee a la
+  // main - la carte etant sous la ligne de flottaison, elle serait restee figee.
+  // Ca evite aussi de decoder en continu ce qui n'est pas regarde.
+  useEffect(() => {
     const v = videoRef.current;
-    if (v) {
-      v.pause();
-      v.currentTime = 0;
-    }
-  };
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
 
   const inner = (
     <>
       <div className="wcard-media">
         {w.video ? (
-          <video ref={videoRef} src={w.video} muted loop playsInline preload="metadata" />
+          <video ref={videoRef} src={w.video} muted loop playsInline preload="auto" />
         ) : (
           <Image src={`/img/realisations/${w.slug}.jpg`} alt={`Site web ${w.name}`} width={1280} height={800} />
         )}
@@ -62,15 +74,7 @@ function Card({ w }: { w: Work }) {
       </a>
     );
   }
-  return (
-    <div
-      className="wcard wcard--static"
-      onMouseEnter={w.video ? play : undefined}
-      onMouseLeave={w.video ? stop : undefined}
-    >
-      {inner}
-    </div>
-  );
+  return <div className="wcard wcard--static">{inner}</div>;
 }
 
 function Row({ works, dir }: { works: Work[]; dir: "right" | "left" }) {

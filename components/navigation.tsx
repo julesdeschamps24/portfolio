@@ -59,6 +59,17 @@ export function Navigation() {
     [],
   );
 
+  // La marque remonte en haut de page. On ne passe PAS par scrollToSection :
+  // le heros est en position:sticky, donc son offsetTop renvoie sa position
+  // visuelle courante (= le scroll actuel) et non sa place dans le flux, ce qui
+  // faisait calculer une cible egale a l'endroit ou on se trouve deja. Le heros
+  // etant le premier element du document, la cible est simplement 0.
+  const scrollToTop = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const handleScroll = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
       e.preventDefault();
@@ -122,7 +133,7 @@ export function Navigation() {
     <header className={`site-header${overHero ? " site-header--over" : ""}`}>
       <div className="site-header__inner">
         {isHomePage ? (
-          <a href="#accueil" onClick={(e) => handleScroll(e, "accueil")} className="brand">
+          <a href="#accueil" onClick={scrollToTop} className="brand">
             Jules Deschamps
           </a>
         ) : (
