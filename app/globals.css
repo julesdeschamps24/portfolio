@@ -77,7 +77,11 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  /* ===== DA « Os & encre » (réf. vanholtz.co) — aplat strict, jamais de dégradé ===== */
+  /* hauteur de l'entete : partagee avec le heros, qui remonte dessous d'autant.
+     Les deux doivent rester lies, sinon une ligne de fond apparait en haut de page. */
+  --header-h: 74px;
+
+  /* ===== DA « Os & encre » (réf. vanholtz.co) - aplat strict, jamais de dégradé ===== */
   --bg: #f1f0ea;
   --bg2: #e7e5dd;
   --text: #16150f;
@@ -115,9 +119,25 @@
   position: sticky; top: 0; z-index: 50;
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line2);
+  /* le filet est en box-shadow et non en border : une border ajouterait 1px a la
+     hauteur de flux de l'entete, et le heros (qui remonte de --header-h) laissait
+     alors passer une ligne de fond creme en haut de page. */
+  box-shadow: 0 1px 0 var(--line2);
+  transition: background .3s, box-shadow .3s, color .3s;
 }
-.site-header__inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 74px; padding: 0 44px; }
+/* Accueil, en haut de page : transparente au-dessus du héros sombre */
+.site-header--over {
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.site-header--over .brand { color: var(--bg); }
+.site-header--over .brand span { color: rgba(241,240,234,.6); }
+.site-header--over .nav-links a { color: rgba(241,240,234,.78); }
+.site-header--over .nav-links a:hover { color: var(--bg); }
+.site-header--over .nav-cta { color: var(--bg); border-bottom-color: var(--bg); }
+.site-header--over .nav-burger span { background: var(--bg); }
+.site-header__inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: var(--header-h); padding: 0 44px; }
 .brand { font-family: var(--font-disp); font-weight: 800; font-size: 18px; letter-spacing: -.02em; color: var(--text); text-decoration: none; }
 .brand b { font-weight: 800; }
 .brand span { color: var(--soft); font-weight: 600; }
@@ -147,8 +167,8 @@
 .studio .wrap { max-width: 1280px; margin: 0 auto; padding: 0 44px; }
 .studio h1, .studio h2, .studio h3 { font-family: var(--font-disp); font-weight: 800; letter-spacing: -.03em; line-height: .98; }
 .studio em.s { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: 0; color: var(--acc); }
-.studio .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--muted2); display: inline-flex; align-items: center; gap: 10px; }
-.studio .eyebrow::before { content: ""; width: 24px; height: 1.5px; background: var(--acc); }
+/* pas de tiret décoratif devant les eyebrows (retiré à la demande de Jules) */
+.studio .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--muted2); display: inline-block; }
 .studio .btn { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; padding: 14px 28px; border-radius: 999px; text-decoration: none; border: 1.5px solid var(--text); color: var(--text); background: transparent; cursor: pointer; transition: .2s; }
 .studio .btn:hover { background: var(--text); color: var(--bg); }
 .studio .btn .arrow { color: var(--acc); transition: transform .2s; }
@@ -157,14 +177,32 @@
 .studio .link::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 100%; height: 1.5px; background: var(--acc); transition: transform .25s; transform-origin: right; }
 .studio .link:hover::after { transform: scaleX(0); }
 
-/* --- Héros « B — Mot rotatif » (réf. viens-la.com, os & encre) — plein écran --- */
-.studio .hero { min-height: calc(100svh - 74px); display: flex; align-items: center; position: relative; padding: 40px 0 110px; border-bottom: 1px solid var(--line2); }
-.studio .hero > .wrap { width: 100%; }
+/* --- Héros « A » : photo plein cadre + mot rotatif (réf. exoape.com / k72.ca) ---
+   Le héros inverse la DA : fond encre, texte crème. Le reste du site reste os & encre. */
+/* le héros passe SOUS l'entête (qui est transparente au-dessus de lui) */
+.studio .hero { margin-top: calc(var(--header-h) * -1); min-height: 100svh; display: flex; align-items: center; position: relative; padding: 114px 0 110px; overflow: hidden; background: var(--text); color: var(--bg); }
+.studio .hero > .wrap { width: 100%; position: relative; z-index: 2; }
+.studio .hero-bg { position: absolute; inset: 0; z-index: 0; }
+.studio .hero-bg img { object-fit: cover; filter: grayscale(1) contrast(1.05); }
+/* voile : fort a gauche (sous le texte), leger a droite (la photo respire).
+   Le stop de droite est a .42 et non moins : en dessous, la fin du titre passe
+   sous le seuil AA du gros texte (3:1) sur les zones claires de la photo. */
+.studio .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(22,21,15,.93) 0%, rgba(22,21,15,.80) 45%, rgba(22,21,15,.42) 100%); }
+.studio .hero h1 { color: var(--bg); }
+.studio .hero .eyebrow { color: #b8b3a4; }
+.studio .hero .btn { border-color: var(--bg); color: var(--bg); }
+.studio .hero .btn:hover { background: var(--bg); color: var(--text); }
+.studio .hero .btn .arrow { color: var(--bg); }
+.studio .hero .btn:hover .arrow { color: var(--text); }
+.studio .hero .link { color: var(--bg); }
+.studio .hero .link::after { background: var(--bg); }
 .studio .hero-text > * { opacity: 0; animation: st-fadeup .8s cubic-bezier(.2,.7,.2,1) forwards; }
 .studio .hero .eyebrow { margin-bottom: 34px; }
 .studio .hero h1 { font-size: clamp(44px,8vw,122px); animation-delay: .06s; }
-.studio .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--line2); }
-.studio .hero-foot .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 16px; padding-bottom: 16px; font-size: 13px; color: var(--muted2); flex-wrap: wrap; }
+/* le pied traverse toute la largeur, donc jusque sur la partie claire de la photo :
+   il porte son propre aplat sombre, sinon son texte 13px tombe a 3:1 (AA exige 4.5). */
+.studio .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; border-top: 1px solid rgba(241,240,234,.22); background: rgba(22,21,15,.55); }
+.studio .hero-foot .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 16px; padding-bottom: 16px; font-size: 13px; color: #b8b3a4; flex-wrap: wrap; }
 .studio .hero-foot .scroll-cue { display: inline-flex; align-items: center; gap: 9px; }
 .studio .hero-foot .scroll-cue i { font-style: normal; display: inline-block; animation: cue-bounce 1.8s ease-in-out infinite; }
 @keyframes cue-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
@@ -172,8 +210,8 @@
 .studio .slot { display: inline-block; position: relative; vertical-align: bottom; overflow: hidden; height: 1.08em; }
 .studio .slot .reel { display: block; transition: transform .55s cubic-bezier(.65,0,.2,1); will-change: transform; }
 .studio .slot .reel span { display: block; height: 1.08em; font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: 0; }
-.studio .hero .brow { display: flex; gap: 14px; align-items: center; margin-top: 44px; color: var(--muted2); font-size: 13.5px; flex-wrap: wrap; animation-delay: .14s; }
-.studio .hero .brow span { border: 1px solid var(--line2); border-radius: 999px; padding: 7px 14px; }
+.studio .hero .brow { display: flex; gap: 14px; align-items: center; margin-top: 44px; font-size: 13.5px; flex-wrap: wrap; animation-delay: .14s; }
+.studio .hero .brow span { border: 1px solid rgba(241,240,234,.3); border-radius: 999px; padding: 7px 14px; color: #c5c0b0; }
 .studio .hero .btns { display: flex; gap: 24px; margin-top: 32px; align-items: center; flex-wrap: wrap; animation-delay: .2s; }
 
 .studio .sec { padding: 96px 0; }
@@ -301,6 +339,10 @@
   .mobile-menu.open { display: block; }
   .studio .wrap { padding: 0 22px; }
   .studio .hero h1 { font-size: clamp(36px,9vw,58px); }
+  /* le texte occupe toute la largeur : le voile passe en vertical (photo lisible en
+     haut, texte sur fond sombre en dessous). Le voile horizontal du desktop laissait
+     le titre et les boutons a 2.4-2.6:1, sous le seuil AA. */
+  .studio .hero-bg::after { background: linear-gradient(180deg, rgba(22,21,15,.42) 0%, rgba(22,21,15,.68) 28%, rgba(22,21,15,.92) 44%, rgba(22,21,15,.94) 100%); }
   .studio .svc { grid-template-columns: 1fr; gap: 10px; }
   .studio .principes { grid-template-columns: 1fr 1fr; }
   .studio .form .row2 { grid-template-columns: 1fr; }

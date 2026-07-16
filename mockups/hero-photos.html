@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Héros A — choix de la photo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#f1f0ea; --ink:#16150f; --disp:'Syne',sans-serif; --body:'Schibsted Grotesk',sans-serif; --serif:'Instrument Serif',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--body);background:#16150f;color:#f1f0ea;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:104px;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 44px;}
+h1{font-family:var(--disp);font-weight:800;letter-spacing:-.035em;line-height:1;}
+
+/* --- héros A --- */
+.hero{min-height:calc(100vh - 104px);display:flex;align-items:center;position:relative;overflow:hidden;background:#16150f;}
+.bgimg{position:absolute;inset:0;}
+.bgimg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);}
+.bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg, rgba(22,21,15,.93) 0%, rgba(22,21,15,.80) 45%, rgba(22,21,15,.34) 100%);}
+.hero .wrap{position:relative;z-index:2;}
+.kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#b8b3a4;margin-bottom:30px;}
+h1{font-size:clamp(44px,7.4vw,108px);color:#f1f0ea;}
+.slot{display:inline-block;position:relative;vertical-align:bottom;overflow:hidden;height:1.08em;}
+.slot .reel{display:block;transition:transform .55s cubic-bezier(.65,0,.2,1);}
+.slot .reel span{display:block;height:1.08em;font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;}
+.chips{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;}
+.chips span{border:1px solid rgba(241,240,234,.28);border-radius:999px;padding:7px 14px;font-size:13.5px;color:#c5c0b0;}
+.btns{display:flex;gap:22px;align-items:center;margin-top:32px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;border:1.5px solid #f1f0ea;color:#f1f0ea;transition:.2s;}
+.btn:hover{background:#f1f0ea;color:#16150f;}
+.link{font-weight:600;color:#f1f0ea;text-decoration:none;border-bottom:1.5px solid #f1f0ea;padding-bottom:2px;}
+.name{position:absolute;right:22px;bottom:16px;z-index:3;font-size:12px;color:rgba(241,240,234,.5);letter-spacing:.08em;text-transform:uppercase;}
+
+/* --- barre de choix --- */
+.pbar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:#0a0a08;border-top:1px solid #2a2a24;padding:10px 14px;display:flex;gap:9px;align-items:center;overflow-x:auto;}
+.pbar .lab{color:#8f8b7e;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-right:4px;white-space:nowrap;}
+.pchip{flex:none;width:96px;border:2px solid #2a2a24;border-radius:9px;overflow:hidden;cursor:pointer;transition:.15s;background:#16150f;}
+.pchip img{width:100%;height:52px;object-fit:cover;filter:grayscale(1);display:block;}
+.pchip b{display:block;font-size:9.5px;color:#b8b3a4;padding:4px 5px;text-align:center;font-weight:600;letter-spacing:.03em;}
+.pchip:hover{border-color:#6b675a;}
+.pchip.on{border-color:#f1f0ea;}
+.pchip.on b{color:#f1f0ea;}
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div class="bgimg"><img id="bg" src="./stock/atelier.jpg" alt=""></div>
+  <div class="wrap">
+    <div class="kicker">Studio web · Angoulême</div>
+    <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel" id="reel">
+      <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+    </span></span></h1>
+    <div class="chips"><span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span></div>
+    <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Un projet ? Écrivez-moi</a></div>
+  </div>
+  <span class="name" id="name">01 · Atelier (mains + outils)</span>
+</section>
+
+<div class="pbar" id="pbar"><span class="lab">Photo →</span></div>
+
+<script>
+const PHOTOS = [
+  { f: 'atelier',            n: '01 · Atelier (mains + outils)' },
+  { f: 'menuisier-chisel',   n: '02 · Ciseau à bois' },
+  { f: 'menuisier-scie',     n: '03 · Menuisier à la scie' },
+  { f: 'menuisier-ponce',    n: '04 · Ponçage' },
+  { f: 'atelier-chaise',     n: '05 · Atelier chaise' },
+  { f: 'potier',             n: '06 · Potier (mains, mouvement)' },
+  { f: 'taille-haie',        n: '07 · Taille-haie' },
+  { f: 'elagage-tronco',     n: '08 · Élagage tronçonneuse' },
+  { f: 'jardin',             n: '09 · Paysagiste au travail' },
+  { f: 'outils',             n: '10 · Outils de jardin' },
+  { f: 'mains-terre',        n: '11 · Mains dans l\'herbe' },
+  { f: 'fleuriste-devant',   n: '12 · Devanture fleuriste' },
+  { f: 'fleuriste-boutique', n: '13 · Boutique fleurs' },
+  { f: 'fleuriste-bouquet',  n: '14 · Composition bouquet' },
+];
+const bar = document.getElementById('pbar');
+const bg = document.getElementById('bg');
+const nm = document.getElementById('name');
+PHOTOS.forEach((p, i) => {
+  const c = document.createElement('div');
+  c.className = 'pchip' + (i === 0 ? ' on' : '');
+  c.innerHTML = `<img src="./stock/${p.f}.jpg" alt=""><b>${p.n.split(' · ')[0]}</b>`;
+  c.title = p.n;
+  c.onclick = () => {
+    bg.src = `./stock/${p.f}.jpg`;
+    nm.textContent = p.n;
+    document.querySelectorAll('.pchip').forEach(x => x.classList.remove('on'));
+    c.classList.add('on');
+  };
+  bar.appendChild(c);
+});
+
+const reel = document.getElementById('reel');
+let i = 0; const n = reel.children.length;
+setInterval(() => {
+  i++;
+  reel.style.transform = `translateY(${-i * 1.08}em)`;
+  if (i === n - 1) setTimeout(() => {
+    reel.style.transition = 'none';
+    reel.style.transform = 'translateY(0)';
+    i = 0;
+    requestAnimationFrame(() => requestAnimationFrame(() => reel.style.transition = ''));
+  }, 580);
+}, 2600);
+</script>
+</body>
+</html>

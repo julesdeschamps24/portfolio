@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Héros plus fournis — os &amp; encre</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#f1f0ea; --bg2:#e7e5dd; --ink:#16150f; --soft:#57544a; --muted:#666357; --line:#d9d6cb;
+  --disp:'Syne',sans-serif; --body:'Schibsted Grotesk',sans-serif; --serif:'Instrument Serif',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 44px;}
+h1{font-family:var(--disp);font-weight:800;letter-spacing:-.035em;line-height:1;}
+
+.switcher{position:sticky;top:0;z-index:100;display:flex;gap:8px;align-items:center;padding:10px 18px;background:#0d0d0d;border-bottom:1px solid #262626;flex-wrap:wrap;}
+.switcher b{color:#fff;font-size:12.5px;font-family:var(--disp);margin-right:8px;}
+.switcher a{color:#c9c9c9;text-decoration:none;font-size:12.5px;font-weight:500;padding:6px 13px;border-radius:999px;border:1px solid #383838;}
+.switcher a:hover{color:#fff;border-color:#888;}
+
+.hero{min-height:820px;display:flex;align-items:center;position:relative;border-bottom:1px solid var(--line);overflow:hidden;}
+.tagpill{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--bg);padding:7px 16px;border-radius:999px;font-weight:600;white-space:nowrap;z-index:50;}
+.tagpill i{font-style:normal;opacity:.6;}
+
+/* PAS de tiret décoratif (retiré à la demande de Jules) */
+.kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--muted);margin-bottom:30px;}
+.chips{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;}
+.chips span{border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13.5px;color:var(--muted);}
+.btns{display:flex;gap:22px;align-items:center;margin-top:32px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);transition:.2s;}
+.btn:hover{background:var(--ink);color:var(--bg);}
+.link{font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--ink);padding-bottom:2px;}
+.slot{display:inline-block;position:relative;vertical-align:bottom;overflow:hidden;height:1.08em;}
+.slot .reel{display:block;transition:transform .55s cubic-bezier(.65,0,.2,1);}
+.slot .reel span{display:block;height:1.08em;font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;}
+
+/* ---------- A : fond photo plein cadre (sombre) ---------- */
+#a{background:#16150f;}
+#a .bgimg{position:absolute;inset:0;}
+#a .bgimg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);}
+#a .bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg, rgba(22,21,15,.92) 0%, rgba(22,21,15,.78) 45%, rgba(22,21,15,.35) 100%);}
+#a .wrap{position:relative;z-index:2;}
+#a h1{font-size:clamp(44px,7.4vw,108px);color:#f1f0ea;}
+#a .kicker{color:#b8b3a4;}
+#a .chips span{border-color:rgba(241,240,234,.28);color:#c5c0b0;}
+#a .btn{border-color:#f1f0ea;color:#f1f0ea;}
+#a .btn:hover{background:#f1f0ea;color:#16150f;}
+#a .link{color:#f1f0ea;border-color:#f1f0ea;}
+#a .credit{position:absolute;right:20px;bottom:14px;z-index:3;font-size:11px;color:rgba(241,240,234,.45);}
+
+/* ---------- B : split texte / photo ---------- */
+#b{padding:0;}
+#b .split{display:grid;grid-template-columns:1.04fr .96fr;width:100%;min-height:820px;}
+#b .left{display:flex;flex-direction:column;justify-content:center;padding:80px 50px 80px clamp(24px,6vw,90px);}
+#b h1{font-size:clamp(38px,4.4vw,66px);}
+#b .right{position:relative;overflow:hidden;background:var(--bg2);}
+#b .right img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);}
+#b .right::after{content:"";position:absolute;inset:0;background:rgba(241,240,234,.12);}
+
+/* ---------- C : photo en bandeau bas ---------- */
+#c{flex-direction:column;justify-content:center;align-items:stretch;padding-top:90px;}
+#c h1{font-size:clamp(42px,6.4vw,96px);}
+#c .strip{margin-top:auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:0;height:280px;border-top:1px solid var(--line);}
+#c .strip figure{position:relative;overflow:hidden;border-right:1px solid var(--line);}
+#c .strip img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);}
+#c .strip figcaption{position:absolute;left:12px;bottom:10px;background:var(--bg);border:1px solid var(--line);font-size:11px;font-weight:600;padding:5px 11px;border-radius:999px;}
+
+/* ---------- D : photo estompée en fond (os & encre préservé) ---------- */
+#d .bgimg{position:absolute;inset:0;}
+#d .bgimg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15) brightness(1.15);opacity:.14;mix-blend-mode:multiply;}
+#d .bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, var(--bg) 0%, rgba(241,240,234,.35) 50%, var(--bg) 100%);}
+#d .wrap{position:relative;z-index:2;}
+#d h1{font-size:clamp(44px,7.6vw,112px);}
+
+/* ---------- E : vraies réalisations (zéro stock) ---------- */
+#e .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;width:100%;}
+#e h1{font-size:clamp(38px,4.5vw,68px);}
+#e .mosaic{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+#e .mosaic a{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:block;background:var(--bg2);position:relative;}
+#e .mosaic img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;display:block;}
+#e .mosaic .cap{position:absolute;left:8px;bottom:8px;background:var(--bg);border:1px solid var(--line);font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:999px;}
+#e .mosaic a:nth-child(1){grid-column:1 / -1;}
+
+@media(max-width:900px){
+  .wrap{padding:0 22px;}
+  .hero{min-height:auto;padding:80px 0;}
+  #b .split{grid-template-columns:1fr;min-height:auto;}
+  #b .right{height:340px;}
+  #c .strip{grid-template-columns:1fr;height:auto;}
+  #c .strip figure{height:200px;}
+  #e .grid{grid-template-columns:1fr;gap:36px;}
+}
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <b>5 héros fournis · os &amp; encre</b>
+  <a href="#a">A · Photo plein cadre</a>
+  <a href="#b">B · Split photo</a>
+  <a href="#c">C · Bandeau bas</a>
+  <a href="#d">D · Photo estompée</a>
+  <a href="#e">E · Vraies réalisations</a>
+</div>
+
+<!-- A -->
+<section class="hero" id="a">
+  <span class="tagpill">A — Photo plein cadre <i>· réf. exoape.com / k72.ca</i></span>
+  <div class="bgimg"><img src="./stock/atelier.jpg" alt=""></div>
+  <div class="wrap">
+    <div class="kicker">Studio web · Angoulême</div>
+    <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel r">
+      <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+    </span></span></h1>
+    <div class="chips"><span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span></div>
+    <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Un projet ? Écrivez-moi</a></div>
+  </div>
+  <span class="credit">photo stock · Unsplash</span>
+</section>
+
+<!-- B -->
+<section class="hero" id="b">
+  <span class="tagpill">B — Split photo <i>· réf. alt-web.fr</i></span>
+  <div class="split">
+    <div class="left">
+      <div class="kicker">Studio web · Angoulême</div>
+      <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel r">
+        <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+      </span></span></h1>
+      <div class="chips"><span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span></div>
+      <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Écrivez-moi</a></div>
+    </div>
+    <div class="right"><img src="./stock/atelier.jpg" alt=""></div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="hero" id="c">
+  <span class="tagpill">C — Bandeau bas <i>· mix stock + vraies réalisations</i></span>
+  <div class="wrap">
+    <div class="kicker">Studio web · Angoulême</div>
+    <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel r">
+      <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+    </span></span></h1>
+    <div class="chips"><span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span></div>
+    <div class="btns" style="margin-bottom:56px;"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Écrivez-moi</a></div>
+  </div>
+  <div class="strip">
+    <figure><img src="./stock/atelier.jpg" alt=""><figcaption>L'atelier</figcaption></figure>
+    <figure><img src="../public/img/realisations/dauffy-paysage.jpg" alt=""><figcaption>Dauffy Paysage</figcaption></figure>
+    <figure><img src="../public/img/realisations/estelle-fonder.jpg" alt=""><figcaption>Estelle Fonder</figcaption></figure>
+  </div>
+</section>
+
+<!-- D -->
+<section class="hero" id="d">
+  <span class="tagpill">D — Photo estompée <i>· la photo devient une texture, os &amp; encre intact</i></span>
+  <div class="bgimg"><img src="./stock/atelier.jpg" alt=""></div>
+  <div class="wrap">
+    <div class="kicker">Studio web · Angoulême</div>
+    <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel r">
+      <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+    </span></span></h1>
+    <div class="chips"><span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span></div>
+    <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Un projet ? Écrivez-moi</a></div>
+  </div>
+</section>
+
+<!-- E -->
+<section class="hero" id="e">
+  <span class="tagpill">E — Vraies réalisations <i>· zéro stock · réf. vanholtz.co</i></span>
+  <div class="wrap grid">
+    <div>
+      <div class="kicker">Studio web · Angoulême</div>
+      <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel r">
+        <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+      </span></span></h1>
+      <div class="chips"><span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span></div>
+      <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Écrivez-moi</a></div>
+    </div>
+    <div class="mosaic">
+      <a href="#"><img src="../public/img/realisations/dauffy-paysage.jpg" alt=""><span class="cap">Dauffy Paysage</span></a>
+      <a href="#"><img src="../public/img/realisations/estelle-fonder.jpg" alt=""><span class="cap">Estelle Fonder</span></a>
+      <a href="#"><img src="../public/img/realisations/poelier-chauffagiste.jpg" alt=""><span class="cap">Atelier Braise</span></a>
+    </div>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.reel.r').forEach(reel => {
+  let i = 0; const n = reel.children.length;
+  setInterval(() => {
+    i++;
+    reel.style.transform = `translateY(${-i * 1.08}em)`;
+    if (i === n - 1) setTimeout(() => {
+      reel.style.transition = 'none';
+      reel.style.transform = 'translateY(0)';
+      i = 0;
+      requestAnimationFrame(() => requestAnimationFrame(() => reel.style.transition = ''));
+    }, 580);
+  }, 2600);
+});
+</script>
+</body>
+</html>

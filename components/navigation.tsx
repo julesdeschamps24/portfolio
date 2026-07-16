@@ -10,6 +10,19 @@ export function Navigation() {
   const router = useRouter();
   const isHomePage = pathname === "/";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Sur l'accueil, l'entête est transparente au-dessus du héros sombre,
+  // puis reprend le fond crème dès qu'on scrolle.
+  useEffect(() => {
+    if (!isHomePage) return;
+    const onScroll = () => setIsScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHomePage]);
+
+  const overHero = isHomePage && !isScrolled && !isMobileMenuOpen;
 
   const scrollToSection = useCallback(
     (targetId: string, smooth = true, retries = 3) => {
@@ -106,15 +119,15 @@ export function Navigation() {
   }, [isMobileMenuOpen]);
 
   return (
-    <header className="site-header">
+    <header className={`site-header${overHero ? " site-header--over" : ""}`}>
       <div className="site-header__inner">
         {isHomePage ? (
           <a href="#accueil" onClick={(e) => handleScroll(e, "accueil")} className="brand">
-            Studio<span> — Jules Deschamps</span>
+            Jules Deschamps<span> Créateur de sites</span>
           </a>
         ) : (
           <Link href="/" className="brand">
-            Studio<span> — Jules Deschamps</span>
+            Jules Deschamps<span> Créateur de sites</span>
           </Link>
         )}
 

@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 const WORDS = ["paysagistes.", "praticiens.", "artisans.", "commerçants.", "indépendants."];
-const STEP_MS = 2100;
+// cadence de la maquette validee (mockups/hero-photos.html) : plus lent = plus calme
+const STEP_MS = 2600;
 const ROLL_MS = 550;
 
 export function HeroSection() {
@@ -47,8 +49,12 @@ export function HeroSection() {
 
   return (
     <section id="accueil" className="hero">
+      <div className="hero-bg">
+        <Image src="/img/hero-atelier.jpg" alt="" fill priority sizes="100vw" />
+      </div>
+
       <div className="wrap hero-text">
-        <div className="eyebrow">Studio web · Angoulême</div>
+        <div className="eyebrow">Créateur de sites internet · Angoulême</div>
         <h1>
           Des sites sur-mesure
           <br />
