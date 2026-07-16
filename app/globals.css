@@ -237,7 +237,7 @@
 .studio .principe p { font-size: 14px; color: var(--muted2); line-height: 1.5; }
 
 .studio .contact { text-align: center; padding: 110px 0; }
-.studio .contact-bubble { display: inline-flex; align-items: center; gap: 14px; margin-top: 30px; border: 1px solid var(--line2); border-radius: 999px; padding: 8px 22px 8px 8px; background: var(--bg); }
+.studio .contact-bubble { display: flex; width: fit-content; max-width: 100%; align-items: center; gap: 14px; margin: 34px auto 0; border: 1px solid var(--line2); border-radius: 999px; padding: 8px 22px 8px 8px; background: var(--bg); }
 .studio .contact-bubble img { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; display: block; }
 .studio .contact-bubble span { font-size: 14px; color: var(--soft); text-align: left; }
 .studio .contact .eyebrow { justify-content: center; }

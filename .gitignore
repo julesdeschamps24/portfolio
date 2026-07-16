@@ -45,3 +45,6 @@ next-env.d.ts
 
 # essais vidéo hors site (non déployés)
 public/vid/hero-candidates/
+
+# photo source (originale, non servie par le site)
+assets-src/

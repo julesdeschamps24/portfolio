@@ -17,7 +17,7 @@ export function ContactSection() {
             src="/img/jules.jpg"
             alt="Jules Deschamps"
             width={160}
-            height={200}
+            height={160}
           />
           <span>
             Jules Deschamps — c&apos;est moi qui vous répond, sans engagement.
