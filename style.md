@@ -54,6 +54,18 @@ Montrer la référence réelle AVANT de coder.
   d'en dessous s'affichait dans le héros ») : `min-height: 100svh`,
   contenu centré verticalement, filet + scroll-cue (« ↓ Défiler ») en pied de héros.
   Titre à l'échelle clamp(44px, 8vw, 122px) : il doit attirer l'œil.
+- **Jointure héros → suite : « Révélation »** (décision 2026-07-16, maquette
+  `mockups/seam-options.html` option F, réf. dennissnellenberg.com). La coupe
+  franche photo → crème était jugée trop brutale (« passer d'une photo à un fond
+  sans rien »). Le héros est en `position: sticky; top: 0; z-index: 0` et le
+  contenu glisse par-dessus. **Conséquence à ne pas casser** : toute section de
+  la home doit rester **opaque et `z-index: 2`**, sinon le héros transparaît
+  dessous ; et la règle de fond doit rester **avant** `.studio .band`, qui gagne
+  son `--bg2` par l'ordre source. Neutralisé sous `prefers-reduced-motion`.
+  La référence utilise un scroll virtuel (lib) : refusé, ça coûte en perf et en
+  accessibilité, deux choses que l'offre vend. `position: sticky` suffit.
+- **Changer la palette ne règle pas un problème de jointure** : la coupe serait
+  la même en d'autres teintes. Ne pas repartir sur une refonte de couleurs pour ça.
 - Contraste AA obligatoire : `--muted2:#666357` (pas plus clair), placeholders de
   formulaire en `--soft`, erreurs de formulaire en `#8c2f24` sur `rgba(180,60,50,.12)`.
 - **Voile du héros : ne jamais l'alléger sans remesurer.** Le texte crème sur photo

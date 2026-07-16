@@ -180,7 +180,15 @@
 /* --- Héros « A » : photo plein cadre + mot rotatif (réf. exoape.com / k72.ca) ---
    Le héros inverse la DA : fond encre, texte crème. Le reste du site reste os & encre. */
 /* le héros passe SOUS l'entête (qui est transparente au-dessus de lui) */
-.studio .hero { margin-top: calc(var(--header-h) * -1); min-height: 100svh; display: flex; align-items: center; position: relative; padding: 114px 0 110px; overflow: hidden; background: var(--text); color: var(--bg); }
+/* « Revelation » (choix 2026-07-16, maquette mockups/seam-options.html option F,
+   ref. dennissnellenberg.com) : le heros reste epingle et le contenu glisse
+   par-dessus, au lieu de la coupe franche photo -> creme jugee trop brutale.
+   La reference le fait avec un scroll virtuel ; ici position:sticky suffit, sans
+   lib, sans cout de performance ni casse de l'accessibilite. */
+.studio .hero { margin-top: calc(var(--header-h) * -1); min-height: 100svh; display: flex; align-items: center; position: sticky; top: 0; z-index: 0; padding: 114px 0 110px; overflow: hidden; background: var(--text); color: var(--bg); }
+/* l'effet est une revelation au defilement : on le neutralise si l'utilisateur
+   demande moins d'animation, le heros defile alors normalement. */
+@media (prefers-reduced-motion: reduce) { .studio .hero { position: relative; } }
 .studio .hero > .wrap { width: 100%; position: relative; z-index: 2; }
 .studio .hero-bg { position: absolute; inset: 0; z-index: 0; }
 .studio .hero-bg img { object-fit: cover; filter: grayscale(1) contrast(1.05); }
@@ -214,6 +222,12 @@
 .studio .hero .brow span { border: 1px solid rgba(241,240,234,.3); border-radius: 999px; padding: 7px 14px; color: #c5c0b0; }
 .studio .hero .btns { display: flex; gap: 24px; margin-top: 32px; align-items: center; flex-wrap: wrap; animation-delay: .2s; }
 
+/* Revelation : le heros reste epingle et le contenu glisse par-dessus (cf. le
+   bloc .hero). Les sections doivent donc etre OPAQUES et au-dessus de lui, sinon
+   il transparait dessous. Ces regles restent avant .band, qui doit continuer a
+   gagner son --bg2 par l'ordre source. */
+.studio .sec,
+.studio .contact { position: relative; z-index: 2; background: var(--bg); }
 .studio .sec { padding: 96px 0; }
 .studio .band { background: var(--bg2); }
 .studio .shead { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid var(--line2); padding-bottom: 20px; }
