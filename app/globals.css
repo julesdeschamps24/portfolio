@@ -268,9 +268,21 @@
 .studio .mobile-lead { max-width: 520px; font-size: 17px; color: var(--soft); line-height: 1.6; margin-top: 30px; }
 .studio .phones { display: flex; gap: clamp(40px, 8vw, 120px); justify-content: center; margin-top: 64px; flex-wrap: wrap; }
 .studio .phone-group { position: relative; width: min(400px, 82vw); padding-bottom: 27%; }
-.studio .phone { width: 62%; border-radius: 34px; overflow: hidden; background: #16150f; border: 1px solid var(--line2); box-shadow: 0 30px 70px -30px rgba(22, 21, 15, .45); position: relative; padding: 10px; }
-.studio .phone img { width: 100%; height: auto; display: block; border-radius: 24px; }
-.studio .phone-notch { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 26%; height: 15px; border-radius: 999px; background: #16150f; z-index: 2; }
+/* Cadre telephone : le RATIO D'ECRAN d'un iPhone (393x852), coque comprise.
+   Avant, la capture faisait tout l'ecran et la coque s'ajoutait par-dessus :
+   l'ensemble depassait donc le format d'un vrai telephone. Maintenant les
+   captures ne couvrent que la zone de CONTENU (393x764) et le cadre rend les
+   deux bandes qui manquaient : barre d'etat (54/852 = 6.34%) et indicateur
+   d'accueil (34/852 = 3.99%). Les % sont lies a ces mesures, ne pas les bouger
+   sans refaire les captures a la hauteur correspondante. */
+.studio .phone { width: 62%; aspect-ratio: 393 / 852; border-radius: 13% / 6%; background: #16150f; border: 1px solid var(--line2); box-shadow: 0 30px 70px -30px rgba(22, 21, 15, .45); position: relative; padding: 2.4%; display: flex; }
+.studio .phone-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; border-radius: 10% / 4.6%; overflow: hidden; background: var(--phone-ui, #fff); }
+.studio .phone-status { flex: none; height: 6.34%; background: var(--phone-ui, #fff); position: relative; }
+.studio .phone-status::after { content: ""; position: absolute; left: 50%; top: 24%; transform: translateX(-50%); width: 30%; height: 48%; border-radius: 999px; background: #16150f; }
+.studio .phone-media { flex: 1; min-height: 0; position: relative; }
+.studio .phone-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.studio .phone-home { flex: none; height: 3.99%; background: var(--bg); position: relative; }
+.studio .phone-home::after { content: ""; position: absolute; left: 50%; bottom: 30%; transform: translateX(-50%); width: 36%; height: 3px; border-radius: 999px; background: rgba(22, 21, 15, .7); }
 .studio .phone-back { position: absolute; right: 0; top: 14%; width: 62%; z-index: 2; }
 .studio .phone-back .phone { width: 100%; }
 .studio .phone-cap { position: absolute; bottom: 0; left: 0; font-size: 13.5px; color: var(--muted2); display: flex; align-items: center; gap: 9px; }
