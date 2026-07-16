@@ -22,7 +22,19 @@ export default function PolitiqueConfidentialite() {
         </header>
 
         <div className="prose">
-          <h2>1. Collecte des données</h2>
+          <h2>1. Responsable du traitement</h2>
+          <p>
+            Le responsable du traitement des données collectées sur ce site est :<br />
+            <strong>Jules Deschamps</strong>
+            <br />
+            Entrepreneur individuel (micro-entreprise). SIRET : 994 400 232 00017
+            <br />
+            38 rue des Lilas, 16800 Soyaux, France
+            <br />
+            Email : <a href="mailto:contact@julesdeschamps.dev">contact@julesdeschamps.dev</a>
+          </p>
+
+          <h2>2. Collecte des données</h2>
           <p>
             Dans le cadre de l&apos;utilisation du site, nous sommes amenés à collecter les
             données personnelles suivantes :
@@ -38,7 +50,7 @@ export default function PolitiqueConfidentialite() {
             </li>
           </ul>
 
-          <h2>2. Finalités du traitement</h2>
+          <h2>3. Finalités du traitement</h2>
           <p>Vos données sont collectées pour les finalités suivantes :</p>
           <ul>
             <li>
@@ -49,7 +61,7 @@ export default function PolitiqueConfidentialite() {
             <li>Sécurité du site (base légale : intérêt légitime).</li>
           </ul>
 
-          <h2>3. Durée de conservation</h2>
+          <h2>4. Durée de conservation</h2>
           <ul>
             <li>
               <strong>Données de contact :</strong> 3 ans après le dernier contact.
@@ -59,7 +71,7 @@ export default function PolitiqueConfidentialite() {
             </li>
           </ul>
 
-          <h2>4. Destinataires des données</h2>
+          <h2>5. Destinataires des données</h2>
           <p>
             Les données sont destinées à l&apos;éditeur du site. Elles peuvent être
             transmises à nos sous-traitants techniques :
@@ -75,7 +87,7 @@ export default function PolitiqueConfidentialite() {
             </li>
           </ul>
 
-          <h2>5. Vos droits (RGPD)</h2>
+          <h2>6. Vos droits (RGPD)</h2>
           <p>
             Conformément au Règlement général sur la protection des données (RGPD), vous
             disposez des droits suivants :
@@ -95,7 +107,7 @@ export default function PolitiqueConfidentialite() {
             (<a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>).
           </p>
 
-          <h2>6. Cookies</h2>
+          <h2>7. Cookies</h2>
           <p>
             Vous pouvez à tout moment modifier vos préférences en matière de cookies via le
             bandeau de gestion disponible sur le site, ou en paramétrant votre navigateur.
