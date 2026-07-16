@@ -38,7 +38,11 @@ un commerçant s'en moque.
 ### Cibles
 - **Artisans / BTP** : plombiers, électriciens, menuisiers, paysagistes…
 - **Commerces & indépendants** : boutiques, coachs, photographes, thérapeutes…
-- **Zone** : France entière / francophone.
+- **Zone** : France entière / francophone. **Ne jamais ancrer la marque à une ville**
+  (décision 2026-07-16) : Jules va beaucoup bouger et ne veut pas être associé à
+  Angoulême. Pas de ville dans le héros, l'entête, les titres ou les descriptions ;
+  on dit « sites livrés partout en France ». Les villes des **clients** dans les
+  réalisations sont une autre affaire, elles restent.
 
 ### Offre & approche commerciale - VITRINE SOBRE (arbitré le 2026-06-27)
 Offre de fond : maquette **gratuite** → visio → prestation **one-shot** ; **indexation Google +

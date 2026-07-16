@@ -54,7 +54,7 @@ export function HeroSection() {
       </div>
 
       <div className="wrap hero-text">
-        <div className="eyebrow">Créateur de sites internet · Angoulême</div>
+        <div className="eyebrow">Créateur de sites internet</div>
         <h1>
           Des sites sur-mesure
           <br />
@@ -88,7 +88,7 @@ export function HeroSection() {
           <span className="scroll-cue">
             <i>↓</i> Défiler pour voir le travail
           </span>
-          <span>Angoulême · sites livrés partout en France</span>
+          <span>Sites livrés partout en France</span>
         </div>
       </div>
     </section>

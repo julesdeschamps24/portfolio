@@ -123,11 +123,11 @@ export function Navigation() {
       <div className="site-header__inner">
         {isHomePage ? (
           <a href="#accueil" onClick={(e) => handleScroll(e, "accueil")} className="brand">
-            Jules Deschamps<span> Créateur de sites</span>
+            Jules Deschamps
           </a>
         ) : (
           <Link href="/" className="brand">
-            Jules Deschamps<span> Créateur de sites</span>
+            Jules Deschamps
           </Link>
         )}
 
