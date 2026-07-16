@@ -135,18 +135,54 @@
 .site-header--over .brand span { color: rgba(241,240,234,.6); }
 .site-header--over .nav-links a { color: rgba(241,240,234,.78); }
 .site-header--over .nav-links a:hover { color: var(--bg); }
-.site-header--over .nav-cta { color: var(--bg); border-bottom-color: var(--bg); }
+.site-header--over .nav-cta { color: var(--bg); border-color: var(--bg); }
+.site-header--over .nav-cta:hover { background: var(--bg); color: var(--text); border-color: var(--bg); }
 .site-header--over .nav-burger span { background: var(--bg); }
 .site-header__inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: var(--header-h); padding: 0 44px; }
 .brand { font-family: var(--font-disp); font-weight: 800; font-size: 18px; letter-spacing: -.02em; color: var(--text); text-decoration: none; }
 .brand b { font-weight: 800; }
 .brand span { color: var(--soft); font-weight: 600; }
 .nav-links { display: flex; gap: 30px; font-size: 14px; font-weight: 500; }
-.nav-links a { color: var(--soft); text-decoration: none; position: relative; transition: color .2s; }
-.nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 0; height: 1.5px; background: var(--acc); transition: width .25s; }
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after { width: 100%; }
-.nav-cta { color: var(--text); font-weight: 600; font-size: 14px; text-decoration: none; border-bottom: 1.5px solid var(--acc); padding-bottom: 2px; }
+
+/* Le trait qui traverse (réf. quentinhocde.com, relevé dans son CSS) : le trait
+   est un background-image, ancré à DROITE au repos, et SEULE la taille est
+   animée. La position saute, la taille glisse : le trait entre donc par la
+   gauche au survol et ressort par la droite quand on quitte, au lieu de revenir
+   sur ses pas. Ne jamais transitionner background-position, ça casse l'effet.
+   La position Y reste à 100% (le bas de la zone de peinture) : au-delà, en
+   calc(100% + Npx), le trait sort de la zone et devient invisible. L'écart au
+   texte se règle donc avec padding-bottom. */
+.nav-links a {
+  color: var(--soft); text-decoration: none; padding-bottom: 5px;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  background-position: 100% 100%;
+  transition: background-size .3s cubic-bezier(.65,0,.2,1), color .2s, opacity .3s;
+}
+.nav-links a:hover { background-size: 100% 1.5px; background-position: 0% 100%; color: var(--text); }
+
+/* Les autres reculent (réf. wadeandleta.com, qui groupe ses liens et
+   transitionne l'opacité sous @media (hover: hover)). Eux estompent le lien
+   survolé ; ici l'inverse, plus intuitif : les voisins reculent et le survolé
+   reste net. Le @media (hover: hover) est repris tel quel : rien ne se
+   déclenche au doigt, où il n'y a pas de survol.
+   Le .55 est mesuré, pas choisi à l'œil : les liens estompés restent des liens
+   lisibles. Au-dessus du héros ils tombent à 4.98:1 (seuil AA 4.5). À .4, plus
+   joli, ils tombaient à 3.75:1. Ne pas descendre sous .55. */
+@media (hover: hover) {
+  .nav-links:hover a { opacity: .55; }
+  .nav-links:hover a:hover { opacity: 1; }
+}
+
+/* Le CTA plein (réf. alt-web.fr) : aplat au survol, texte inversé. C'est le seul
+   point de contact du site, il doit peser. */
+.nav-cta {
+  color: var(--text); font-weight: 600; font-size: 14px; text-decoration: none;
+  padding: 9px 18px; border-radius: 999px; border: 1.5px solid var(--text);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.nav-cta:hover { background: var(--text); color: var(--bg); }
 .nav-burger { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 8px; }
 .nav-burger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
 .mobile-menu { display: none; border-top: 1px solid var(--line2); background: var(--bg); }
