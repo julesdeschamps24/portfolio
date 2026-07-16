@@ -90,6 +90,45 @@ body.opt-c .nl:hover::after{width:100%;left:0;right:auto;}
 body.opt-c .nl:hover{color:var(--text);}
 body.opt-c .strip.dark .nl:hover{color:var(--bg);}
 
+
+/* =====================================================================
+   D - LE TRAIT QUI TRAVERSE (ref. quentinhocde.com, releve le 2026-07-16 ;
+   meme principe chez exoape.com avec transform-origin: right center).
+   Leur .c-link dessine le trait en background-image, avec
+   background-size: 0% 1px ancre a 100% 100% (a DROITE) au repos, et une
+   transition sur background-size UNIQUEMENT (verifie : transition-property
+   = background-size, 0.3s). La position saute, la taille s'anime : le trait
+   entre donc par la gauche au survol et RESSORT par la droite quand on
+   quitte, au lieu de se retracter d'ou il vient.
+   ===================================================================== */
+body.opt-d .nl{background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-size:0% 1px;background-position:100% 100%;transition:background-size .3s cubic-bezier(.65,0,.2,1),color .2s;padding-bottom:5px;}
+body.opt-d .nl:hover{background-size:100% 1px;background-position:0% 100%;color:var(--text);}
+body.opt-d .strip.dark .nl:hover{color:var(--bg);}
+
+/* =====================================================================
+   E - LES AUTRES RECULENT (ref. wadeandleta.com : un groupe .hover-links
+   avec transition-property: opacity et une regle sous @media (hover:hover)).
+   Eux estompent le lien SURVOLE a .4 ; ici l'inverse, plus intuitif : ce
+   sont les voisins qui reculent et le survole qui reste net. Le @media
+   (hover: hover) est repris tel quel : rien ne se declenche au doigt.
+   ===================================================================== */
+@media (hover: hover) {
+  body.opt-e .nav:hover .nl{opacity:.35;transition:opacity .3s;}
+  body.opt-e .nav:hover .nl:hover{opacity:1;color:var(--text);}
+  body.opt-e .strip.dark .nav:hover .nl:hover{color:var(--bg);}
+}
+
+/* =====================================================================
+   G - LE CTA PLEIN (ref. alt-web.fr, meme metier que Jules : leur .nav-cta
+   passe en aplat de couleur avec le texte inverse au survol). Ne touche
+   que "Me contacter", donc se combine avec n'importe quelle option ci-dessus.
+   ===================================================================== */
+body.opt-g .cta{border-bottom-color:transparent;padding:8px 16px;border-radius:999px;border:1.5px solid currentColor;transition:background .2s,color .2s;}
+body.opt-g .cta:hover{background:var(--text);color:var(--bg);border-color:var(--text);}
+body.opt-g .strip.dark .cta:hover{background:var(--bg);color:var(--text);border-color:var(--bg);}
+body.opt-g .nl:hover{color:var(--text);}
+body.opt-g .strip.dark .nl:hover{color:var(--bg);}
+
 /* barre de choix */
 .bar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:#0a0a08;border-top:1px solid #2a2a24;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 .bar .lab{color:#8f8b7e;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-right:6px;}
@@ -149,6 +188,9 @@ body.opt-c .strip.dark .nl:hover{color:var(--bg);}
   <button data-o="a">A · Volet d'encre</button>
   <button data-o="b">B · Lettres brouillées</button>
   <button data-o="c">C · Index chiffré</button>
+  <button data-o="d">D · Trait qui traverse</button>
+  <button data-o="e">E · Les autres reculent</button>
+  <button data-o="g">G · CTA plein</button>
   <span class="hint">Survolez les liens pour comparer.</span>
 </div>
 
@@ -157,6 +199,9 @@ const REFS = {
   now: "<b>Actuel</b> — un trait de 1,5px qui grandit de gauche à droite. C'est le survol le plus répandu du web : correct, mais vu partout.",
   a:   "<b>A · Volet d'encre</b> — relevé dans le CSS de <b>k72.ca</b> : un bloc plein, caché au-dessus du lien (<code>translate3d(0,-102%,0)</code>), descend le couvrir au survol pendant que le texte s'inverse. Eux le font en vert lime ; ici en encre, ce qui reste dans « os & encre ». Franc, net, aucun dégradé.",
   b:   "<b>B · Lettres brouillées</b> — <b>locomotive.ca</b> pose un <code>data-hover-shuffle</code> sur sa marque : les lettres se mélangent puis se reposent. Dure 0,4s, ne déplace rien. Original, mais c'est un effet « de dev » : à voir s'il rassure un commerçant.",
+  d:   "<b>D · Le trait qui traverse</b> — relevé chez <b>quentinhocde.com</b> : le trait est un <code>background-image</code> en <code>background-size: 0% 1px</code> ancré à droite au repos, et seule la taille est animée (vérifié : <code>transition-property: background-size, 0.3s</code>). Résultat : il entre par la gauche et <b>ressort par la droite</b> au lieu de se rétracter. Même principe chez <b>exoape.com</b>. Sobre, c'est le raffinement de l'actuel plutôt que sa rupture.",
+  e:   "<b>E · Les autres reculent</b> — <b>wadeandleta.com</b> groupe ses liens dans un <code>.hover-links</code> avec une transition d'opacité, sous <code>@media (hover: hover)</code>. Eux estompent le lien survolé ; ici l'inverse, plus intuitif : les voisins reculent, le survolé reste net. Effet de groupe, pas de décoration. Ne se déclenche pas au doigt.",
+  g:   "<b>G · Le CTA plein</b> — <b>alt-web.fr</b> (ton métier) remplit son CTA d'un aplat au survol, texte inversé. Ne touche que « Me contacter » : se combine avec n'importe quelle option ci-dessus.",
   c:   "<b>C · Index chiffré</b> — un chiffre romain apparaît devant le libellé et le trait entre par la droite. Reprend les chiffres romains déjà utilisés dans la section Services. L'originalité vient de la structure, pas d'un effet."
 };
 const setOpt = (o) => {
@@ -197,7 +242,7 @@ function debrancherBrouillage() {
 }
 // #now / #a / #b / #c : selectionne l'option depuis l'URL (sert aux captures)
 const h = location.hash.replace('#', '');
-setOpt(['now', 'a', 'b', 'c'].includes(h) ? h : 'now');
+setOpt(['now', 'a', 'b', 'c', 'd', 'e', 'g'].includes(h) ? h : 'now');
 </script>
 </body>
 </html>
