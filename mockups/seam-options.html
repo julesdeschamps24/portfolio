@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Transition héros → réalisations : 3 options</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#f1f0ea; --bg2:#e7e5dd; --text:#16150f; --soft:#57544a; --muted2:#666357; --line2:#d9d6cb;
+  --disp:'Syne',sans-serif; --body:'Schibsted Grotesk',sans-serif; --serif:'Instrument Serif',serif;
+  --header-h:74px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:70px;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 44px;}
+
+/* ---- entete ---- */
+.hdr{position:sticky;top:0;z-index:50;background:transparent;}
+.hdr-in{max-width:1280px;margin:0 auto;height:var(--header-h);padding:0 44px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:var(--disp);font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--bg);}
+.brand span{color:rgba(241,240,234,.6);font-weight:600;}
+.nav{display:flex;gap:26px;font-size:14px;}
+.nav a{color:rgba(241,240,234,.78);text-decoration:none;}
+
+/* ---- heros ---- */
+.hero{margin-top:calc(var(--header-h) * -1);min-height:100svh;display:flex;align-items:center;position:relative;padding:114px 0 110px;overflow:hidden;background:var(--text);color:var(--bg);}
+.hero>.wrap{width:100%;position:relative;z-index:2;}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,21,15,.93) 0%,rgba(22,21,15,.80) 45%,rgba(22,21,15,.42) 100%);}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:#b8b3a4;margin-bottom:34px;}
+h1{font-family:var(--disp);font-weight:800;letter-spacing:-.035em;line-height:1;font-size:clamp(44px,8vw,122px);color:var(--bg);}
+.slot{display:inline-block;position:relative;vertical-align:bottom;overflow:hidden;height:1.08em;}
+.slot .reel{display:block;transition:transform .55s cubic-bezier(.65,0,.2,1);}
+.slot .reel span{display:block;height:1.08em;font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;}
+.brow{display:flex;gap:14px;margin-top:44px;font-size:13.5px;flex-wrap:wrap;}
+.brow span{border:1px solid rgba(241,240,234,.3);border-radius:999px;padding:7px 14px;color:#c5c0b0;}
+.btns{display:flex;gap:24px;margin-top:32px;align-items:center;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;border:1.5px solid var(--bg);color:var(--bg);}
+.lnk{font-weight:600;color:var(--bg);text-decoration:none;border-bottom:1.5px solid var(--bg);padding-bottom:2px;}
+.hero-foot{position:absolute;left:0;right:0;bottom:0;z-index:2;border-top:1px solid rgba(241,240,234,.22);background:rgba(22,21,15,.55);}
+.hero-foot .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:16px;padding-bottom:16px;font-size:13px;color:#b8b3a4;}
+
+/* ---- section realisations ---- */
+.sec{padding:96px 0;position:relative;}
+.shead{display:flex;justify-content:space-between;align-items:baseline;gap:24px;border-bottom:1px solid var(--line2);padding-bottom:20px;}
+.shead .lbl{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);}
+.shead h2{font-family:var(--disp);font-weight:800;font-size:clamp(26px,3.2vw,42px);letter-spacing:-.03em;}
+.wmq{margin-top:40px;display:flex;flex-direction:column;gap:16px;overflow:hidden;}
+.wmq-row{overflow:hidden;}
+.wmq-track{display:flex;gap:16px;width:max-content;}
+.wmq-right .wmq-track{animation:mq-r 46s linear infinite;}
+.wmq-left  .wmq-track{animation:mq-l 46s linear infinite;}
+@keyframes mq-r{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@keyframes mq-l{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.wcard{width:340px;flex:none;background:var(--bg2);border:1px solid var(--line2);border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;}
+.wcard img{width:100%;height:212px;object-fit:cover;display:block;}
+.wcard-meta{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;}
+.wcard-meta b{font-family:var(--disp);font-size:14px;}
+.wcard-meta .tag{display:block;font-size:12px;color:var(--muted2);}
+
+/* =======================================================================
+   A - FRANC ET NET (ref. k72.ca / viens-la.com)
+   La coupe dark -> creme est assumee comme un evenement graphique.
+   On supprime le filet du pied de heros (l'aplat sombre separe deja) et
+   on resserre le vide sous la coupe : 4 filets deviennent 2.
+   ======================================================================= */
+body.opt-a .hero-foot{border-top:none;}
+body.opt-a .sec{padding-top:56px;}
+
+/* =======================================================================
+   B - CHEVAUCHEMENT DU MARQUEE (ref. vanholtz.co)
+   Les cartes montent sur la coupe : la rangee du haut chevauche le heros.
+   La transition se fait PAR le contenu, pas sur un bord vide.
+   ======================================================================= */
+body.opt-b .hero-foot{display:none;}
+body.opt-b .sec{padding-top:0;}
+body.opt-b .wmq{margin-top:0;position:relative;z-index:3;transform:translateY(-120px);}
+body.opt-b .shead{margin-top:-84px;}
+body.opt-b .wcard{box-shadow:0 18px 40px rgba(22,21,15,.28);}
+
+/* =======================================================================
+   C - SAS SOMBRE (ref. lmscom.fr / exoape.com)
+   L'encre deborde du heros : le titre de section reste sur fond sombre,
+   le creme ne reprend qu'apres. L'oeil est passe du sombre au clair PAR
+   le contenu, pas sur un bord vide. (NB : contredit la regle "le heros est
+   la seule section sombre" de style.md - a arbitrer.)
+   ======================================================================= */
+body.opt-c .hero-foot{border-top:none;}
+body.opt-c .sec{padding-top:0;}
+body.opt-c .sec::before{content:"";position:absolute;left:0;right:0;top:0;height:300px;background:var(--text);z-index:0;}
+body.opt-c .sec>.wrap:first-child{position:relative;z-index:1;padding-top:64px;}
+body.opt-c .shead{border-bottom-color:rgba(241,240,234,.22);}
+body.opt-c .shead .lbl{color:#b8b3a4;}
+body.opt-c .shead h2{color:var(--bg);}
+body.opt-c .wmq{position:relative;z-index:1;margin-top:56px;}
+
+/* mode comparaison (?c) : heros raccourci pour que la jointure tienne a l'ecran
+   sans defiler. Ne change que la hauteur du heros, pas le traitement de la coupe. */
+body.cmp .hero{min-height:380px;padding:90px 0 70px;}
+body.cmp h1{font-size:46px;}
+body.cmp .eyebrow{margin-bottom:18px;}
+body.cmp .brow{margin-top:22px;}
+body.cmp .btns{margin-top:20px;}
+
+/* ---- barre de choix ---- */
+.bar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:#0a0a08;border-top:1px solid #2a2a24;padding:12px 16px;display:flex;gap:10px;align-items:center;}
+.bar .lab{color:#8f8b7e;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-right:6px;}
+.bar button{background:#16150f;border:2px solid #2a2a24;color:#b8b3a4;border-radius:8px;padding:8px 16px;font-family:var(--body);font-size:13px;font-weight:600;cursor:pointer;}
+.bar button:hover{border-color:#6b675a;}
+.bar button.on{border-color:#f1f0ea;color:#f1f0ea;}
+.bar .hint{margin-left:auto;color:#6b675a;font-size:12px;}
+</style>
+</head>
+<body class="opt-a">
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="brand" href="#">Jules Deschamps<span> Créateur de sites</span></a>
+    <nav class="nav"><a href="#">Réalisations</a><a href="#">Services</a><a href="#">Approche</a><a href="#">Contact</a></nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"><img src="../public/img/hero-atelier.jpg" alt=""></div>
+  <div class="wrap">
+    <div class="eyebrow">Créateur de sites internet · Angoulême</div>
+    <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel" id="reel">
+      <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+    </span></span></h1>
+    <div class="brow"><span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span></div>
+    <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="lnk" href="#">Un projet ? Écrivez-moi</a></div>
+  </div>
+  <div class="hero-foot"><div class="wrap">
+    <span>↓ Défiler pour voir le travail</span>
+    <span>Angoulême · sites livrés partout en France</span>
+  </div></div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="shead">
+      <span class="lbl">Réalisations</span>
+      <h2>Des sites qui leur ressemblent.</h2>
+    </div>
+  </div>
+  <div class="wmq">
+    <div class="wmq-row wmq-right"><div class="wmq-track" id="t1"></div></div>
+    <div class="wmq-row wmq-left"><div class="wmq-track" id="t2"></div></div>
+  </div>
+</section>
+
+<div class="bar">
+  <span class="lab">Transition →</span>
+  <button data-o="a" class="on">A · Franc et net</button>
+  <button data-o="b">B · Chevauchement</button>
+  <button data-o="c">C · Sas sombre</button>
+  <span class="hint">Défilez jusqu'à la jointure pour comparer.</span>
+</div>
+
+<script>
+const TOP = [
+  ['dauffy-paysage','Dauffy Paysage','Paysagiste · Issé (44)'],
+  ['estelle-fonder','Estelle Fonder','Psychologue · Albi'],
+  ['poelier-chauffagiste','Atelier Braise','Poêlier · Périgueux (24)'],
+  ['laborde-services','Laborde Services','Travaux forestiers · Béarn (64)'],
+  ['toilettage-canin','Au Poil','Toilettage canin · Angoulême'],
+  ['avocat','Camille Rivière','Avocat · Aix-en-Provence'],
+  ['bs-atout-vert','BS Atout Vert','Paysagiste · Création & entretien'],
+];
+const BOT = [
+  ['medecine-alternative','Léa Roussel','Naturopathe · Bordeaux'],
+  ['grimpe-o-arbres','Grimpe Ô Arbres','Élagage & grimpe'],
+  ['brice-paysage','Brice Paysage','Paysagiste · Création & entretien'],
+  ['kerinou-bois','Kerinou Bois','Paysagiste & bois'],
+  ['ab-paysage','AB Paysage','Paysagiste · Création & entretien'],
+  ['espace-paysage','Espace Paysage','Paysagiste · Création & entretien'],
+  ['bl-paysages','BL Paysages','Paysagiste · Création & entretien'],
+];
+const card = ([slug, name, tag]) =>
+  `<div class="wcard"><img src="../public/img/realisations/${slug}.jpg" alt=""><div class="wcard-meta"><div><b>${name}</b><span class="tag">${tag}</span></div></div></div>`;
+document.getElementById('t1').innerHTML = [...TOP, ...TOP].map(card).join('');
+document.getElementById('t2').innerHTML = [...BOT, ...BOT].map(card).join('');
+
+const CMP = location.search.includes('c');
+function setOpt(o) {
+  document.body.className = 'opt-' + o + (CMP ? ' cmp' : '');
+  document.querySelectorAll('.bar button').forEach(x => x.classList.toggle('on', x.dataset.o === o));
+}
+document.querySelectorAll('.bar button').forEach(b => { b.onclick = () => setOpt(b.dataset.o); });
+
+// #a / #b / #c : selectionne l'option et cadre la jointure (sert aux captures)
+const h = location.hash.replace('#', '');
+if (['a', 'b', 'c'].includes(h)) {
+  setOpt(h);
+  addEventListener('load', () => setTimeout(() => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    const seam = document.querySelector('.hero').getBoundingClientRect().bottom + scrollY;
+    scrollTo(0, Math.round(seam - 300));
+  }, 400));
+}
+
+const reel = document.getElementById('reel');
+let i = 0, n = reel.children.length;
+setInterval(() => {
+  i++;
+  reel.style.transform = `translateY(${-i * 1.08}em)`;
+  if (i === n - 1) setTimeout(() => {
+    reel.style.transition = 'none';
+    reel.style.transform = 'translateY(0)';
+    i = 0;
+    requestAnimationFrame(() => requestAnimationFrame(() => reel.style.transition = ''));
+  }, 580);
+}, 2600);
+</script>
+</body>
+</html>
