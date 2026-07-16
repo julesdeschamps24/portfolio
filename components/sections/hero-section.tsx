@@ -54,7 +54,7 @@ export function HeroSection() {
       </div>
 
       <div className="wrap hero-text">
-        <div className="eyebrow">Créateur de sites internet</div>
+        <div className="eyebrow">Créateur de sites internet indépendant</div>
         <h1>
           Des sites sur-mesure
           <br />

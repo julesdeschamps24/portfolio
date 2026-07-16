@@ -71,15 +71,40 @@ body.opt-a .hero-foot{border-top:none;}
 body.opt-a .sec{padding-top:56px;}
 
 /* =======================================================================
-   B - CHEVAUCHEMENT DU MARQUEE (ref. vanholtz.co)
-   Les cartes montent sur la coupe : la rangee du haut chevauche le heros.
-   La transition se fait PAR le contenu, pas sur un bord vide.
+   D - FONDU (le plus courant)
+   La photo se dissout dans le creme de la section suivante : il n'y a plus
+   de bord, l'un devient l'autre. Le voile gagne un 2e calque vertical qui
+   finit sur --bg. Meme mecanique que le voile existant (voile photo, pas
+   fond degrade) - la seule entorse toleree par style.md.
    ======================================================================= */
-body.opt-b .hero-foot{display:none;}
-body.opt-b .sec{padding-top:0;}
-body.opt-b .wmq{margin-top:0;position:relative;z-index:3;transform:translateY(-120px);}
-body.opt-b .shead{margin-top:-84px;}
-body.opt-b .wcard{box-shadow:0 18px 40px rgba(22,21,15,.28);}
+body.opt-d .hero-bg::after{
+  background:
+    linear-gradient(180deg, rgba(241,240,234,0) 62%, rgba(241,240,234,.55) 84%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(22,21,15,.93) 0%, rgba(22,21,15,.80) 45%, rgba(22,21,15,.42) 100%);
+}
+body.opt-d .hero-foot{display:none;}
+body.opt-d .sec{padding-top:40px;}
+
+/* =======================================================================
+   E - LA SECTION QUI REMONTE, COINS ARRONDIS
+   Le bloc creme chevauche le bas du heros avec des coins arrondis. Tres
+   courant depuis 2024. Aplat strict, aucun degrade.
+   ======================================================================= */
+body.opt-e .hero-foot{border-top:none;}
+body.opt-e .hero{padding-bottom:150px;}
+body.opt-e .sec{
+  position:relative; z-index:2; background:var(--bg);
+  border-radius:34px 34px 0 0; margin-top:-44px; padding-top:64px;
+}
+
+/* =======================================================================
+   F - REVELATION (ref. dennissnellenberg.com, verifie : son main est en
+   position fixed + scroll virtuel)
+   Le heros reste epingle, le contenu glisse par-dessus. Ici en CSS pur
+   (position:sticky), sans la lib de scroll virtuel de la reference.
+   ======================================================================= */
+body.opt-f .hero{position:sticky;top:0;z-index:0;}
+body.opt-f .sec{position:relative;z-index:2;background:var(--bg);padding-top:64px;}
 
 /* =======================================================================
    C - SAS SOMBRE (ref. lmscom.fr / exoape.com)
@@ -154,8 +179,10 @@ body.cmp .btns{margin-top:20px;}
 
 <div class="bar">
   <span class="lab">Transition →</span>
-  <button data-o="a" class="on">A · Franc et net</button>
-  <button data-o="b">B · Chevauchement</button>
+  <button data-o="a" class="on">A · Franc (actuel)</button>
+  <button data-o="d">D · Fondu</button>
+  <button data-o="f">F · Révélation</button>
+  <button data-o="e">E · Coins arrondis</button>
   <button data-o="c">C · Sas sombre</button>
   <span class="hint">Défilez jusqu'à la jointure pour comparer.</span>
 </div>
@@ -193,7 +220,7 @@ document.querySelectorAll('.bar button').forEach(b => { b.onclick = () => setOpt
 
 // #a / #b / #c : selectionne l'option et cadre la jointure (sert aux captures)
 const h = location.hash.replace('#', '');
-if (['a', 'b', 'c'].includes(h)) {
+if (['a', 'c', 'd', 'e', 'f'].includes(h)) {
   setOpt(h);
   addEventListener('load', () => setTimeout(() => {
     document.documentElement.style.scrollBehavior = 'auto';
