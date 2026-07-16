@@ -59,8 +59,9 @@ Montrer la référence réelle AVANT de coder.
   service « Suivi & sérénité » a été supprimée. Services = 3 : Design & identité,
   Site sur-mesure, Visible localement. Ne jamais promettre hébergement, mises à
   jour ou maintenance dans les textes.
-- La photo de Jules vit dans une **bulle sur la section Contact**
-  (`public/img/jules.jpg`, en attente de la vraie photo).
+- La photo de Jules vit dans une **bulle sur la section Contact** :
+  `public/img/jules.jpg` (400×400, carré centré sur le visage). L'originale est
+  dans `assets-src/photo-source.png` (hors `public/`, gitignorée).
 
 ## Ton & discours
 
