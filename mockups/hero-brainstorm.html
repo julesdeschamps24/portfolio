@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brainstorm héros — os &amp; encre, vivants</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#f1f0ea; --ink:#16150f; --soft:#57544a; --muted:#8b887c; --line:#d9d6cb;
+  --disp:'Syne',sans-serif; --body:'Schibsted Grotesk',sans-serif; --serif:'Instrument Serif',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 44px;}
+h1{font-family:var(--disp);font-weight:800;letter-spacing:-.035em;line-height:1;}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;}
+
+.switcher{position:sticky;top:0;z-index:100;display:flex;gap:8px;align-items:center;padding:10px 18px;background:#0d0d0d;border-bottom:1px solid #262626;flex-wrap:wrap;}
+.switcher b{color:#fff;font-size:12.5px;font-family:var(--disp);margin-right:8px;}
+.switcher a{color:#c9c9c9;text-decoration:none;font-size:12.5px;font-weight:500;padding:6px 13px;border-radius:999px;border:1px solid #383838;}
+.switcher a:hover{color:#fff;border-color:#888;}
+
+.hero{min-height:96vh;display:flex;align-items:center;position:relative;border-bottom:1px solid var(--line);padding:90px 0;overflow:hidden;}
+.tagpill{position:absolute;top:20px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--bg);padding:7px 16px;border-radius:999px;font-weight:600;white-space:nowrap;z-index:50;}
+.tagpill i{font-style:normal;opacity:.6;}
+.kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:10px;margin-bottom:30px;}
+.kicker::before{content:"";width:24px;height:1.5px;background:var(--ink);}
+.sub{font-size:17.5px;color:var(--soft);max-width:480px;line-height:1.6;}
+.btns{display:flex;gap:22px;align-items:center;margin-top:34px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;padding:13px 26px;border-radius:999px;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);transition:.2s;background:transparent;}
+.btn:hover{background:var(--ink);color:var(--bg);}
+.link{font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--ink);padding-bottom:2px;}
+
+/* ============ A — SECTEURS INTERACTIFS ============ */
+#a .intro{font-size:clamp(20px,2vw,26px);color:var(--soft);margin-bottom:18px;font-family:var(--serif);font-style:italic;}
+#a .sector{display:flex;align-items:baseline;gap:26px;padding:6px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:padding-left .3s cubic-bezier(.2,.7,.2,1);}
+#a .sector:hover{padding-left:26px;}
+#a .sector .no{font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.4vw,20px);color:var(--muted);width:34px;flex:none;}
+#a .sector .word{font-family:var(--disp);font-weight:800;font-size:clamp(40px,6.4vw,92px);letter-spacing:-.03em;line-height:1.14;transition:opacity .25s;}
+#a:hover .sector:not(:hover) .word{opacity:.28;}
+#a .sector .hint{margin-left:auto;font-size:13px;color:var(--muted);opacity:0;transform:translateX(-8px);transition:.25s;white-space:nowrap;}
+#a .sector:hover .hint{opacity:1;transform:none;}
+#a .foot{display:flex;justify-content:space-between;align-items:center;margin-top:34px;gap:20px;flex-wrap:wrap;}
+.cursor-img{position:fixed;top:0;left:0;width:330px;aspect-ratio:16/10;border-radius:12px;pointer-events:none;z-index:60;opacity:0;transform:translate(-50%,-58%) rotate(3deg) scale(.9);transition:opacity .22s,transform .22s;overflow:hidden;border:1px solid var(--ink);box-shadow:0 30px 60px -25px rgba(22,21,15,.45);background:var(--ink);}
+.cursor-img.show{opacity:1;transform:translate(-50%,-58%) rotate(0deg) scale(1);}
+.cursor-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .18s;}
+.cursor-img img.on{opacity:1;}
+
+/* ============ B — MOT ROTATIF ============ */
+#b h1{font-size:clamp(42px,6.6vw,96px);}
+#b .slot{display:inline-block;position:relative;vertical-align:bottom;overflow:hidden;height:1.08em;min-width:7.2ch;}
+#b .slot span{display:block;height:1.08em;font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;will-change:transform;}
+#b .slot .reel{transition:transform .55s cubic-bezier(.65,0,.2,1);}
+#b .under{position:relative;}
+#b .under svg{position:absolute;left:0;bottom:-14px;width:100%;height:16px;}
+#b .under svg path{stroke:var(--ink);stroke-width:3.5;fill:none;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:0;}
+#b .brow{display:flex;gap:14px;align-items:center;margin-top:34px;color:var(--muted);font-size:13.5px;flex-wrap:wrap;}
+#b .brow span{border:1px solid var(--line);border-radius:999px;padding:7px 14px;}
+#b .l3bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:36px;padding:12px 14px;border:1px dashed var(--muted);border-radius:12px;}
+#b .l3bar b{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-right:4px;}
+#b .l3{font-family:var(--body);font-size:13px;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--soft);cursor:pointer;transition:.15s;}
+#b .l3:hover{border-color:var(--ink);color:var(--ink);}
+#b .l3.on{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+
+/* ============ C — COLLAGE DÉRIVANT ============ */
+#c{text-align:center;}
+#c h1{font-size:clamp(40px,5.6vw,86px);position:relative;z-index:10;}
+#c .sub{margin:26px auto 0;position:relative;z-index:10;}
+#c .btns{justify-content:center;position:relative;z-index:10;}
+#c .kicker{justify-content:center;}
+#c .kicker::before{display:none;}
+.drift{position:absolute;width:clamp(180px,17vw,270px);aspect-ratio:16/11;border-radius:10px;overflow:hidden;border:1px solid var(--ink);box-shadow:0 24px 55px -22px rgba(22,21,15,.4);will-change:transform;z-index:2;}
+.drift img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
+.drift figcaption{position:absolute;left:0;right:0;bottom:0;background:color-mix(in srgb, var(--bg) 88%, transparent);font-size:11px;letter-spacing:.06em;padding:5px 10px;color:var(--ink);text-align:left;font-weight:600;}
+@keyframes bob1{0%,100%{transform:translateY(0) rotate(var(--r));}50%{transform:translateY(-14px) rotate(var(--r));}}
+@keyframes bob2{0%,100%{transform:translateY(-8px) rotate(var(--r));}50%{transform:translateY(8px) rotate(var(--r));}}
+.d1{top:12%;left:3%;--r:-6deg;animation:bob1 7s ease-in-out infinite;}
+.d2{bottom:10%;left:9%;--r:4deg;animation:bob2 8.5s ease-in-out infinite;}
+.d3{top:9%;right:4%;--r:5deg;animation:bob2 7.6s ease-in-out infinite;}
+.d4{bottom:13%;right:7%;--r:-4deg;animation:bob1 9s ease-in-out infinite;}
+
+/* ============ D — DECK QUI TOURNE ============ */
+#d .grid{display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center;}
+#d h1{font-size:clamp(38px,4.6vw,66px);}
+#d .deck{position:relative;aspect-ratio:16/11;width:100%;max-width:560px;margin-left:auto;}
+#d .card{position:absolute;inset:0;border-radius:14px;overflow:hidden;border:1px solid var(--ink);box-shadow:0 26px 60px -24px rgba(22,21,15,.45);transition:transform .6s cubic-bezier(.6,.05,.2,1),opacity .6s;background:var(--ink);}
+#d .card img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
+#d .card .cap{position:absolute;left:14px;bottom:12px;background:var(--bg);color:var(--ink);font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--ink);}
+#d .dots{display:flex;gap:8px;margin-top:30px;}
+#d .dots i{width:26px;height:3px;background:var(--line);border-radius:2px;transition:background .3s;}
+#d .dots i.on{background:var(--ink);}
+
+@media(max-width:900px){
+  .wrap{padding:0 22px;}
+  .hero{min-height:auto;}
+  #d .grid{grid-template-columns:1fr;gap:40px;}
+  .drift{display:none;}
+  .cursor-img{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <b>4 héros vivants · os &amp; encre</b>
+  <a href="#a">A · Secteurs interactifs</a>
+  <a href="#b">B · Mot rotatif</a>
+  <a href="#c">C · Collage dérivant</a>
+  <a href="#d">D · Deck</a>
+</div>
+
+<!-- ============ A ============ -->
+<section class="hero" id="a">
+  <span class="tagpill">A — Secteurs interactifs <i>· réf. locomotive.ca / obys.agency (aperçu au curseur)</i></span>
+  <div class="wrap">
+    <div class="kicker">Studio — Jules Deschamps · Angoulême</div>
+    <p class="intro">Je crée des sites sur-mesure pour les…</p>
+    <div class="sectors">
+      <div class="sector" data-img="0"><span class="no">01</span><span class="word">Paysagistes</span><span class="hint">survolez — vrai site ↗</span></div>
+      <div class="sector" data-img="1"><span class="no">02</span><span class="word">Praticiens</span><span class="hint">survolez — vrai site ↗</span></div>
+      <div class="sector" data-img="2"><span class="no">03</span><span class="word">Artisans</span><span class="hint">survolez — vrai site ↗</span></div>
+      <div class="sector" data-img="3"><span class="no">04</span><span class="word">Indépendants</span><span class="hint">survolez — vrai site ↗</span></div>
+    </div>
+    <div class="foot">
+      <p class="sub" style="max-width:430px;">Studio indépendant. Des sites soignés, pensés pour être trouvés — dix sont déjà en ligne.</p>
+      <div class="btns" style="margin-top:0;"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Écrivez-moi</a></div>
+    </div>
+  </div>
+  <div class="cursor-img" id="acur">
+    <img src="../public/img/realisations/dauffy-paysage.jpg" alt="">
+    <img src="../public/img/realisations/estelle-fonder.jpg" alt="">
+    <img src="../public/img/realisations/poelier-chauffagiste.jpg" alt="">
+    <img src="../public/img/realisations/medecine-alternative.jpg" alt="">
+  </div>
+</section>
+
+<!-- ============ B ============ -->
+<section class="hero" id="b">
+  <span class="tagpill">B — Mot rotatif <i>· réf. viens-la.com (typo joueuse) / vanholtz.co</i></span>
+  <div class="wrap">
+    <div class="kicker">Studio web · Angoulême</div>
+    <h1>Des sites sur-mesure<br>pour les <span class="slot"><span class="reel" id="breel">
+      <span>paysagistes.</span><span>praticiens.</span><span>artisans.</span><span>commerçants.</span><span>indépendants.</span><span>paysagistes.</span>
+    </span></span><br><span class="under" id="bline3">Dessinés un par un.<svg viewBox="0 0 300 16" preserveAspectRatio="none"><path d="M4 11 C80 4 190 13 296 6"/></svg></span></h1>
+    <div class="l3bar">
+      <b>3ᵉ ligne, cliquez pour tester :</b>
+      <button class="l3 on">Dessinés un par un.</button>
+      <button class="l3">Faits pour être trouvés.</button>
+      <button class="l3">Déjà dix en ligne.</button>
+      <button class="l3">Pensés pour durer.</button>
+      <button class="l3">Le vôtre n'existe pas encore.</button>
+      <button class="l3" data-none="1">— aucune 3ᵉ ligne —</button>
+    </div>
+    <div class="brow">
+      <span>10 sites en ligne</span><span>Réponse sous 24 h</span><span>Un seul interlocuteur</span>
+    </div>
+    <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Écrivez-moi</a></div>
+  </div>
+</section>
+
+<!-- ============ C ============ -->
+<section class="hero" id="c">
+  <span class="tagpill">C — Collage dérivant <i>· réf. wadeandleta.com / k72.ca (matière en mouvement)</i></span>
+  <figure class="drift d1"><img src="../public/img/realisations/dauffy-paysage.jpg" alt=""><figcaption>Dauffy Paysage</figcaption></figure>
+  <figure class="drift d2"><img src="../public/img/realisations/estelle-fonder.jpg" alt=""><figcaption>Estelle Fonder</figcaption></figure>
+  <figure class="drift d3"><img src="../public/img/realisations/laborde-services.jpg" alt=""><figcaption>Laborde Services</figcaption></figure>
+  <figure class="drift d4"><img src="../public/img/realisations/poelier-chauffagiste.jpg" alt=""><figcaption>Atelier Braise</figcaption></figure>
+  <div class="wrap">
+    <div class="kicker">Studio — Jules Deschamps</div>
+    <h1>Des sites web sur-mesure<br>pour les <em class="s">entreprises locales</em>.</h1>
+    <p class="sub">Le travail flotte autour : ce sont de vrais sites, en ligne. Bougez la souris.</p>
+    <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Écrivez-moi</a></div>
+  </div>
+</section>
+
+<!-- ============ D ============ -->
+<section class="hero" id="d">
+  <span class="tagpill">D — Deck <i>· réf. dennissnellenberg.com (pile de projets) — auto-défile</i></span>
+  <div class="wrap grid">
+    <div>
+      <div class="kicker">Studio web · Angoulême</div>
+      <h1>Des sites web<br>sur-mesure pour les<br><em class="s">entreprises locales</em>.</h1>
+      <p class="sub" style="margin-top:24px;">Studio indépendant. La pile à droite, ce sont de vrais sites en ligne — elle tourne toute seule.</p>
+      <div class="btns"><a class="btn" href="#">Voir mes réalisations ↓</a><a class="link" href="#">Écrivez-moi</a></div>
+      <div class="dots" id="ddots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="deck" id="ddeck">
+      <div class="card"><img src="../public/img/realisations/dauffy-paysage.jpg" alt=""><span class="cap">Dauffy Paysage · Issé (44)</span></div>
+      <div class="card"><img src="../public/img/realisations/estelle-fonder.jpg" alt=""><span class="cap">Estelle Fonder · Albi</span></div>
+      <div class="card"><img src="../public/img/realisations/laborde-services.jpg" alt=""><span class="cap">Laborde Services · Béarn</span></div>
+      <div class="card"><img src="../public/img/realisations/poelier-chauffagiste.jpg" alt=""><span class="cap">Atelier Braise · Périgueux</span></div>
+      <div class="card"><img src="../public/img/realisations/bs-atout-vert.jpg" alt=""><span class="cap">BS Atout Vert</span></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* A — aperçu qui suit le curseur */
+const acur=document.getElementById('acur');
+const aimgs=acur.querySelectorAll('img');
+document.querySelectorAll('#a .sector').forEach(row=>{
+  row.addEventListener('mouseenter',()=>{
+    aimgs.forEach(i=>i.classList.remove('on'));
+    aimgs[+row.dataset.img].classList.add('on');
+    acur.classList.add('show');
+  });
+  row.addEventListener('mouseleave',()=>acur.classList.remove('show'));
+});
+window.addEventListener('mousemove',e=>{acur.style.left=e.clientX+'px';acur.style.top=e.clientY+'px';});
+
+/* B — mot rotatif (reel vertical) */
+const reel=document.getElementById('breel');
+let bi=0, bn=reel.children.length;
+setInterval(()=>{
+  bi++;
+  reel.style.transform=`translateY(${-bi*1.08}em)`;
+  if(bi===bn-1){setTimeout(()=>{reel.style.transition='none';reel.style.transform='translateY(0)';bi=0;requestAnimationFrame(()=>requestAnimationFrame(()=>reel.style.transition=''));},580);}
+},2100);
+
+/* B — sélecteur de 3e ligne */
+const bline3=document.getElementById('bline3');
+const l3svg=bline3.querySelector('svg').outerHTML;
+document.querySelectorAll('#b .l3').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#b .l3').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    if(btn.dataset.none){bline3.style.display='none';}
+    else{bline3.style.display='';bline3.innerHTML=btn.textContent+l3svg;}
+  });
+});
+
+/* C — parallax souris sur le collage */
+const drifts=[...document.querySelectorAll('.drift')].map((el,i)=>({el,f:(i%2? -1:1)*(10+i*6)}));
+document.getElementById('c').addEventListener('mousemove',e=>{
+  const r=e.currentTarget.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+  drifts.forEach(d=>{d.el.style.marginLeft=(x*d.f)+'px';d.el.style.marginTop=(y*d.f)+'px';});
+});
+
+/* D — deck auto-défilant */
+const deck=document.getElementById('ddeck');
+const dots=document.querySelectorAll('#ddots i');
+let cards=[...deck.children], di=0, paused=false;
+function layout(){
+  cards.forEach((c,k)=>{
+    c.style.zIndex=cards.length-k;
+    c.style.transform=`translate(${k*16}px, ${k*-10}px) rotate(${k*1.6}deg)`;
+    c.style.opacity=k>3?0:1;
+  });
+}
+layout();
+deck.addEventListener('mouseenter',()=>paused=true);
+deck.addEventListener('mouseleave',()=>paused=false);
+setInterval(()=>{
+  if(paused) return;
+  const top=cards[0];
+  top.style.transform='translate(120%, -6%) rotate(9deg)';
+  top.style.opacity='0';
+  setTimeout(()=>{cards.push(cards.shift());layout();},450);
+  di=(di+1)%dots.length;
+  dots.forEach((d,k)=>d.classList.toggle('on',k===di));
+},2600);
+</script>
+</body>
+</html>

@@ -14,11 +14,6 @@ const SERVICES = [
     title: "Visible localement",
     desc: "Pensé pour ressortir sur Google quand on cherche votre activité dans votre ville.",
   },
-  {
-    no: "04",
-    title: "Suivi & sérénité",
-    desc: "Hébergement, mises à jour, petites modifs : la technique, c'est mon affaire.",
-  },
 ];
 
 export function ServicesSection() {

@@ -47,8 +47,8 @@ export default function AProposPage() {
             recyclé : chaque site est conçu pour l&apos;entreprise qu&apos;il représente.
           </p>
           <p>
-            Ensuite, je reste là. Hébergement, mises à jour, petites modifications : la
-            technique reste de mon côté, pour que vous puissiez rester du vôtre.
+            À la livraison, le site est à vous : propre, rapide, et pensé pour durer sans
+            entretien permanent.
           </p>
 
           <h2>D&apos;où je viens</h2>

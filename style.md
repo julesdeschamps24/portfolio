@@ -27,16 +27,40 @@ Montrer la référence réelle AVANT de coder.
   - **dennissnellenberg.com** — héros-portrait de référence (photo plein cadre, localisation).
   - **viens-la.com** — couleur pleine + typo massive, personnalité jusque dans le loader.
 
-## DA actuelle (validée)
+## DA (en transition — 2026-07-16)
 
-- **Fond cobalt vibrant, APLAT strict** : `--bg:#2231d8`, bandes `--bg2:#2c3de6`.
-  **Jamais de dégradé.** Texte `#f1f3ff`, soft `#cdd3fc`, muted `#aab1f0`,
-  lignes `#4257ec`, accent `#c6cfff`.
-- **Typos** : Syne (titres, 700/800), Instrument Serif italique (mots-accents),
-  Schibsted Grotesk (corps). Interdits : Inter, Space Grotesk (génériques).
-- **Héros** : texte à gauche, **portrait de Jules à droite** (photo = incarnation
-  de la marque, remplacer `public/img/jules.jpg`). Côte à côte dès 760px.
+- **Le cobalt vibrant plein écran est abandonné** : Jules veut des **couleurs plus
+  sobres**. Toujours en APLAT strict, **jamais de dégradé**.
+- **Palette choisie : « Os & encre »** (réf. vanholtz.co) : fond crème `#f1f0ea`,
+  encre `#16150f`, soft `#57544a`, muted `#8b887c`, lignes `#d9d6cb`.
+- **Héros choisi : « B — Mot rotatif »** (réf. viens-la.com, maquette
+  `mockups/hero-brainstorm.html`) : « Des sites sur-mesure pour les
+  *paysagistes. / praticiens. / artisans. / commerçants. / indépendants.* »
+  (mot en Instrument Serif italique qui roule verticalement toutes les ~2 s).
+  **Structure validée telle quelle. PAS de 3ᵉ ligne** (décision finale) : le titre
+  s'arrête sur le mot rotatif. Sous le titre : chips de faits réels (10 sites en
+  ligne · Réponse sous 24 h · Un seul interlocuteur) + boutons sobres.
+  Le bandeau de secteurs défilant est SUPPRIMÉ (redondant avec le mot rotatif).
+- **Le héros doit REMPLIR l'écran** (retour 2026-07-16 : « une partie de la page
+  d'en dessous s'affichait dans le héros ») : `min-height: calc(100svh - 74px)`,
+  contenu centré verticalement, filet + scroll-cue (« ↓ Défiler ») en pied de héros.
+  Titre à l'échelle clamp(44px, 8vw, 122px) : il doit attirer l'œil.
+- Contraste AA obligatoire : `--muted2:#666357` (pas plus clair), placeholders de
+  formulaire en `--soft`, erreurs de formulaire en `#8c2f24` sur `rgba(180,60,50,.12)`.
+- **Typos conservées** : Syne (titres, 700/800), Instrument Serif italique
+  (mots-accents), Schibsted Grotesk (corps). Interdits : Inter, Space Grotesk.
+- **Héros SANS portrait** (décision 2026-07-16) : plus de photo de Jules dans le
+  héros. À la place, **une « bulle » photo sur la page/section contact** (à faire).
 - Chiffres romains en MAJUSCULES (I, II, III, IV) — jamais i/ii/iii (effet bug).
+
+## Offre (contenu contractuel)
+
+- **Jules ne propose PAS de suivi/maintenance** (décision 2026-07-16) : la carte
+  service « Suivi & sérénité » a été supprimée. Services = 3 : Design & identité,
+  Site sur-mesure, Visible localement. Ne jamais promettre hébergement, mises à
+  jour ou maintenance dans les textes.
+- La photo de Jules vit dans une **bulle sur la section Contact**
+  (`public/img/jules.jpg`, en attente de la vraie photo).
 
 ## Ton & discours
 

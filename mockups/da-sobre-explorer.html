@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DA sobres × styles de héros — explorateur</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --bg:#f1f0ea; --ink:#16150f; --soft:#57544a; --muted:#8b887c; --line:#d9d6cb; --acc:#16150f;
+  --panel:#16150f; --panel-text:#f1f0ea;
+  --disp:'Syne',sans-serif; --body:'Schibsted Grotesk',sans-serif; --serif:'Instrument Serif',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:86px;transition:background .35s,color .35s;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 44px;}
+h1{font-family:var(--disp);font-weight:800;letter-spacing:-.035em;line-height:.97;}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;}
+
+.switcher{position:sticky;top:0;z-index:100;display:flex;gap:8px;align-items:center;padding:10px 18px;background:#0d0d0d;border-bottom:1px solid #262626;flex-wrap:wrap;}
+.switcher b{color:#fff;font-size:12.5px;font-family:var(--disp);margin-right:8px;}
+.switcher a{color:#c9c9c9;text-decoration:none;font-size:12.5px;font-weight:500;padding:6px 13px;border-radius:999px;border:1px solid #383838;}
+.switcher a:hover{color:#fff;border-color:#888;}
+
+.hero{min-height:820px;display:flex;align-items:center;position:relative;border-bottom:1px solid var(--line);padding:80px 0;}
+.tagpill{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--bg);padding:7px 16px;border-radius:999px;font-weight:600;white-space:nowrap;}
+.tagpill i{font-style:normal;opacity:.65;}
+.kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:10px;margin-bottom:28px;}
+.kicker::before{content:"";width:24px;height:1.5px;background:var(--acc);}
+.sub{font-size:18px;color:var(--soft);max-width:520px;line-height:1.6;margin-top:26px;}
+.btns{display:flex;gap:22px;align-items:center;margin-top:34px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;padding:14px 28px;border-radius:999px;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);transition:.2s;}
+.btn:hover{background:var(--ink);color:var(--bg);}
+.link{font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--acc);padding-bottom:2px;}
+.meta-row{display:flex;gap:28px;flex-wrap:wrap;margin-top:40px;border-top:1px solid var(--line);padding-top:20px;font-size:13.5px;color:var(--muted);}
+.stats{display:flex;gap:34px;margin-top:42px;flex-wrap:wrap;}
+.stats div{font-size:13.5px;color:var(--muted);}
+.stats b{display:block;font-family:var(--disp);font-weight:700;font-size:22px;color:var(--ink);margin-bottom:2px;}
+
+/* A — Typo XXL */
+#a h1{font-size:clamp(52px,8.6vw,128px);}
+#a .row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-top:34px;}
+
+/* B — Split */
+#b{padding:0;min-height:820px;}
+#b .split{display:grid;grid-template-columns:1.05fr .95fr;width:100%;min-height:820px;}
+#b .left{display:flex;flex-direction:column;justify-content:center;padding:90px 54px 70px clamp(24px,6vw,90px);}
+#b h1{font-size:clamp(40px,4.6vw,68px);}
+#b mark{background:var(--acc);color:var(--bg);padding:0 10px;border-radius:4px;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+#b .right{background:var(--panel);color:var(--panel-text);display:flex;flex-direction:column;justify-content:center;gap:22px;padding:90px clamp(24px,5vw,80px);}
+#b .shot{border-radius:12px;overflow:hidden;border:1px solid color-mix(in srgb, var(--panel-text) 25%, transparent);}
+#b .shot img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:top;display:block;}
+#b .shot:nth-child(2){width:82%;align-self:flex-end;margin-top:-6px;}
+#b .pstat{font-size:13.5px;color:color-mix(in srgb, var(--panel-text) 72%, transparent);}
+#b .pstat b{font-family:var(--disp);font-size:22px;color:var(--panel-text);display:block;}
+
+/* C — Éditorial */
+#c h1{font-size:clamp(40px,5.6vw,84px);max-width:1000px;}
+#c .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:48px;border-top:1px solid var(--line);padding-top:24px;}
+#c .cols div{font-size:14px;color:var(--soft);}
+#c .cols b{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600;}
+#c .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;}
+#c .strip a{border-radius:12px;overflow:hidden;border:1px solid var(--line);display:block;}
+#c .strip img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:top;display:block;}
+
+/* D — Centré display+serif */
+#d{text-align:center;}
+#d h1{font-size:clamp(44px,6.2vw,96px);}
+#d .sub{margin-left:auto;margin-right:auto;}
+#d .btns,#d .stats{justify-content:center;}
+#d .kicker{justify-content:center;}
+#d .kicker::before{display:none;}
+
+.pbar{position:fixed;bottom:0;left:0;right:0;z-index:90;background:#0d0d0d;border-top:1px solid #262626;padding:12px 16px;display:flex;gap:10px;align-items:center;overflow-x:auto;}
+.pbar .lab{color:#9a9a9a;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-right:6px;white-space:nowrap;}
+.pchip{display:flex;align-items:center;gap:9px;background:#1a1a1a;border:1.5px solid #333;border-radius:12px;padding:8px 13px;cursor:pointer;white-space:nowrap;transition:.18s;}
+.pchip:hover{border-color:#777;}.pchip.active{border-color:#fff;background:#242424;}
+.pchip i{width:15px;height:15px;border-radius:50%;display:block;border:1.5px solid #0d0d0d;}
+.pchip b{color:#ececec;font-family:var(--disp);font-weight:600;font-size:12.5px;}
+.pchip small{color:#8d8d8d;font-size:10.5px;}
+
+@media(max-width:900px){
+  .wrap{padding:0 22px;}
+  #b .split{grid-template-columns:1fr;}
+  #c .cols,#c .strip{grid-template-columns:1fr;}
+  .hero{min-height:auto;}
+}
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <b>Héros ×</b>
+  <a href="#a">A · Typo XXL</a>
+  <a href="#b">B · Split</a>
+  <a href="#c">C · Éditorial</a>
+  <a href="#d">D · Centré serif</a>
+  <b style="margin-left:14px;">Palettes ↓ en bas</b>
+</div>
+
+<!-- A -->
+<section class="hero" id="a">
+  <span class="tagpill">A — Typo XXL <i>· réf. rejouice.com / vanholtz.co</i></span>
+  <div class="wrap">
+    <div class="kicker">Studio web · entreprises &amp; commerces locaux</div>
+    <h1>Des sites web<br>sur-mesure pour les<br><em class="s">entreprises locales</em>.</h1>
+    <div class="row">
+      <p class="sub" style="margin-top:0;">Studio indépendant. Je conçois et développe des sites soignés pour les commerces, artisans et indépendants qui veulent une présence en ligne à leur image.</p>
+      <div class="btns" style="margin-top:0;">
+        <a class="btn" href="#">Voir mes réalisations ↓</a>
+        <a class="link" href="#">Écrivez-moi</a>
+      </div>
+    </div>
+    <div class="meta-row"><span>Conception &amp; développement</span><span>Identité &amp; design</span><span>Visibilité locale</span><span style="margin-left:auto;">Angoulême · partout en France</span></div>
+  </div>
+</section>
+
+<!-- B -->
+<section class="hero" id="b">
+  <span class="tagpill">B — Split <i>· réf. alt-web.fr</i></span>
+  <div class="split">
+    <div class="left">
+      <div class="kicker">Studio web · Angoulême</div>
+      <h1>Des sites qui doivent<br><mark>ramener des clients</mark><br>aux entreprises locales.</h1>
+      <p class="sub">Commerces, artisans, indépendants : je conçois des sites soignés, pensés pour être trouvés sur Google.</p>
+      <div class="btns">
+        <a class="btn" href="#">Voir mes réalisations ↓</a>
+        <a class="link" href="#">Écrivez-moi</a>
+      </div>
+    </div>
+    <div class="right">
+      <div class="shot"><img src="../public/img/realisations/dauffy-paysage.jpg" alt=""></div>
+      <div class="shot"><img src="../public/img/realisations/estelle-fonder.jpg" alt=""></div>
+      <div class="pstat"><b>10 sites en ligne</b>pour de vraies entreprises — cliquables plus bas.</div>
+    </div>
+  </div>
+</section>
+
+<!-- C -->
+<section class="hero" id="c">
+  <span class="tagpill">C — Éditorial <i>· réf. exoape.com / dennissnellenberg.com</i></span>
+  <div class="wrap">
+    <div class="kicker">Studio — Jules Deschamps</div>
+    <h1>Des sites web sur-mesure pour les <em class="s">entreprises locales</em>.</h1>
+    <div class="cols">
+      <div><b>Ce que je fais</b>Conception, design et développement de sites vitrines. Un seul interlocuteur.</div>
+      <div><b>Pour qui</b>Commerces, artisans, praticiens et indépendants qui veulent une image à la hauteur.</div>
+      <div><b>Où</b>Basé à Angoulême. Sites livrés partout en France.</div>
+    </div>
+    <div class="strip">
+      <a href="#"><img src="../public/img/realisations/dauffy-paysage.jpg" alt=""></a>
+      <a href="#"><img src="../public/img/realisations/poelier-chauffagiste.jpg" alt=""></a>
+      <a href="#"><img src="../public/img/realisations/bs-atout-vert.jpg" alt=""></a>
+    </div>
+  </div>
+</section>
+
+<!-- D -->
+<section class="hero" id="d">
+  <span class="tagpill">D — Centré serif <i>· réf. lmscom.fr</i></span>
+  <div class="wrap">
+    <div class="kicker">Studio web · TPE &amp; indépendants</div>
+    <h1>Pensés. Dessinés.<br><em class="s">Faits pour durer.</em></h1>
+    <p class="sub">Des sites sur-mesure pour les commerces, artisans et indépendants. Aucun template, aucun duplicata.</p>
+    <div class="btns">
+      <a class="btn" href="#">Voir mes réalisations ↓</a>
+      <a class="link" href="#">Écrivez-moi</a>
+    </div>
+    <div class="stats">
+      <div><b>10</b>sites en ligne</div>
+      <div><b>24 h</b>pour une réponse</div>
+      <div><b>1</b>interlocuteur</div>
+    </div>
+  </div>
+</section>
+
+<div class="pbar" id="pbar"><span class="lab">Palette →</span></div>
+
+<script>
+const palettes=[
+  {name:"Os & encre",ref:"vanholtz.co",v:{'--bg':'#f1f0ea','--ink':'#16150f','--soft':'#57544a','--muted':'#8b887c','--line':'#d9d6cb','--acc':'#16150f','--panel':'#16150f','--panel-text':'#f1f0ea'}},
+  {name:"Galet",ref:"dennissnellenberg.com",v:{'--bg':'#e9e7e2','--ink':'#1d1c19','--soft':'#4f4d47','--muted':'#85827a','--line':'#d0cdc5','--acc':'#1d1c19','--panel':'#242320','--panel-text':'#eceae4'}},
+  {name:"Craie",ref:"basement.studio",v:{'--bg':'#fbfbf9','--ink':'#111110','--soft':'#3f3f3c','--muted':'#8a8a85','--line':'#e6e5e0','--acc':'#111110','--panel':'#111110','--panel-text':'#fbfbf9'}},
+  {name:"Charbon chaud",ref:"lmscom.fr",v:{'--bg':'#17140f','--ink':'#ece7db','--soft':'#b5af9f','--muted':'#7f7a6c','--line':'#2e2a21','--acc':'#ece7db','--panel':'#ece7db','--panel-text':'#17140f'}},
+  {name:"Crème + cobalt discret",ref:"pont avec la DA actuelle",v:{'--bg':'#f3f1ea','--ink':'#14140f','--soft':'#4d4c44','--muted':'#8b897d','--line':'#dcd9cd','--acc':'#2231d8','--panel':'#14140f','--panel-text':'#f3f1ea'}},
+];
+const bar=document.getElementById('pbar');
+function apply(p,el){for(const k in p.v){document.documentElement.style.setProperty(k,p.v[k]);}document.querySelectorAll('.pchip').forEach(c=>c.classList.remove('active'));el.classList.add('active');}
+palettes.forEach((p,i)=>{
+  const chip=document.createElement('div');chip.className='pchip'+(i===0?' active':'');
+  chip.innerHTML='<i style="background:'+p.v['--bg']+'"></i><i style="background:'+p.v['--acc']+'"></i><b>'+p.name+'</b><small>'+p.ref+'</small>';
+  chip.onclick=()=>apply(p,chip);bar.appendChild(chip);
+});
+</script>
+</body>
+</html>

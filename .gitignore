@@ -42,3 +42,6 @@ debug.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# essais vidéo hors site (non déployés)
+public/vid/hero-candidates/

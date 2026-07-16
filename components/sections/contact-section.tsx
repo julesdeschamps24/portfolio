@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ContactForm } from "@/components/contact-form";
 
 export function ContactSection() {
@@ -10,9 +11,19 @@ export function ContactSection() {
           <br />
           de <em className="s">site</em> ?
         </h2>
-        <p className="lead reveal" style={{ transitionDelay: "120ms" }}>
-          Parlez-moi de votre entreprise. Je vous réponds avec plaisir, sans engagement.
-        </p>
+
+        <div className="contact-bubble reveal" style={{ transitionDelay: "110ms" }}>
+          <Image
+            src="/img/jules.jpg"
+            alt="Jules Deschamps"
+            width={160}
+            height={200}
+          />
+          <span>
+            Jules Deschamps — c&apos;est moi qui vous répond, sans engagement.
+          </span>
+        </div>
+
         <a
           href="mailto:contact@julesdeschamps.dev"
           className="mail reveal"

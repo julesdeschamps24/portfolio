@@ -1,71 +1,88 @@
-import Image from "next/image";
+"use client";
 
-const SECTORS = [
-  "Restaurants",
-  "Artisans",
-  "Boutiques",
-  "Coachs",
-  "Praticiens",
-  "Commerces",
-];
+import { useEffect, useRef } from "react";
 
-const META = ["Conception & développement", "Identité & design", "Visibilité locale"];
+const WORDS = ["paysagistes.", "praticiens.", "artisans.", "commerçants.", "indépendants."];
+const STEP_MS = 2100;
+const ROLL_MS = 550;
 
 export function HeroSection() {
+  const reelRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reel = reelRef.current;
+    if (!reel) return;
+
+    // le 1er mot est dupliqué en fin de liste pour une boucle sans couture
+    // NB: le pas de 1.08em doit rester synchronisé avec height:1.08em de .slot/.reel span
+    let i = 0;
+    let jumpTimer: ReturnType<typeof setTimeout> | undefined;
+    let raf1 = 0;
+    let raf2 = 0;
+    const tick = setInterval(() => {
+      i++;
+      reel.style.transform = `translateY(${-i * 1.08}em)`;
+      if (i === WORDS.length) {
+        jumpTimer = setTimeout(() => {
+          reel.style.transition = "none";
+          reel.style.transform = "translateY(0)";
+          i = 0;
+          raf1 = requestAnimationFrame(() => {
+            raf2 = requestAnimationFrame(() => {
+              reel.style.transition = "";
+            });
+          });
+        }, ROLL_MS + 30);
+      }
+    }, STEP_MS);
+
+    return () => {
+      clearInterval(tick);
+      if (jumpTimer) clearTimeout(jumpTimer);
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, []);
+
   return (
     <section id="accueil" className="hero">
-      <div className="wrap hero-grid">
-        <div className="hero-text">
-          <div className="eyebrow">Studio web · entreprises &amp; commerces locaux</div>
-          <h1>
-            Des sites web
-            <br />
-            sur-mesure pour les
-            <br />
-            <em className="s">entreprises locales</em>.
-          </h1>
-          <p className="sub">
-            Studio indépendant. Je conçois et développe des sites soignés pour les
-            commerces, artisans et indépendants qui veulent une présence en ligne à leur
-            image.
-          </p>
-          <div className="btns">
-            <a href="#work" className="btn">
-              Voir mes réalisations <span className="arrow">↓</span>
-            </a>
-            <a href="#contact" className="link">
-              Un projet ? Écrivez-moi
-            </a>
-          </div>
-          <div className="meta">
-            {META.map((m) => (
-              <span key={m}>{m}</span>
-            ))}
-          </div>
+      <div className="wrap hero-text">
+        <div className="eyebrow">Studio web · Angoulême</div>
+        <h1>
+          Des sites sur-mesure
+          <br />
+          pour les{" "}
+          <span className="sr-only">entreprises locales.</span>
+          <span className="slot" aria-hidden="true">
+            <span className="reel" ref={reelRef}>
+              {[...WORDS, WORDS[0]].map((w, k) => (
+                <span key={k}>{w}</span>
+              ))}
+            </span>
+          </span>
+        </h1>
+        <div className="brow">
+          <span>10 sites en ligne</span>
+          <span>Réponse sous 24 h</span>
+          <span>Un seul interlocuteur</span>
         </div>
-
-        <div className="hero-portrait">
-          <div className="portrait-frame">
-            <Image
-              src="/img/jules.jpg"
-              alt="Jules Deschamps, fondateur du studio"
-              width={800}
-              height={1000}
-              priority
-            />
-          </div>
-          <p className="portrait-cap">Jules Deschamps, Angoulême</p>
+        <div className="btns">
+          <a href="#work" className="btn">
+            Voir mes réalisations <span className="arrow">↓</span>
+          </a>
+          <a href="#contact" className="link">
+            Un projet ? Écrivez-moi
+          </a>
         </div>
       </div>
 
-      <div className="marquee">
-        <div className="mq-track">
-          {[...SECTORS, ...SECTORS].map((s, i) => (
-            <span key={i}>
-              {s}
-              <i>{" & "}</i>
-            </span>
-          ))}
+      <div className="hero-foot">
+        <div className="wrap">
+          <span className="scroll-cue">
+            <i>↓</i> Défiler pour voir le travail
+          </span>
+          <span>Angoulême · sites livrés partout en France</span>
         </div>
       </div>
     </section>
