@@ -235,8 +235,12 @@
 .studio .shead h2 { font-size: clamp(30px,4.2vw,54px); }
 
 /* --- Réalisations : double marquee (haut → droite, bas → gauche) --- */
-@keyframes wmq-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes wmq-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+/* la piste contient 3 jeux de cartes identiques et se decale d'UN jeu (-33.333%) :
+   au bout, le 2e jeu a pris la place du 1er, la boucle est invisible. Ne pas
+   repasser a -50% sans remettre 3 jeux -> 2 jeux exigent qu'un seul jeu couvre
+   l'ecran, ce que 5 cartes ne font plus au-dela de ~2100px de large. */
+@keyframes wmq-left { from { transform: translateX(0); } to { transform: translateX(-33.3333%); } }
+@keyframes wmq-right { from { transform: translateX(-33.3333%); } to { transform: translateX(0); } }
 .studio .wmq { margin-top: 46px; display: grid; gap: 22px; overflow: hidden; }
 .studio .wmq-row { overflow: hidden; }
 .studio .wmq-track { display: flex; gap: 22px; width: max-content; padding-right: 22px; will-change: transform; }
@@ -246,7 +250,8 @@
 .studio .wcard { display: block; flex: none; width: clamp(280px, 27vw, 400px); text-decoration: none; color: var(--text); border: 1px solid var(--line2); border-radius: 16px; overflow: hidden; background: var(--bg2); transition: transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s; }
 .studio .wcard:hover { transform: translateY(-5px); border-color: var(--acc); }
 .studio .wcard-media { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--line2); background: var(--bg); }
-.studio .wcard-media img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.studio .wcard-media img,
+.studio .wcard-media video { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
 .studio .wcard-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 16px; }
 .studio .wcard-meta b { font-family: var(--font-disp); font-weight: 700; font-size: 16px; display: block; }
 .studio .wcard-meta .tag { font-size: 12.5px; color: var(--muted2); }
@@ -258,10 +263,6 @@
 }
 .studio .work-foot { display: flex; align-items: center; justify-content: space-between; gap: 26px; flex-wrap: wrap; margin-top: 30px; }
 .studio .work-note { color: var(--muted2); font-size: 14px; max-width: 480px; }
-.studio .asana-card { display: flex; align-items: center; gap: 14px; border: 1px solid var(--line2); border-radius: 14px; padding: 10px 16px 10px 10px; background: var(--bg2); }
-.studio .asana-card video { width: 96px; aspect-ratio: 16/10; object-fit: cover; border-radius: 8px; display: block; }
-.studio .asana-card b { font-family: var(--font-disp); font-weight: 700; font-size: 15px; display: block; }
-.studio .asana-card span { font-size: 12.5px; color: var(--muted2); }
 
 /* --- Mobile : 2 groupes de 2 téléphones superposés (réf. vanholtz.co) --- */
 .studio .mobile-lead { max-width: 520px; font-size: 17px; color: var(--soft); line-height: 1.6; margin-top: 30px; }

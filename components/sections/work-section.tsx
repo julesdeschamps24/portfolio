@@ -3,34 +3,47 @@
 import { useRef } from "react";
 import Image from "next/image";
 
-type Work = { slug: string; name: string; tag: string; url?: string };
+type Work = { slug: string; name: string; tag: string; url?: string; video?: string };
 
 // url présent = site en ligne (cliquable). Sans url = concept sectoriel (démo).
 const ROW_TOP: Work[] = [
   { slug: "dauffy-paysage", name: "Dauffy Paysage", tag: "Paysagiste · Issé (44)", url: "https://dauffy-paysage.julesdeschamps.dev" },
   { slug: "estelle-fonder", name: "Estelle Fonder", tag: "Psychologue · Albi", url: "https://estelle-fonder.julesdeschamps.dev" },
-  { slug: "poelier-chauffagiste", name: "Atelier Braise", tag: "Poêlier · Périgueux (24)" },
   { slug: "laborde-services", name: "Laborde Services", tag: "Travaux forestiers · Béarn (64)", url: "https://laborde-services.julesdeschamps.dev" },
   { slug: "toilettage-canin", name: "Au Poil", tag: "Toilettage canin · Angoulême" },
-  { slug: "avocat", name: "Camille Rivière", tag: "Avocat · Aix-en-Provence" },
   { slug: "bs-atout-vert", name: "BS Atout Vert", tag: "Paysagiste · Création & entretien", url: "https://bs-atout-vert.julesdeschamps.dev" },
 ];
 
 const ROW_BOTTOM: Work[] = [
   { slug: "medecine-alternative", name: "Léa Roussel", tag: "Naturopathe · Bordeaux" },
-  { slug: "grimpe-o-arbres", name: "Grimpe Ô Arbres", tag: "Élagage & grimpe", url: "https://grimpe-o-arbres.julesdeschamps.dev" },
-  { slug: "brice-paysage", name: "Brice Paysage", tag: "Paysagiste · Création & entretien", url: "https://brice-paysage.julesdeschamps.dev" },
   { slug: "kerinou-bois", name: "Kerinou Bois", tag: "Paysagiste & bois", url: "https://kerinou-bois.julesdeschamps.dev" },
+  { slug: "asana", name: "Asana", tag: "Motion design · survolez", video: "/vid/asana.webm" },
   { slug: "ab-paysage", name: "AB Paysage", tag: "Paysagiste · Création & entretien", url: "https://ab-paysage.julesdeschamps.dev" },
-  { slug: "espace-paysage", name: "Espace Paysage", tag: "Paysagiste · Création & entretien", url: "https://espace-paysage.julesdeschamps.dev" },
   { slug: "bl-paysages", name: "BL Paysages", tag: "Paysagiste · Création & entretien", url: "https://bl-paysages.julesdeschamps.dev" },
 ];
 
 function Card({ w }: { w: Work }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const play = () => {
+    videoRef.current?.play().catch(() => {});
+  };
+  const stop = () => {
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
+
   const inner = (
     <>
       <div className="wcard-media">
-        <Image src={`/img/realisations/${w.slug}.jpg`} alt={`Site web ${w.name}`} width={1280} height={800} />
+        {w.video ? (
+          <video ref={videoRef} src={w.video} muted loop playsInline preload="metadata" />
+        ) : (
+          <Image src={`/img/realisations/${w.slug}.jpg`} alt={`Site web ${w.name}`} width={1280} height={800} />
+        )}
       </div>
       <div className="wcard-meta">
         <div>
@@ -41,6 +54,7 @@ function Card({ w }: { w: Work }) {
       </div>
     </>
   );
+
   if (w.url) {
     return (
       <a className="wcard" href={w.url} target="_blank" rel="noopener noreferrer">
@@ -48,15 +62,26 @@ function Card({ w }: { w: Work }) {
       </a>
     );
   }
-  return <div className="wcard wcard--static">{inner}</div>;
+  return (
+    <div
+      className="wcard wcard--static"
+      onMouseEnter={w.video ? play : undefined}
+      onMouseLeave={w.video ? stop : undefined}
+    >
+      {inner}
+    </div>
+  );
 }
 
 function Row({ works, dir }: { works: Work[]; dir: "right" | "left" }) {
-  // contenu doublé pour une boucle infinie sans couture
+  // contenu triplé pour une boucle infinie sans couture : l'animation décale d'UN
+  // jeu (-33.333%), il faut donc que deux jeux couvrent l'écran. En doublant, un
+  // seul jeu devait couvrir l'écran seul, et 5 cartes n'y suffisent plus (~2110px,
+  // soit un trou dès 2560px de large).
   return (
     <div className={`wmq-row wmq-${dir}`}>
       <div className="wmq-track">
-        {[...works, ...works].map((w, i) => (
+        {[...works, ...works, ...works].map((w, i) => (
           <Card key={`${w.slug}-${i}`} w={w} />
         ))}
       </div>
@@ -65,19 +90,6 @@ function Row({ works, dir }: { works: Work[]; dir: "right" | "left" }) {
 }
 
 export function WorkSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const playAsana = () => {
-    videoRef.current?.play().catch(() => {});
-  };
-  const pauseAsana = () => {
-    const v = videoRef.current;
-    if (v) {
-      v.pause();
-      v.currentTime = 0;
-    }
-  };
-
   return (
     <section id="work" className="sec">
       <div className="wrap">
@@ -98,15 +110,6 @@ export function WorkSection() {
             Sites en ligne pour de vraies entreprises. Les cartes sont cliquables.
             Survolez pour mettre en pause.
           </p>
-
-          {/* Motion design : Asana (conservé) */}
-          <div className="asana-card" onMouseEnter={playAsana} onMouseLeave={pauseAsana}>
-            <video ref={videoRef} src="/vid/asana.webm" muted loop playsInline preload="metadata" />
-            <div>
-              <b>Asana</b>
-              <span>Motion design · survolez</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>
