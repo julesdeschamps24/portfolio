@@ -16,7 +16,7 @@ const ROW_TOP: Work[] = [
 
 const ROW_BOTTOM: Work[] = [
   { slug: "medecine-alternative", name: "Léa Roussel", tag: "Naturopathe · Bordeaux" },
-  { slug: "kerinou-bois", name: "Kerinou Bois", tag: "Paysagiste & bois", url: "https://kerinou-bois.julesdeschamps.dev" },
+  { slug: "le-fenouil", name: "Le Fenouil", tag: "Bistrot de saison · Bordeaux", url: "https://le-fenouil.julesdeschamps.dev" },
   { slug: "asana", name: "Asana", tag: "Motion design", video: "/vid/asana.webm" },
   { slug: "ab-paysage", name: "AB Paysage", tag: "Paysagiste · Création & entretien", url: "https://ab-paysage.julesdeschamps.dev" },
   { slug: "bl-paysages", name: "BL Paysages", tag: "Paysagiste · Création & entretien", url: "https://bl-paysages.julesdeschamps.dev" },
